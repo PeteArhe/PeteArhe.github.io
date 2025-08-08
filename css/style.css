@@ -1,0 +1,1100 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+ul {
+    list-style: none;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+.button {
+    display: inline-block;
+    background: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.primary-button {
+    background: #28a745;
+}
+
+.button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.primary-button:hover {
+    background: #218838;
+}
+
+.main-header {
+    background: #fff;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+
+.main-header .logo .site-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav ul li a {
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+}
+
+.main-nav ul li a:hover,
+.main-nav ul li a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    padding: 0;
+}
+
+.hamburger-menu .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+}
+
+
+.hero-main {
+    display: flex;
+    align-items: center;
+    padding: 60px 20px;
+    background-color: #e0f7fa;
+    min-height: 500px;
+    justify-content: center;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.hero-main .hero-content {
+    flex: 1;
+    max-width: 600px;
+    margin-right: 40px;
+}
+
+.hero-main .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.hero-main .hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.hero-main .hero-image {
+    flex: 1;
+    max-width: 500px;
+}
+
+.hero-main .hero-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.page-hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/page_hero_bg.jpg') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.page-hero p {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Updated hero image for about.html */
+.about-hero { 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/about_Row1_Hero_Values_Community.jpg') no-repeat center center/cover; 
+}
+/* Updated hero image for programs.html */
+.programs-hero { 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/programs_Row1_Hero_Programs_Joy.jpg') no-repeat center center/cover; 
+}
+/* Updated hero image for enrollment.html */
+.enrollment-hero { 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/enrollment_Row1_Hero_Guidance.jpg') no-repeat center center/cover; 
+}
+/* Updated hero image for contact.html */
+.contact-hero { 
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/contact_Row1_Hero_Communication.jpg') no-repeat center center/cover; 
+}
+
+
+section {
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Row 2: Features Section Styles */
+.features-overview {
+    background-color: #fcfcfc;
+}
+
+.features-overview .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.features-overview .feature-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.features-overview .feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8-px 20px rgba(0,0,0,0.15);
+}
+
+.features-overview .feature-item h3 {
+    font-size: 1.6rem;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.features-overview .feature-item p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* New CSS for Feature Icons in Row 2 */
+.features-overview .feature-item .icon-wrapper {
+    margin-bottom: 20px;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+}
+
+.features-overview .feature-item .icon-wrapper img {
+    width: 100%;
+    height: auto;
+}
+
+/* New CSS for Row 3: About Us Snapshot */
+.about-snapshot {
+    background-color: #e0f7fa;
+}
+
+.about-snapshot .about-grid {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    text-align: left;
+}
+
+.about-snapshot .about-grid .about-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-snapshot .about-grid .about-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.about-snapshot .about-grid .about-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-snapshot .about-grid .about-content h2 {
+    text-align: left;
+}
+
+
+/* Row 4: Testimonials Section Styles */
+.testimonials {
+    background-color: #f0f8ff;
+}
+
+.testimonial-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 30px;
+    padding-bottom: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.testimonial-item {
+    flex: 0 0 320px;
+    scroll-snap-align: start;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+}
+
+.testimonial-item blockquote {
+    font-style: italic;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+.testimonial-item cite {
+    font-weight: bold;
+    color: #007bff;
+    display: block;
+    margin-top: auto;
+}
+
+/* New CSS for Testimonial Images in Row 4 */
+.testimonial-item .parent-headshot-wrapper {
+    margin: -15px auto 15px auto; /* Pulls the image up slightly */
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.testimonial-item .parent-headshot-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-info-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.contact-info-form .contact-details,
+.contact-info-form .contact-form {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.contact-info-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.contact-info-form .contact-details p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.contact-info-form .contact-details p .icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.contact-info-form .contact-details a {
+    color: #555;
+}
+
+.contact-info-form .contact-details a:hover {
+    color: #007bff;
+}
+
+.contact-info-form .map-placeholder iframe {
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+
+.contact-form .form-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: 'Arial', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form .button {
+    width: auto;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-home,
+.cta-enrollment,
+.cta-about,
+.cta-programs {
+    background-color: #e6f7ff;
+    padding: 80px 20px;
+}
+
+.cta-home h2,
+.cta-enrollment h2,
+.cta-about h2,
+.cta-programs h2 {
+    margin-bottom: 20px;
+}
+
+.cta-home p,
+.cta-enrollment p,
+.cta-about p,
+.cta-programs p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.cta-home .button,
+.cta-enrollment .button,
+.cta-about .button,
+.cta-programs .button {
+    margin: 10px;
+}
+
+.main-footer {
+    background: #2c3e50;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.main-footer .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-footer p {
+    flex: 1 1 100%;
+    margin-bottom: 20px;
+}
+
+.main-footer .footer-nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.main-footer .footer-nav ul li a {
+    color: #bbb;
+    transition: color 0.3s ease;
+}
+
+.main-footer .footer-nav ul li a:hover {
+    color: #fff;
+}
+
+.main-footer .social-links {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.main-footer .social-icon {
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.main-footer .social-icon:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Row 2: About Intro Section */
+.about-intro {
+    padding: 60px 20px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+.about-intro .intro-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-intro .intro-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.about-intro .intro-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-intro .intro-content h2 {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.about-intro .intro-content h2::after {
+    margin: 10px 0 0 0;
+}
+
+/* Row 3: Values & Mission Section */
+.values-mission {
+    background-color: #f0f8ff;
+    padding: 60px 20px;
+    text-align: center;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.values-mission .value-item {
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8-px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.values-mission .value-item h3 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+}
+
+.values-mission .value-item ul {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.values-mission .value-item li {
+    margin-bottom: 10px;
+}
+
+/* New CSS for the Team and Accreditations sections */
+
+/* New Row for Team Members */
+.meet-the-team {
+    padding: 60px 20px;
+    background-color: #fcfcfc;
+}
+
+.meet-the-team .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.meet-the-team .team-member {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.meet-the-team .team-member .team-headshot {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #007bff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.meet-the-team .team-member h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.meet-the-team .team-member p {
+    color: #666;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+
+/* New Row for Accreditations */
+.accreditations {
+    padding: 60px 20px;
+    background-color: #e6f7ff;
+}
+
+.accreditations h2 {
+    margin-bottom: 20px;
+}
+
+.accreditations .accreditation-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.accreditations .accreditation-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.accreditations .accreditation-item img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.accreditations .accreditation-item p {
+    color: #555;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+/* Programs Page Specific Styles */
+.program-overview {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #fff;
+}
+
+.program-overview p {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* New row for Program Icons (Row 2 on the programs page) */
+.program-icons {
+    background-color: #f0f8ff;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.program-icons .icon-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.program-icons .icon-item {
+    padding: 10px;
+}
+
+.program-icons .icon-item img {
+    width: 80px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #007bff;
+    padding: 5px;
+}
+
+.program-icons .icon-item h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+
+/* Program List styles (Row 3 on the programs page) */
+.program-list {
+    background-color: #fff;
+    padding: 60px 20px;
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.program-list .program-item {
+    background-color: #fcfcfc;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.program-list .program-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.program-list .program-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.program-list .program-item h3 {
+    color: #007bff;
+    font-size: 1.8rem;
+    padding: 20px 20px 10px;
+}
+
+.program-list .program-item p {
+    padding: 0 20px;
+    color: #666;
+    flex-grow: 1;
+}
+
+.program-list .program-item ul {
+    margin: 20px 20px 30px 40px;
+    list-style-type: disc;
+    color: #555;
+}
+
+.program-list .program-item ul li {
+    margin-bottom: 5px;
+}
+
+.program-list .program-item .button {
+    margin: 0 20px 20px;
+    align-self: flex-start;
+    width: auto;
+}
+
+/* Enrollment page specific styles */
+.enrollment-steps {
+    padding: 60px 20px;
+    background-color: #fcfcfc;
+}
+
+.enrollment-steps .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.enrollment-steps .step-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.enrollment-steps .step-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.enrollment-steps .step-item .step-number {
+    display: block;
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    line-height: 60px;
+}
+.enrollment-steps .step-item .step-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+}
+
+
+.enrollment-steps .step-item h3 {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.enrollment-steps .step-item p {
+    font-size: 1rem;
+    color: #666;
+    flex-grow: 1;
+}
+
+.enrollment-documents {
+    padding: 60px 20px;
+    background-color: #fff;
+}
+
+.enrollment-documents h2 {
+    margin-bottom: 20px;
+}
+
+.enrollment-documents .documents-list {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    columns: 2;
+    column-gap: 40px;
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.enrollment-documents .documents-list li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.enrollment-documents p {
+    max-width: 800px;
+    margin: 30px auto 0;
+    font-style: italic;
+    color: #666;
+}
+
+.faq-enrollment {
+    padding: 60px 20px;
+    background-color: #f0f8ff;
+}
+
+.faq-enrollment h2 {
+    margin-bottom: 20px;
+}
+
+.faq-enrollment .faq-item {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.faq-enrollment .faq-item h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+
+@media (max-width: 900px) {
+    .about-intro {
+        flex-direction: column;
+    }
+    .about-intro .intro-content h2 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .main-nav {
+        display: none;
+        width: 100%;
+        order: 3;
+        margin-top: 15px;
+    }
+    
+    .main-nav ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .main-nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .main-nav ul li a {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        display: block;
+    }
+    
+    .main-nav ul li:last-child a {
+        border-bottom: none;
+    }
+    
+    .hamburger-menu {
+        display: flex;
+    }
+    
+    .hero-main {
+        flex-direction: column;
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .hero-main .hero-content {
+        margin-right: 0;
+        margin-bottom: 30px;
+    }
+    
+    .hero-main .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .page-hero {
+        padding: 60px 20px;
+    }
+    
+    .page-hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    section {
+        padding: 40px 15px;
+    }
+    
+    section h2 {
+        font-size: 2rem;
+    }
+    
+    .features-overview .feature-grid,
+    .programs-grid,
+    .contact-info-form,
+    .testimonial-slider {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .testimonial-item {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    
+    .contact-info-form .contact-details,
+    .contact-info-form .contact-form {
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .main-footer .footer-content {
+        flex-direction: column;
+    }
+    
+    .main-footer .footer-nav ul,
+    .main-footer .social-links {
+        margin-bottom: 15px;
+    }
+    
+    .main-footer p {
+        margin-bottom: 15px;
+    }
+
+    .about-intro {
+        flex-direction: column;
+    }
+    .about-intro .intro-content h2 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 15px;
+    }
+    
+    .main-header .logo .site-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-main .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-main .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .page-hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .button {
+        padding: 12px 18px;
+        font-size: 0.95rem;
+    }
+
+    .values-mission .value-item {
+        max-width: 100%;
+    }
+    .enrollment-documents .documents-list {
+        columns: 1;
+    }
+}
