@@ -120,46 +120,58 @@ ul {
 
 /* Mobile Menu Styles for "Responsive Navigation".  */ 
 @media only screen and (max-width: 768px) {
-    /* Step 1: Hide the desktop navigation links on mobile */
+    /* Main navigation styles for mobile */
+    .main-nav {
+        display: block; /* Display the nav container on mobile */
+        position: absolute;
+        top: 60px; /* Aligns the menu right below the header */
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 100;
+        /* Initially hide the menu with max-height */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+    }
+
     .main-nav ul {
-        display: none; /* Initially hide the menu */
+        /* Set a flexible layout for mobile links */
         flex-direction: column;
         width: 100%;
         padding: 20px;
         gap: 0;
-        position: absolute; /* Position the menu below the header */
-        top: 60px; /* Aligns the menu right below the header */
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        z-index: 100;
-        transition: max-height 0.3s ease-in-out;
-        overflow: hidden; /* Prevents content from overflowing during transition */
+    }
+    
+    .main-nav ul li a {
+        display: block;
+        padding: 15px 0;
+        text-align: center;
+        border-bottom: 1px solid #eee;
     }
 
-    /* Step 2: Display the hamburger menu icon */
+    /* Show the hamburger icon */
     .hamburger-menu {
         display: flex;
         z-index: 200;
     }
 
-    /* Step 3: Define the active states */
-    .main-nav ul.active {
-        display: flex; /* When active, show the menu */
+    /* When the menu is active, set its max-height to a value that will reveal the content */
+    .main-nav.active {
+        max-height: 500px; /* A value large enough to reveal all content */
     }
-    
+
+    /* Style the hamburger to an 'X' when active */
     .hamburger-menu.active .bar:nth-child(2) {
-        /* Hide the middle bar */
         opacity: 0;
     }
     
     .hamburger-menu.active .bar:nth-child(1) {
-        /* Rotate the top bar */
         transform: translateY(8px) rotate(45deg);
     }
     
     .hamburger-menu.active .bar:nth-child(3) {
-        /* Rotate the bottom bar */
         transform: translateY(-8px) rotate(-45deg);
     }
 }
