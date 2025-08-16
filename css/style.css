@@ -1123,55 +1123,54 @@ section h2::after {
 
 
 
-/* Mobile Menu Styles - CORRECTED VERSION */
+/* CORRECTED Mobile Menu CSS v3 - Add this to your CSS file */
 
-/* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
-    .main-header {
-        padding: 15px 20px;
-    }
-    
     /* Show hamburger menu on mobile */
     .hamburger-menu {
         display: flex !important;
         z-index: 1001;
     }
     
-    /* Hide main navigation UL by default on mobile */
+    /* Hide the navigation menu by default on mobile */
     .main-nav ul {
         position: fixed;
         top: 0;
-        left: -100%;
-        width: 100%;
+        right: -100%;  /* Start hidden on the right */
+        width: 80%;
         height: 100vh;
         background-color: #fff;
-        transition: left 0.3s ease-in-out;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
         z-index: 1000;
-        padding-top: 80px;
         flex-direction: column;
         gap: 0;
+        padding: 80px 30px 30px 30px;
         margin: 0;
-        padding-left: 20px;
-        padding-right: 20px;
     }
     
-    /* Show navigation when UL has active class (matches JavaScript) */
+    /* Show menu when active class is added by JavaScript */
     .main-nav ul.active {
-        left: 0;
+        right: 0;  /* Slide in from right */
     }
     
-    /* Style navigation items for mobile */
+    /* Style menu items for mobile */
     .main-nav ul li {
-        border-bottom: 1px solid #eee;
         width: 100%;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .main-nav ul li:last-child {
+        border-bottom: none;
     }
     
     .main-nav ul li a {
         display: block;
-        padding: 20px 0;
+        padding: 15px 0;
         font-size: 1.1rem;
         color: #333;
-        width: 100%;
+        font-weight: 500;
     }
     
     .main-nav ul li a:hover,
@@ -1180,7 +1179,11 @@ section h2::after {
         border-bottom: 2px solid #007bff;
     }
     
-    /* Hamburger animation when active */
+    /* Hamburger animation */
+    .hamburger-menu .bar {
+        transition: all 0.3s ease;
+    }
+    
     .hamburger-menu.active .bar:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
     }
@@ -1193,23 +1196,15 @@ section h2::after {
         transform: rotate(-45deg) translate(7px, -6px);
     }
     
-    .hamburger-menu .bar {
-        transition: all 0.3s ease;
-    }
-}
-
-/* Ensure hamburger is hidden on desktop */
-@media screen and (min-width: 769px) {
-    .hamburger-menu {
-        display: none !important;
-    }
-    
-    .main-nav ul {
-        position: static !important;
-        background: transparent !important;
-        flex-direction: row !important;
-        height: auto !important;
-        padding: 0 !important;
-        width: auto !important;
+    /* Add overlay when menu is open */
+    .main-nav ul.active::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: -1;
     }
 }
