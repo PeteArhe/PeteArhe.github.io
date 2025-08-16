@@ -1123,8 +1123,7 @@ section h2::after {
 
 
 
-
-/* Mobile Menu Styles - Add this to your CSS file */
+/* Mobile Menu Styles - CORRECTED VERSION */
 
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
@@ -1138,8 +1137,8 @@ section h2::after {
         z-index: 1001;
     }
     
-    /* Hide main navigation by default on mobile */
-    .main-nav {
+    /* Hide main navigation UL by default on mobile */
+    .main-nav ul {
         position: fixed;
         top: 0;
         left: -100%;
@@ -1149,23 +1148,22 @@ section h2::after {
         transition: left 0.3s ease-in-out;
         z-index: 1000;
         padding-top: 80px;
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     
-    /* Show navigation when active */
-    .main-nav.active {
+    /* Show navigation when UL has active class (matches JavaScript) */
+    .main-nav ul.active {
         left: 0;
     }
     
-    /* Style navigation list for mobile */
-    .main-nav ul {
-        flex-direction: column;
-        gap: 0;
-        padding: 20px;
-        height: 100%;
-    }
-    
+    /* Style navigation items for mobile */
     .main-nav ul li {
         border-bottom: 1px solid #eee;
+        width: 100%;
     }
     
     .main-nav ul li a {
@@ -1173,6 +1171,13 @@ section h2::after {
         padding: 20px 0;
         font-size: 1.1rem;
         color: #333;
+        width: 100%;
+    }
+    
+    .main-nav ul li a:hover,
+    .main-nav ul li a.active {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
     }
     
     /* Hamburger animation when active */
@@ -1199,8 +1204,12 @@ section h2::after {
         display: none !important;
     }
     
-    .main-nav {
+    .main-nav ul {
         position: static !important;
         background: transparent !important;
+        flex-direction: row !important;
+        height: auto !important;
+        padding: 0 !important;
+        width: auto !important;
     }
 }
