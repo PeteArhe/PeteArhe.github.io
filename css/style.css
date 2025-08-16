@@ -120,45 +120,32 @@ ul {
 
 /* Mobile Menu Styles for "Responsive Navigation".  */ 
 @media only screen and (max-width: 768px) {
-    /* Step 1: Hide the desktop navigation */
-    .main-nav {
-        display: none;
-        position: fixed;
-        top: 60px; /* Adjust this value to match your header height */
-        left: 0;
-        width: 100%;
-        background-color: #fff;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        z-index: 100;
-        /* Initially hide the menu off-screen */
-        transform: translateY(-100%);
-        transition: transform 0.3s ease-in-out;
-    }
-
+    /* Step 1: Hide the desktop navigation links on mobile */
     .main-nav ul {
+        display: none; /* Initially hide the menu */
         flex-direction: column;
         width: 100%;
         padding: 20px;
         gap: 0;
+        position: absolute; /* Position the menu below the header */
+        top: 60px; /* Aligns the menu right below the header */
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 100;
+        transition: max-height 0.3s ease-in-out;
+        overflow: hidden; /* Prevents content from overflowing during transition */
     }
 
-    .main-nav ul li a {
-        display: block;
-        padding: 15px 0;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-    }
-
-    /* Step 2: Show the hamburger menu icon */
+    /* Step 2: Display the hamburger menu icon */
     .hamburger-menu {
         display: flex;
         z-index: 200;
     }
 
     /* Step 3: Define the active states */
-    .main-nav.active {
-        /* When active, slide the menu into view */
-        transform: translateY(0);
+    .main-nav ul.active {
+        display: flex; /* When active, show the menu */
     }
     
     .hamburger-menu.active .bar:nth-child(2) {
@@ -176,7 +163,6 @@ ul {
         transform: translateY(-8px) rotate(-45deg);
     }
 }
-
 
 /* Updated hero image for index.html */
 .hero-main {
