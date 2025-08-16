@@ -1,10 +1,9 @@
 
-I'm glad you find this condensed format useful! Let's apply it to your JavaScript file (script.js) now.
-
-First, here's the raw script.js code.
+/* Here's the raw script.js code.
 
 script.js Code (No Inline Comments)
 JavaScript
+*/
 
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger-menu');
@@ -128,4 +127,4 @@ Line 18: });
 Closes the DOMContentLoaded event listener function.
 
 Do you have any other files or aspects of your project you'd like to explore in this condensed format?
- */
+*/
