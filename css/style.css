@@ -122,22 +122,25 @@ ul {
 @media only screen and (max-width: 768px) {
     /* Main navigation styles for mobile */
     .main-nav {
-        display: block; /* Display the nav container on mobile */
+        display: block;
         position: absolute;
-        top: 60px; /* Aligns the menu right below the header */
+        top: 60px;
         left: 0;
         width: 100%;
         background-color: #fff;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         z-index: 100;
-        /* Initially hide the menu with max-height */
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease-in-out;
     }
 
+    /* When the menu is active, make the container visible */
+    .main-nav.active {
+        max-height: 500px;
+    }
+
     .main-nav ul {
-        /* Set a flexible layout for mobile links */
         flex-direction: column;
         width: 100%;
         padding: 20px;
@@ -151,18 +154,13 @@ ul {
         border-bottom: 1px solid #eee;
     }
 
-    /* Show the hamburger icon */
+    /* Show the hamburger icon on mobile */
     .hamburger-menu {
         display: flex;
         z-index: 200;
     }
-
-    /* When the menu is active, set its max-height to a value that will reveal the content */
-    .main-nav.active {
-        max-height: 500px; /* A value large enough to reveal all content */
-    }
-
-    /* Style the hamburger to an 'X' when active */
+    
+    /* When active, transform the hamburger icon */
     .hamburger-menu.active .bar:nth-child(2) {
         opacity: 0;
     }
