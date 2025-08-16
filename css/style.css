@@ -634,15 +634,20 @@ section h2::after {
 
 /* New Row for Team Members */
 .meet-the-team {
-    padding: 60px 20px;
+    /*padding: 60px 20px;   */
+	padding: 60px 20px;
     background-color: #fcfcfc;
 }
 
 .meet-the-team .team-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /*grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));   *This is what was there before now */
+	/* Reduce the minimum width to allow more columns to fit */
+	/* This rule will allow columns to shrink as low as 150px to prevent overflow */
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
-    max-width: 1000px;
+    /*max-width: 1000px;   ...we are trying to replace 1000px as below to stop the overflowing*/
+	max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -654,9 +659,19 @@ section h2::after {
     text-align: center;
 }
 
-.meet-the-team .team-member .team-headshot {
-    width: 150px;
+.meet-the-team .team-member img {
+	/*.meet-the-team .team-member .team-headshot {   **Above replaced 'team-headshot' with 'img' because HTML code does not have: <img class="team-headshot">, instead the HTML just have: <img>   */
+
+    /* 1, Force the image to shrink and respect its parent's width */
+    max-width: 100%;
+
+	/* 2, Set the size of the headshot image's dimensions to a proportional value (correct size)  */
+	width: 150px;
     height: 150px;
+	
+	/* 3, Ensure the image is a block-level element for proper spacing */
+    /*display: block;      *This #3 correction is commented out because it shifts image to one side. */
+	
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
