@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Day Home/Agency Name - Nurturing Care for Children</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>TARG Childcare Services - Nurturing Care for Children</title>
+    <link rel="stylesheet" href="css/style.css">    <!-- your CSS file -->
 </head>
 <body>
-
+	<!--This HEADER w/ Hamburger Menu + nav secion is repeated & works across all HTML pages:-->
     <header class="main-header">
         <div class="logo">
-            <a href="index.html" class="site-title">Your Day Home/Agency Name</a>
+            <a href="index.html" class="site-title">TARG Childcare Services</a>
         </div>
-        <nav class="main-nav">
+		
+		<!--Key Rules to Keep Hamburger Working:
+		1.Never rename .hamburger-menu or .main-nav (in CSS file), 
+			or "hamburger-menu" or ".main-nav" classes(in HTML file) in-dependent of each other.
+		2.Keep the 3 <span class="bar"> elements inside the hamburger button.
+		3.Keep the nav links inside <nav class="main-nav"><ul>...</ul></nav>.
+		4.Always include your script.js before </body>.   -->
+				
+		<!-- Navigation menu starts -->
+        <nav class="main-nav">         
             <ul>
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
@@ -21,6 +30,8 @@
                 <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </nav>
+		
+		<!-- Hamburger button section starts here -->
         <button class="hamburger-menu" aria-label="Toggle navigation">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -31,7 +42,7 @@
     <main>
         <section class="hero-main">
             <div class="hero-content">
-                <h1>Welcome to Your Day Home/Agency Name</h1>
+                <h1>Welcome to TARG Childcare Services</h1>
                 <p>Providing nurturing and enriching childcare in Calgary, Alberta.</p>
                 <a href="programs.html" class="button primary-button">Explore Our Programs</a>
             </div>
@@ -88,7 +99,7 @@
                 </div>
                 <div class="about-content">
                     <h2>Our Philosophy</h2>
-                    <p>At Your Day Home/Agency Name, we believe in a holistic approach to child development. Our philosophy centers on creating a safe, engaging, and compassionate environment where every child feels valued. We foster curiosity and a love for learning through play, ensuring that each child's social, emotional, cognitive, and physical needs are met with personalized care.</p>
+                    <p>At TARG Childcare Services, we believe in a holistic approach to child development. Our philosophy centers on creating a safe, engaging, and compassionate environment where every child feels valued. We foster curiosity and a love for learning through play, ensuring that each child's social, emotional, cognitive, and physical needs are met with personalized care.</p>
                     <a href="about.html" class="button primary-button">Learn More About Us</a>
                 </div>
             </div>
@@ -109,14 +120,14 @@
                         <img src="images/index_Row4_Testimonial_Parent2.png" alt="Headshot of a satisfied parent">
                     </div>
                     <blockquote>"The staff are incredibly caring and professional. It feels like a second family."</blockquote>
-                    <cite>- Satisfied Mom</cite>
+                    <cite>- Satisfied Dad</cite>
                 </div>
                 <div class="testimonial-item">
                     <div class="parent-headshot-wrapper">
                         <img src="images/index_Row4_Testimonial_Parent3.png" alt="Headshot of a grateful parent">
                     </div>
                     <blockquote>"Highly recommend! The programs are well-structured, and communication is excellent."</blockquote>
-                    <cite>- Grateful Dad</cite>
+                    <cite>- Grateful Mom</cite>
                 </div>
             </div>
         </section>
@@ -133,7 +144,7 @@
 
     <footer class="main-footer">
         <div class="footer-content">
-            <p>&copy; 2024 Your Day Home/Agency Name. All rights reserved.</p>
+            <p>&copy; 2025 TARG Childcare Services. All rights reserved.</p>
             <nav class="footer-nav">
                 <ul>
                     <li><a href="index.html">Home</a></li>

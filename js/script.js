@@ -1,131 +1,171 @@
+//BELOW IS AN OLD BUT WORKING VERSION
 
-I'm glad you find this condensed format useful! Let's apply it to your JavaScript file (script.js) now.
-
-First, here's the raw script.js code.
-
-script.js Code (No Inline Comments)
-JavaScript
-
+/* 
 document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger-menu');
-    const navMenu = document.querySelector('.main-nav ul');
+  const hamburger = document.querySelector('.hamburger-menu');
+  const navMenu = document.querySelector('.main-nav');
 
-    if (hamburger && navMenu) {
-        hamburger.addEventListener('click', function() {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        navMenu.querySelectorAll('li a').forEach(item => {
-            item.addEventListener('click', function() {
-                if (hamburger.classList.contains('active')) {
-                    hamburger.classList.remove('active');
-                    navMenu.classList.remove('active');
-                }
-            });
-        });
-    }
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    console.log('Hamburger clicked, nav active:', navMenu.classList.contains('active'));
+  });
 });
+*/
+
+
+//BELOW IS A SECOND OLD BUT WORKING VERSION AND BETTER THAN THAT ABOVE
+
+/* THIS NEW ONE BELOW WILL::
+Keeps your current hamburger toggle (works exactly like before).
+Closes the menu if user clicks anywhere outside the menu.
+Closes the menu when user clicks a link inside.  */
+
+/*
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.querySelector('.hamburger-menu');
+  const navMenu = document.querySelector('.main-nav');
+
+  // Toggle menu on hamburger click
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    console.log('Hamburger clicked, nav active:', navMenu.classList.contains('active'));
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
+      if (navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        console.log('Clicked outside, nav closed');
+      }
+    }
+  });
+
+  // Close menu when clicking a link inside
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function() {
+      if (navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        hamburger.classList.remove('active');
+        console.log('Link clicked, nav closed');
+      }
+    });
+  });
+});
+*/
 
 
 
 
-/* Summarized script.js Line-by-Line Explanations
-Here are the concise explanations for each line of your script.js code, organized by line number.
+//BELOW IS A NEW AND WORKING VERSION, AND MUCH BETTER THAN THAT ABOVE
+/* THIS NEW ONE BELOW WILL::
+Keeps your current hamburger toggle (works exactly like before).
+Closes the menu if user clicks anywhere outside the menu.
+Closes the menu when user clicks a link inside.  */
 
-Line 1: document.addEventListener('DOMContentLoaded', function() {
+/*
+Additional Changes made:
 
-Attaches an event listener to the document.
+1.Defined navLinks once at the top.
 
-The function inside runs only after the HTML is fully loaded.
+2.Replaced navMenu.querySelectorAll('a').forEach(...) with navLinks.forEach(...).
 
-Line 2:     const hamburger = document.querySelector('.hamburger-menu');
+3.Functionality is exactly the same, including:
 
-Selects the HTML element with the class hamburger-menu.
+	Hamburger toggle
 
-Stores this element in a constant variable named hamburger.
+	Clicking outside closes menu
 
-Line 3:     const navMenu = document.querySelector('.main-nav ul');
+	Clicking a link closes menu
 
-Selects the <ul> element within the .main-nav class.
+4.Code is cleaner and easier to extend.
 
-Stores this navigation menu element in navMenu.
 
-Line 4:     if (hamburger && navMenu) {
+Key points for a beginner:
 
-Checks if both the hamburger icon and navigation menu elements were found.
+1] DOMContentLoaded ensures JS runs after HTML loads.
 
-This prevents errors if the elements don't exist in the HTML.
+2] querySelector grabs a single element; querySelectorAll grabs multiple elements.
 
-Line 5:         hamburger.addEventListener('click', function() {
+3] .classList.toggle('active') adds the class if missing, removes it if present.
 
-Adds a click event listener to the hamburger icon.
+4] .contains(event.target) checks if the clicked element is inside a container.
 
-The enclosed function runs every time the hamburger is clicked.
+5] forEach loops through all menu links to add the same behavior to each.
 
-Line 6:             hamburger.classList.toggle('active');
+*/
 
-Toggles the active CSS class on the hamburger element itself.
+// Wait until the full HTML document is loaded before running any code
+document.addEventListener('DOMContentLoaded', function() {
 
-This often changes the icon's appearance (e.g., from lines to an 'X').
+  // Grab the hamburger button element from the page
+  const hamburger = document.querySelector('.hamburger-menu');
 
-Line 7:             navMenu.classList.toggle('active');
+  // Grab the navigation menu element from the page
+  const navMenu = document.querySelector('.main-nav');
 
-Toggles the active CSS class on the navMenu element.
+  // Grab all the links inside the navigation menu
+  const navLinks = navMenu.querySelectorAll('a');
 
-This typically shows or hides the mobile navigation menu via CSS.
+  // -------------------------------
+  // 1. Toggle menu open/close when clicking the hamburger
+  // -------------------------------
+  hamburger.addEventListener('click', function() {
+    // Toggle "active" class on hamburger (for animation or styling)
+    hamburger.classList.toggle('active');
 
-Line 8:         });
+    // Toggle "active" class on the menu to show or hide it
+    navMenu.classList.toggle('active');
 
-Closes the click event handler function for the hamburger.
+    // Print to console for debugging
+    console.log('Hamburger clicked, nav active:', navMenu.classList.contains('active'));
+  });
 
-Line 9:         navMenu.querySelectorAll('li a').forEach(item => {
+  // -------------------------------
+  // 2. Close the menu if user clicks anywhere outside the menu
+  // -------------------------------
+  document.addEventListener('click', function(event) {
+    // Check if the click was NOT on the menu or the hamburger
+    if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
 
-Selects all links (<a>) within the navigation menu.
+      // If the menu is currently open
+      if (navMenu.classList.contains('active')) {
 
-It then loops through each of these links.
+        // Remove the "active" class to hide the menu
+        navMenu.classList.remove('active');
 
-Line 10:             item.addEventListener('click', function() {
+        // Remove the "active" class from hamburger (return it to original state)
+        hamburger.classList.remove('active');
 
-Adds a click event listener to each individual navigation link (item).
+        // Debugging message
+        console.log('Clicked outside, nav closed');
+      }
+    }
+  });
 
-The function inside runs when a link is clicked.
+  // -------------------------------
+  // 3. Close the menu when clicking any link inside the menu
+  // -------------------------------
+  navLinks.forEach(link => {
+    // For each link, add a click listener
+    link.addEventListener('click', function() {
 
-Line 11:                 if (hamburger.classList.contains('active')) {
+      // If the menu is currently open
+      if (navMenu.classList.contains('active')) {
 
-Checks if the menu is currently open (i.e., if hamburger has the active class).
+        // Remove the "active" class to hide the menu
+        navMenu.classList.remove('active');
 
-Line 12:                     hamburger.classList.remove('active');
+        // Remove the "active" class from hamburger
+        hamburger.classList.remove('active');
 
-Removes the active class from the hamburger icon.
+        // Debugging message
+        console.log('Link clicked, nav closed');
+      }
+    });
+  });
 
-This resets its appearance (e.g., back to lines).
-
-Line 13:                     navMenu.classList.remove('active');
-
-Removes the active class from the navMenu.
-
-This hides or collapses the mobile navigation menu.
-
-Line 14:                 }
-
-Closes the if statement for checking the active class.
-
-Line 15:             });
-
-Closes the click event handler function for each navigation link.
-
-Line 16:         });
-
-Closes the forEach loop that iterates over the navigation links.
-
-Line 17:     }
-
-Closes the initial if statement that checked for element existence.
-
-Line 18: });
-
-Closes the DOMContentLoaded event listener function.
-
-Do you have any other files or aspects of your project you'd like to explore in this condensed format?
- */
+});

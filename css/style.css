@@ -1,3 +1,100 @@
+/* ***STARTED WITH THIS BELOW BASIC HAMBURGER SECTION THAT WORKS, SO THAT WE CAN FILL-IN OTHER SECTION-BY-SECTION FROM ORIGINAL CSS FILE***   */ 
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; }
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #fff; padding: 10px 20px; position: relative; border-bottom: 1px solid #ddd;
+}
+
+.main-nav ul { display: flex; gap: 15px; list-style: none; }
+.main-nav a {
+	text-decoration: none; 
+	color: #FFD700;    /* 👈changed '333' to 'fff', to have Gold links for contrast instead of black*/
+	transition: color 0.3s ease;     /* Added this transition color  */
+	
+	/* New styles for light purple background ; TO MAKE THE GOLD LINKS CONTRAST BETTER*/
+    background-color: rgba(186, 85, 211, 0.65); /* very light purple */
+    padding: 5px 1px;   /* space inside the block */
+    border-radius: 5px;  /* rounded corners for each link */
+}
+.main-nav a:hover {
+	color: #FFF8DC;  /* 👈changed '007bff' to 'cce7ff', to have Much lighter gold hover instead of grey*/
+}
+
+.hamburger-menu {
+  display: none; flex-direction: column; gap: 5px; border: none; background: none; cursor: pointer;
+}
+.hamburger-menu .bar { width: 25px; height: 3px; background: #333; }
+
+@media (max-width: 768px) {
+	.hamburger-menu {
+		display: flex;
+		position: relative;     /* stays above the menu */
+		z-index: 100;           /* higher than .main-nav */
+	}
+
+	/* Slide-in from right menu */
+	.main-nav {
+		position: fixed;    /* fixed to screen */
+		top: 60px;          /* 👈changed '0' to '60px', so that it starts just below header */
+		right: -250px;      /* start off-screen to the right */
+		width: 250px;
+		height: auto;     /* 👈changed '100%' to 'auto', so that bar is is not entire vertical lenght; only as tall as needed */
+		background: rgba(186, 85, 211, 0.65); /* 👈changed from '#fff', so slightly transparent; further changed from white (255, 255, 255, 0.85) to Medium Orchid (soft purple) translucent (186, 85, 211, 0.65) */
+		overflow: hidden;      /* 👈changed 'auto' to  'hidden', to prevent scrollbars */
+		transition: right 0.3s ease;
+		box-shadow: -4px 0 8px rgba(0,0,0,0.1);
+		z-index: 100;
+		padding: 20px 0;       /* 👈 optional: adds space inside */
+	}
+
+	.main-nav ul { 
+		flex-direction: column; 
+		padding: 20px;
+	}
+
+	/* When active, slide into view */
+	.main-nav.active { right: 0;       /* slides in */
+	}
+	
+	
+	/* Below focus on 'about section' in the index page only: cause it to stack on mobile device */
+	.about-snapshot .about-grid {
+		flex-direction: column;   /* stack vertically */
+		gap: 20px;                /* tighter spacing on mobile */
+	}
+	.about-snapshot .about-grid .about-image,
+	.about-snapshot .about-grid .about-content {
+		flex: 0 1 auto;           /* stops general flex rules from forcing 2 columns */
+		min-width: 0;             /* prevent width from fighting the stack */
+	}
+}
+
+
+/* Hamburger animation */
+.hamburger-menu.active .bar:nth-child(1) {
+	transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-menu.active .bar:nth-child(2) {
+	opacity: 0;
+}
+
+.hamburger-menu.active .bar:nth-child(3) {
+	transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Smooth transition for bars */
+.hamburger-menu .bar {
+	transition: all 0.3s ease;
+}
+
+
+
+/*  ***STARTED FILING-IN SECTION-BY-SECTION FROM THIS POINT ONWARDS*** */
+
+/* Main header menu section */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -61,6 +158,8 @@ ul {
     background: #218838;
 }
 
+
+/* Sub-header  */
 .main-header {
     background: #fff;
     padding: 1rem 0;
@@ -78,8 +177,19 @@ ul {
     font-weight: bold;
     color: #333;
     white-space: nowrap;
+	/* New styles for light purple block */
+    /*
+	background-color: rgba(230, 230, 250, 0.5);  **TO COMMENT OUT: *very light purple, semi-transparent *
+    padding: 5px 15px;  **TO COMMENT OUT:* adds some spacing inside the block *
+    border-radius: 5px; **TO COMMENT OUT:* optional, slightly rounded corners *
+	*/
 }
 
+
+/* ***SKIPPING THIS SECTION OF THE ORIGINAL CODE BECAUSE THE ABOVE NEW new working hamburger CSS replaces/handles it! 
+WE ARE STILL WITHIN THE ABOVE " Main header menu section "  ***   */
+/* .main-nav & @media rules for .main-nav */
+/*
 .main-nav ul {
     display: flex;
     gap: 20px;
@@ -116,8 +226,73 @@ ul {
     background-color: #333;
     border-radius: 2px;
 }
+*/
 
 
+/* ***ALSO SKIPPING THIS SECTION OF THE ORIGINAL CODE BECAUSE THE ABOVE NEW new working hamburger CSS replaces/handles it!***   */
+/* Mobile Menu Styles for "Responsive Navigation".  */ 
+/*
+@media only screen and (max-width: 768px) {
+    
+    .main-nav {
+        display: none;
+        position: fixed;
+        top: 60px; 
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 100;
+        
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+        gap: 0;
+    }
+
+    .main-nav ul li a {
+        display: block;
+        padding: 15px 0;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    
+    .hamburger-menu {
+        display: flex;
+        z-index: 200;
+    }
+
+    
+    .main-nav.active {
+        
+        transform: translateY(0);
+    }
+    
+    .hamburger-menu.active .bar:nth-child(2) {
+        
+        opacity: 0;
+    }
+    
+    .hamburger-menu.active .bar:nth-child(1) {
+        
+        transform: translateY(8px) rotate(45deg);
+    }
+    
+    .hamburger-menu.active .bar:nth-child(3) {
+        
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+*/
+
+
+/* Updated hero image for index.html */
 .hero-main {
     display: flex;
     align-items: center;
@@ -181,7 +356,12 @@ ul {
     margin: 0 auto;
 }
 
+
+
+/* ***NO MORE SKIPPING THIS SECTION OF THE ORIGINAL CODE***   */
+
 /* Updated hero image for about.html */
+
 .about-hero { 
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../images/about_Row1_Hero_Values_Community.jpg') no-repeat center center/cover; 
 }
@@ -222,6 +402,8 @@ section h2::after {
     margin: 10px auto 0;
     border-radius: 2px;
 }
+
+
 
 /* Row 2: Features Section Styles */
 .features-overview {
@@ -368,6 +550,11 @@ section h2::after {
     object-fit: cover;
 }
 
+
+
+
+/*Contact / Forms / CTA   */
+
 .contact-info-form {
     display: flex;
     flex-wrap: wrap;
@@ -496,6 +683,11 @@ section h2::after {
 .cta-programs .button {
     margin: 10px;
 }
+
+
+/* ***no more SKIPPING THIS SECTION OF THE ORIGINAL CODE ***   */
+
+/* .main-header & .main-nav rules.  */
 
 .main-footer {
     background: #2c3e50;
@@ -956,7 +1148,7 @@ section h2::after {
     margin-bottom: 10px;
 }
 
-
+/* layout/content rules  */
 @media (max-width: 900px) {
     .about-intro {
         flex-direction: column;
@@ -966,8 +1158,13 @@ section h2::after {
     }
 }
 
+
+
+
 @media (max-width: 768px) {
-    .main-header {
+	/* ***ALSO SKIPPING THIS SECTION OF THE ORIGINAL CODE BECAUSE THE ABOVE NEW new working hamburger CSS replaces/handles it!***   */
+	/* navigation/hamburger rules  */
+    /*.main-header {
         flex-wrap: wrap;
         justify-content: space-between;
     }
@@ -1001,8 +1198,10 @@ section h2::after {
     
     .hamburger-menu {
         display: flex;
-    }
-    
+    }  */
+ 
+
+    /* layout/content rules  */
     .hero-main {
         flex-direction: column;
         text-align: center;
@@ -1076,6 +1275,8 @@ section h2::after {
     }
 }
 
+
+/* layout/content rules  */
 @media (max-width: 480px) {
     body {
         font-size: 15px;
@@ -1113,3 +1314,7 @@ section h2::after {
         columns: 1;
     }
 }
+
+
+
+
