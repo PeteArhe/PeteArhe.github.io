@@ -14,7 +14,7 @@ body { font-family: Arial, sans-serif; }
 	transition: color 0.3s ease;     /* Added this transition color  */
 	
 	/* New styles for light purple background ; TO MAKE THE GOLD LINKS CONTRAST BETTER*/
-    background-color: rgba(186, 85, 211, 0.65); /* very light purple */
+    background-color: rgba(169, 169, 169, 0.8); /* changed to from very light purple rgba(186, 85, 211, 0.65); Now changed again to darker gray background to contrasts with gold(DarkGray translucent) (9169, 169, 169, 0.8) */
     padding: 5px 1px;   /* space inside the block */
     border-radius: 5px;  /* rounded corners for each link */
 }
@@ -41,7 +41,7 @@ body { font-family: Arial, sans-serif; }
 		right: -250px;      /* start off-screen to the right */
 		width: 250px;
 		height: auto;     /* 👈changed '100%' to 'auto', so that bar is is not entire vertical lenght; only as tall as needed */
-		background: rgba(186, 85, 211, 0.65); /* 👈changed from '#fff', so slightly transparent; further changed from white (255, 255, 255, 0.85) to Medium Orchid (soft purple) translucent (186, 85, 211, 0.65) */
+		background: rgba(211, 211, 211, 0.65); /* 👈changed from '#fff', so slightly transparent; further changed from white (255, 255, 255, 0.85) to Medium Orchid (soft purple) translucent (186, 85, 211, 0.65). NOW CHANGED AGAIN TO light gray translucent (LightGray) (211, 211, 211, 0.65) */
 		overflow: hidden;      /* 👈changed 'auto' to  'hidden', to prevent scrollbars */
 		transition: right 0.3s ease;
 		box-shadow: -4px 0 8px rgba(0,0,0,0.1);
