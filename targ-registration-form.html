@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARG Family Day Home — Child Registration & Intake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1F0;
+    --card: #FFFFFF;
+    --ink: #1E2624;
+    --ink-soft: #5B655F;
+    --line: #DDE3DF;
+    --accent: #1F4E45;
+    --accent-2: #163A33;
+    --gold: #C79A3E;
+    --danger: #A6432F;
+    --readonly-bg: #F4F6F4;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg: #14201C; }
+  }
+  :root[data-theme="dark"] { --bg: #14201C; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100%;
+    background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    padding: 20px 12px 50px;
+    display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 640px; }
+
+  /* Header / progress */
+  .masthead {
+    text-align: center; color: #fff;
+    background: linear-gradient(160deg, var(--accent), var(--accent-2));
+    border-radius: 14px 14px 0 0;
+    padding: 22px 20px 18px;
+  }
+  .masthead .org { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .masthead .logo { height: 44px; width: auto; margin-bottom: 8px; }
+  .masthead .title { font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 21px; margin-top: 4px; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-top: 16px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.25s ease; }
+  .progress-label { font-size: 11px; opacity: 0.85; margin-top: 8px; }
+
+  .card {
+    background: var(--card);
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.12);
+    padding: 26px 20px 24px;
+  }
+  @media (min-width: 520px) { .card { padding: 32px 34px 28px; } }
+
+  .step-title { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 19px; margin: 0 0 4px; color: var(--accent-2); }
+  .step-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 20px; line-height: 1.5; }
+
+  .field { margin-bottom: 18px; }
+  .field label.f-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input[type="text"], .field input[type="tel"], .field input[type="email"],
+  .field input[type="date"], .field input[type="time"], .field textarea {
+    width: 100%; font: inherit; font-size: 15px; color: var(--ink);
+    background: #fff; border: 1.5px solid var(--line); border-radius: 9px;
+    padding: 10px 12px;
+  }
+  .field textarea { min-height: 70px; resize: vertical; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+  .field input[readonly] { background: var(--readonly-bg); color: var(--ink-soft); }
+
+  .row-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 480px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+
+  fieldset { border: none; margin: 0 0 18px; padding: 0; }
+  legend { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 8px; padding: 0; }
+
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice {
+    position: relative;
+  }
+  .choice input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .choice .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--line);
+    font-size: 13.5px; color: var(--ink); background: #fff; user-select: none;
+  }
+  .choice input:checked + .pill {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+  .choice input:focus-visible + .pill { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .consent-row {
+    border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+  }
+  .consent-row .c-title { font-weight: 600; font-size: 13.5px; margin-bottom: 4px; }
+  .consent-row .c-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; margin-bottom: 10px; }
+  .consent-row .choice-grid { gap: 8px; }
+
+  .legal-block {
+    background: var(--readonly-bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px; font-size: 13px; line-height: 1.65; color: var(--ink);
+    margin-bottom: 18px;
+  }
+  .legal-block p { margin: 0 0 10px; }
+  .legal-block p:last-child { margin-bottom: 0; }
+  .legal-block ul { margin: 6px 0; padding-left: 20px; }
+  .legal-block strong { color: var(--accent-2); }
+
+  .divider { border: none; border-top: 1px dashed var(--line); margin: 20px 0; }
+
+  /* Signature */
+  .sig-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .sig-label .t { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .sig-clear { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .sig-box { position: relative; border: 1.5px solid var(--line); border-radius: 9px; background: var(--readonly-bg); touch-action: none; overflow: hidden; }
+  .sig-box canvas { display: block; width: 100%; height: 160px; touch-action: none; }
+  .sig-placeholder { position: absolute; left: 14px; bottom: 30px; font-family: 'Lora', serif; font-style: italic; color: #A7AFA9; font-size: 14px; pointer-events: none; }
+  .sig-baseline { position: absolute; left: 14px; right: 14px; bottom: 24px; border-top: 1.5px solid var(--ink-soft); }
+
+  /* Nav */
+  .nav-row { display: flex; gap: 10px; margin-top: 22px; }
+  .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; }
+  .btn:active { transform: scale(0.98); }
+  .btn-back { background: var(--readonly-bg); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-next { background: var(--accent); color: #fff; }
+  .btn-download { background: var(--gold); color: #2A2110; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .status-line { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 10px; min-height: 16px; }
+  .foot-note { text-align: center; font-size: 11px; color: #8B9490; margin-top: 18px; line-height: 1.6; }
+
+  .form-page { display: none; }
+  .form-page.active { display: block; }
+
+  /* Weekly schedule table */
+  .sched-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .sched-table th { text-align: left; font-weight: 600; color: var(--ink-soft); padding: 6px 4px; border-bottom: 1.5px solid var(--line); }
+  .sched-table td { padding: 8px 4px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .sched-table input[type="time"] { width: 100%; padding: 6px; font-size: 12.5px; border: 1px solid var(--line); border-radius: 6px; }
+  .sched-table input[type="checkbox"] { width: 18px; height: 18px; }
+
+  @media print {
+    body { background: #fff; }
+    .nav-row, .status-line, .foot-note { display: none !important; }
+    .form-page { display: block !important; page-break-after: always; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <img class="logo" src="data:image/png;base64,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" alt="TARG Family Day Home Agency logo">
+    <div class="org">TARG Family Day Home Agency</div>
+    <div class="title">Child Registration &amp; Parent Intake Form</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1 of 9</div>
+  </div>
+
+  <form class="card" id="theForm">
+
+    <!-- STEP 1 — Enrollment & Program Details -->
+    <section class="form-page active" data-step="1">
+      <p class="step-title">Enrollment &amp; Program Details</p>
+      <p class="step-sub">Basic enrollment dates, program type, and your weekly schedule of care.</p>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="startDate">Intended start date</label>
+          <input type="date" id="startDate" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="endDate">Intended withdrawal date (if applicable)</label>
+          <input type="date" id="endDate">
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Program type</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="programType" value="Full-Time Care" required><span class="pill">Full-Time Care</span></label>
+          <label class="choice"><input type="radio" name="programType" value="Part-Time Care"><span class="pill">Part-Time Care</span></label>
+          <label class="choice"><input type="radio" name="programType" value="Extended Hours/Overnight Care"><span class="pill">Extended Hours / Overnight</span></label>
+          <label class="choice"><input type="radio" name="programType" value="Drop-In"><span class="pill">Drop-In</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Schedule of care — check days attending and enter times</legend>
+        <table class="sched-table">
+          <thead><tr><th>Day</th><th>Attending</th><th>Arrival</th><th>Departure</th></tr></thead>
+          <tbody id="schedBody"></tbody>
+        </table>
+      </fieldset>
+    </section>
+
+    <!-- STEP 2 — Child Profile: Basic & Medical -->
+    <section class="form-page" data-step="2">
+      <p class="step-title">Child Profile — Basic &amp; Medical</p>
+      <p class="step-sub">Helps us align routines, safety, and support to your child's needs.</p>
+
+      <div class="field">
+        <label class="f-label" for="childName">Child's full name</label>
+        <input type="text" id="childName" required>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="childDob">Date of birth</label>
+          <input type="date" id="childDob" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="educatorName">Approved day home (educator name)</label>
+          <input type="text" id="educatorName" required>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Medical condition (select all that apply)</legend>
+        <div class="choice-grid" id="medicalConditions">
+          <label class="choice"><input type="checkbox" value="None"><span class="pill">None</span></label>
+          <label class="choice"><input type="checkbox" value="Asthma"><span class="pill">Asthma</span></label>
+          <label class="choice"><input type="checkbox" value="Diabetes"><span class="pill">Diabetes</span></label>
+          <label class="choice"><input type="checkbox" value="Epilepsy"><span class="pill">Epilepsy</span></label>
+          <label class="choice"><input type="checkbox" value="EpiPen Required"><span class="pill">EpiPen required</span></label>
+          <label class="choice"><input type="checkbox" value="Other"><span class="pill">Other</span></label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="f-label" for="medicalDetails">Describe any medical conditions, chronic illnesses, or required medications</label>
+        <textarea id="medicalDetails" required></textarea>
+      </div>
+
+      <fieldset>
+        <legend>Are your child's immunizations up to date?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="immunizations" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="immunizations" value="No"><span class="pill">No</span></label>
+          <label class="choice"><input type="radio" name="immunizations" value="In progress"><span class="pill">In progress</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Known allergies (select all that apply)</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="checkbox" value="None"><span class="pill">None</span></label>
+          <label class="choice"><input type="checkbox" value="Peanuts"><span class="pill">Peanuts</span></label>
+          <label class="choice"><input type="checkbox" value="Tree nuts"><span class="pill">Tree nuts</span></label>
+          <label class="choice"><input type="checkbox" value="Dairy"><span class="pill">Dairy</span></label>
+          <label class="choice"><input type="checkbox" value="Eggs"><span class="pill">Eggs</span></label>
+          <label class="choice"><input type="checkbox" value="Gluten"><span class="pill">Gluten</span></label>
+          <label class="choice"><input type="checkbox" value="Insect stings"><span class="pill">Insect stings</span></label>
+          <label class="choice"><input type="checkbox" value="Other"><span class="pill">Other</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- STEP 3 — Child Profile: Behavior & Routines -->
+    <section class="form-page" data-step="3">
+      <p class="step-title">Child Profile — Behaviour &amp; Daily Routines</p>
+      <p class="step-sub">Tells us how your child communicates, self-soothes, and moves through the day.</p>
+
+      <fieldset>
+        <legend>How does your child typically express excitement or happiness?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="checkbox" value="Smiling and laughing"><span class="pill">Smiling / laughing</span></label>
+          <label class="choice"><input type="checkbox" value="Clapping hands"><span class="pill">Clapping hands</span></label>
+          <label class="choice"><input type="checkbox" value="Jumping or running"><span class="pill">Jumping / running</span></label>
+          <label class="choice"><input type="checkbox" value="Verbal cheering"><span class="pill">Verbal cheering</span></label>
+          <label class="choice"><input type="checkbox" value="Quiet observation"><span class="pill">Quiet observation</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>How does your child generally react to new environments or people?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="newEnv" value="Adapts quickly and explores eagerly" required><span class="pill">Adapts quickly</span></label>
+          <label class="choice"><input type="radio" name="newEnv" value="Cautious at first but warms up with time"><span class="pill">Cautious, warms up</span></label>
+          <label class="choice"><input type="radio" name="newEnv" value="Needs close adult support to feel secure"><span class="pill">Needs adult support</span></label>
+          <label class="choice"><input type="radio" name="newEnv" value="Reluctant and hesitant to engage"><span class="pill">Reluctant / hesitant</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Current level of independence with restroom use</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="restroom" value="Fully toilet trained" required><span class="pill">Fully toilet trained</span></label>
+          <label class="choice"><input type="radio" name="restroom" value="In the process of potty training"><span class="pill">Potty training</span></label>
+          <label class="choice"><input type="radio" name="restroom" value="Wears diapers or pull-ups"><span class="pill">Diapers / pull-ups</span></label>
+          <label class="choice"><input type="radio" name="restroom" value="Requires verbal reminders"><span class="pill">Needs reminders</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Can your child dress and put on shoes independently?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="dressing" value="Yes, completely independent" required><span class="pill">Fully independent</span></label>
+          <label class="choice"><input type="radio" name="dressing" value="Needs help with fasteners like buttons or zippers"><span class="pill">Needs help w/ fasteners</span></label>
+          <label class="choice"><input type="radio" name="dressing" value="Needs full assistance with dressing"><span class="pill">Needs full assistance</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Favorite activities or toys</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="checkbox" value="Building blocks"><span class="pill">Building blocks</span></label>
+          <label class="choice"><input type="checkbox" value="Arts and crafts"><span class="pill">Arts and crafts</span></label>
+          <label class="choice"><input type="checkbox" value="Reading books"><span class="pill">Reading books</span></label>
+          <label class="choice"><input type="checkbox" value="Outdoor active play"><span class="pill">Outdoor active play</span></label>
+          <label class="choice"><input type="checkbox" value="Puzzles and sorting"><span class="pill">Puzzles / sorting</span></label>
+          <label class="choice"><input type="checkbox" value="Imaginative pretend play"><span class="pill">Imaginative play</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>What methods or items help soothe your child when upset or tired?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="checkbox" value="Holding a comfort blanket or stuffed toy"><span class="pill">Comfort blanket / toy</span></label>
+          <label class="choice"><input type="checkbox" value="Gentle rocking or hugging"><span class="pill">Rocking / hugging</span></label>
+          <label class="choice"><input type="checkbox" value="Quiet space away from noise"><span class="pill">Quiet space</span></label>
+          <label class="choice"><input type="checkbox" value="Soothing vocal reassurance"><span class="pill">Vocal reassurance</span></label>
+          <label class="choice"><input type="checkbox" value="Listening to soft music"><span class="pill">Soft music</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Does your child take a regular nap or rest period during the day?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="nap" value="Yes, takes a daily afternoon nap" required><span class="pill">Daily afternoon nap</span></label>
+          <label class="choice"><input type="radio" name="nap" value="Yes, takes morning and afternoon naps"><span class="pill">Morning + afternoon</span></label>
+          <label class="choice"><input type="radio" name="nap" value="Rests quietly without sleeping"><span class="pill">Rests, no sleep</span></label>
+          <label class="choice"><input type="radio" name="nap" value="No longer naps during the day"><span class="pill">No longer naps</span></label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="f-label" for="napRoutine">Describe any specific naptime routines or comforting objects used for sleep</label>
+        <textarea id="napRoutine" required></textarea>
+      </div>
+
+      <fieldset>
+        <legend>How would you describe your child's eating habits and independence?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="eating" value="Feeds independently with utensils" required><span class="pill">Feeds independently</span></label>
+          <label class="choice"><input type="radio" name="eating" value="Uses fingers and utensils with some assistance"><span class="pill">Some assistance</span></label>
+          <label class="choice"><input type="radio" name="eating" value="Requires full feeding assistance"><span class="pill">Full assistance</span></label>
+          <label class="choice"><input type="radio" name="eating" value="Adventuresome eater"><span class="pill">Adventuresome eater</span></label>
+          <label class="choice"><input type="radio" name="eating" value="Picky eater with selective preferences"><span class="pill">Picky eater</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Specific dietary restrictions or preferences</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="checkbox" value="None"><span class="pill">None</span></label>
+          <label class="choice"><input type="checkbox" value="Vegetarian"><span class="pill">Vegetarian</span></label>
+          <label class="choice"><input type="checkbox" value="Vegan"><span class="pill">Vegan</span></label>
+          <label class="choice"><input type="checkbox" value="Halal"><span class="pill">Halal</span></label>
+          <label class="choice"><input type="checkbox" value="Kosher"><span class="pill">Kosher</span></label>
+          <label class="choice"><input type="checkbox" value="Lactose intolerant"><span class="pill">Lactose intolerant</span></label>
+          <label class="choice"><input type="checkbox" value="Gluten free"><span class="pill">Gluten free</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Anything else we should know that isn't covered in this package?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="otherInfo" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="otherInfo" value="No"><span class="pill">No</span></label>
+          <label class="choice"><input type="radio" name="otherInfo" value="Maybe"><span class="pill">Maybe</span></label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label class="f-label" for="otherInfoDetail">If yes/maybe — please describe (optional)</label>
+        <textarea id="otherInfoDetail"></textarea>
+      </div>
+    </section>
+
+    <!-- STEP 4 — Consent Conditions -->
+    <section class="form-page" data-step="4">
+      <p class="step-title">Consent Conditions</p>
+      <p class="step-sub">I hereby give or refuse consent for my child to participate in the following, as may be required.</p>
+
+      <div id="consentRows"></div>
+    </section>
+
+    <!-- STEP 5 — Photo/Video Consent -->
+    <section class="form-page" data-step="5">
+      <p class="step-title">Photo &amp; Video Consent <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(FOIP Act)</span></p>
+      <p class="step-sub">Check any condition(s) under which you consent to your child being photographed and/or videoed.</p>
+      <div class="choice-grid" id="photoConsent" style="flex-direction:column; align-items:stretch;"></div>
+    </section>
+
+    <!-- STEP 6 — Backup Care Consent -->
+    <section class="form-page" data-step="6">
+      <p class="step-title">Backup Care Consent</p>
+      <div class="legal-block">
+        <p>I understand that, in situations where my child's primary Educator is unavailable, the Agency may arrange backup care in accordance with its Back-up Care Policy. This may include:</p>
+        <ul>
+          <li>An approved adult resident in the program home,</li>
+          <li>Another approved Educator within the Agency, or</li>
+          <li>In rare cases, an approved Educator from another licensed Agency (Inter-Agency Backup Care).</li>
+        </ul>
+        <p>I acknowledge that I will be <strong>notified in advance</strong>, and my <strong>written consent will be obtained prior to any backup care arrangement</strong>.</p>
+      </div>
+      <fieldset>
+        <legend>Do you consent to this backup care arrangement?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="backupCare" value="Yes, I consent" required><span class="pill">Yes, I consent</span></label>
+          <label class="choice"><input type="radio" name="backupCare" value="No, I do not consent"><span class="pill">No, I do not consent</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- STEP 7 — Privacy Statement + Personal Info Consent -->
+    <section class="form-page" data-step="7">
+      <p class="step-title">Privacy &amp; Use of Personal Information</p>
+      <div class="legal-block">
+        <p><strong>Privacy / FOIP Statement.</strong> TARG Family Day Home Agency collects personal information under the authority of the Freedom of Information and Protection of Privacy Act (FOIP). Information is used only for the purpose of providing licensed childcare services, ensuring safety, and meeting Alberta Family Day Home Standards. Personal information will not be shared without consent, except as required by law.</p>
+        <p><strong>Consent to Use Personal Information.</strong> The personal information on this form is collected exclusively for administering this program, part of TARG Family Day Home Agency. It is protected under FOIP and will only be used by the concerned educator for operational, medical, emergency and accounting purposes.</p>
+        <p>Questions about this data collection can be directed to <strong>info@targetfix.com</strong>.</p>
+      </div>
+      <p class="step-sub" style="margin-top:-6px;">By continuing, you are indicating that you give consent to use this information in the ways described above. This will be confirmed with your signature at the end of this form.</p>
+    </section>
+
+    <!-- STEP 8 — Registration Confirmation + Agency Info + Initials -->
+    <section class="form-page" data-step="8">
+      <p class="step-title">Registration Confirmation</p>
+      <div class="legal-block">
+        <p>I confirm that all information provided in this registration package is accurate and complete. I understand that this information will be used to ensure the safety, well-being, and individualized care of my child.</p>
+        <p>I certify that the information provided above is accurate and complete. I agree to notify TARG Family Day Home Agency and my provider of any changes to my child's information, medical condition, or emergency contacts immediately.</p>
+      </div>
+
+      <div class="field">
+        <label class="f-label" for="initials">Parent/Guardian initials <span style="color:var(--ink-soft); font-weight:400;">(acknowledging the above)</span></label>
+        <input type="text" id="initials" maxlength="6" style="max-width:120px;" required>
+      </div>
+
+      <hr class="divider">
+      <p class="step-sub" style="margin-bottom:10px; font-weight:600; color:var(--ink-soft);">Provider &amp; agency information <span style="font-weight:400;">(pre-filled by the agency)</span></p>
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label">FDH provider name</label>
+          <input type="text" value="[Provider Name — agency to complete]" readonly>
+        </div>
+        <div class="field">
+          <label class="f-label">Provider phone</label>
+          <input type="text" value="[Provider Phone — agency to complete]" readonly>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label">Agency program consultant</label>
+          <input type="text" value="[Consultant Name — agency to complete]" readonly>
+        </div>
+        <div class="field">
+          <label class="f-label">Agency contact number</label>
+          <input type="text" value="[Agency Phone — agency to complete]" readonly>
+        </div>
+      </div>
+      <div class="field">
+        <label class="f-label">Agency address</label>
+        <input type="text" value="[Agency Address — agency to complete]" readonly>
+      </div>
+    </section>
+
+    <!-- STEP 9 — Agreement & Signature -->
+    <section class="form-page" data-step="9">
+      <p class="step-title">Agreement &amp; Confirmation</p>
+      <div class="legal-block">
+        <p>By signing below, I confirm the accuracy of the information provided throughout this form and agree to initiate the formal enrollment process based on the schedule and program selected above. I acknowledge that any subsequent changes to the schedule, or termination of care, must strictly adhere to the <strong>one (1) full calendar month written notice</strong> requirement outlined in the Agency–Parent Contract.</p>
+        <p>My signature below confirms that I have reviewed and made a selection for every consent item throughout this form (Steps 4–8), and that it represents my agreement to all of them as selected.</p>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="signedName">Parent/guardian name (print)</label>
+          <input type="text" id="signedName" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="signedDate">Date</label>
+          <input type="date" id="signedDate" required>
+        </div>
+      </div>
+
+      <div class="sig-label">
+        <span class="t">Parent/guardian signature — sign with your finger</span>
+        <button type="button" class="sig-clear" id="clearSig">Clear</button>
+      </div>
+      <div class="sig-box">
+        <canvas id="sigCanvas"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder" id="sigPlaceholder">sign here</div>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Download completed PDF</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">Complete on your phone. Your signature at the final step confirms every selection made throughout this form.</div>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  //  AGENCY SETUP — paste your deployed Apps Script Web App URL
+  //  here after following the Drive auto-delivery setup guide.
+  //  Leave as-is (empty string) to disable auto-delivery — the
+  //  form will still work, parents just won't auto-send to Drive.
+  // ============================================================
+  var APPS_SCRIPT_URL = "";
+  // ============================================================
+
+  // ---------- Build dynamic sections ----------
+  var days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  var schedBody = document.getElementById('schedBody');
+  days.forEach(function (d) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + d + '</td>' +
+      '<td><input type="checkbox" data-day="' + d + '" class="sched-attend"></td>' +
+      '<td><input type="time" data-day="' + d + '" class="sched-arrival"></td>' +
+      '<td><input type="time" data-day="' + d + '" class="sched-departure"></td>';
+    schedBody.appendChild(tr);
+  });
+
+  var consentItems = [
+    ["Sunscreen Application", "I authorize staff to apply sunscreen provided by me or by the day home to my child as needed."],
+    ["Bug Spray Application", "I authorize staff to apply insect repellent to my child when necessary for outdoor play."],
+    ["Emergency Medical Treatment", "In the event of an emergency, I authorize staff to seek medical treatment for my child, including transportation by ambulance if required."],
+    ["Outing and Field Trips", "I authorize my child to participate in supervised outings and field trips within the community."],
+    ["Transportation", "I authorize staff to transport my child in a vehicle only in the case of emergencies."],
+    ["Medication Administration", "I authorize staff to administer prescription, non-prescription, or emergency medication to my child according to the Medication Administration Statement."],
+    ["Water Play / Wading Pool", "I authorize my child to participate in supervised water play activities (e.g., sprinklers, wading pools)."],
+    ["Food and Snacks", "I authorize staff to provide snacks and meals to my child, respecting allergies and restrictions noted in the Food section."]
+  ];
+  var consentRowsEl = document.getElementById('consentRows');
+  consentItems.forEach(function (item, i) {
+    var name = 'consent_' + i;
+    var div = document.createElement('div');
+    div.className = 'consent-row';
+    div.innerHTML =
+      '<div class="c-title">' + item[0] + '</div>' +
+      '<div class="c-desc">' + item[1] + '</div>' +
+      '<div class="choice-grid">' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="Yes, I consent" required><span class="pill">Yes, I consent</span></label>' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="No, I do not consent"><span class="pill">No, I do not consent</span></label>' +
+      '</div>';
+    consentRowsEl.appendChild(div);
+  });
+
+  var photoItems = [
+    "Photographed by other parents",
+    "Photographed by a TARG Family Day Home Educator or Agency staff for use on our website",
+    "Photographed and/or videoed by a TARG Family Day Home Educator or Agency staff for use on Agency social media",
+    "Photographed and/or videoed for a craft project",
+    "Photographed to post picture inside the Day Home",
+    "Photographed for the scrapbook"
+  ];
+  var photoConsentEl = document.getElementById('photoConsent');
+  photoItems.forEach(function (label, i) {
+    var wrap = document.createElement('label');
+    wrap.className = 'choice';
+    wrap.style.display = 'block';
+    wrap.innerHTML =
+      '<input type="checkbox" value="' + label.replace(/"/g,'&quot;') + '" style="position:static; opacity:1; width:18px; height:18px; margin-right:8px; vertical-align:middle;">' +
+      '<span style="font-size:13.5px; vertical-align:middle;">' + label + '</span>';
+    photoConsentEl.appendChild(wrap);
+  });
+
+  // ---------- Step navigation ----------
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length;
+  var current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function validateCurrentPage() {
+    var page = pages[current];
+    var fields = page.querySelectorAll('input[required], textarea[required]');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) {
+        fields[i].reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  nextBtn.addEventListener('click', function () {
+    if (!validateCurrentPage()) return;
+    if (current < totalSteps - 1) { current++; updateNav(); }
+  });
+  backBtn.addEventListener('click', function () {
+    if (current > 0) { current--; updateNav(); }
+  });
+  updateNav();
+
+  // ---------- Signature pad ----------
+  var canvas = document.getElementById('sigCanvas');
+  var ctx = canvas.getContext('2d');
+  var placeholder = document.getElementById('sigPlaceholder');
+  var drawing = false, lastX = 0, lastY = 0;
+
+  function resizeCanvas() {
+    var rect = canvas.getBoundingClientRect();
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.lineWidth = 2.4; ctx.strokeStyle = '#1E2624';
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function getPos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var p = evt.touches ? evt.touches[0] : evt;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+  function start(evt) {
+    evt.preventDefault(); drawing = true; placeholder.style.opacity = '0';
+    var p = getPos(evt); lastX = p.x; lastY = p.y;
+    ctx.beginPath(); ctx.moveTo(lastX, lastY);
+  }
+  function move(evt) {
+    if (!drawing) return; evt.preventDefault();
+    var p = getPos(evt); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lastX = p.x; lastY = p.y;
+  }
+  function end() { drawing = false; }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', move, { passive: false });
+  canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    placeholder.style.opacity = '1';
+  });
+
+  // ---------- Download full multi-page PDF ----------
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        // reader.result is a data: URL — strip the prefix, keep raw base64
+        var result = reader.result;
+        var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  downloadBtn.addEventListener('click', async function () {
+    if (!validateCurrentPage()) return;
+    var btn = this;
+    btn.disabled = true;
+    setStatus('Preparing PDF — capturing all ' + totalSteps + ' pages…');
+    var originalStep = current;
+    try {
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = null;
+
+      for (var i = 0; i < totalSteps; i++) {
+        current = i;
+        pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
+        await new Promise(function (res) { setTimeout(res, 60); });
+
+        var target = pages[i];
+        var canvasImg = await html2canvas(target, {
+          backgroundColor: '#FFFFFF',
+          scale: Math.min(window.devicePixelRatio || 1, 2) * 1.4,
+          useCORS: true
+        });
+        var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
+        var pxW = canvasImg.width, pxH = canvasImg.height;
+        var pdfWidth = 210;
+        var pdfHeight = (pxH / pxW) * pdfWidth;
+
+        if (!pdf) {
+          pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] });
+        } else {
+          pdf.addPage([pdfWidth, pdfHeight], 'portrait');
+        }
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        setStatus('Capturing page ' + (i + 1) + ' of ' + totalSteps + '…');
+      }
+
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+
+      var blob = pdf.output('blob');
+      var childName = document.getElementById('childName').value.trim() || 'Registration';
+      var filename = ('TARG_Registration_' + childName).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
+
+      var driveSent = false;
+      if (APPS_SCRIPT_URL) {
+        setStatus('Sending completed form to the Agency…');
+        try {
+          var base64Pdf = await blobToBase64(blob);
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename,
+              childName: childName,
+              parentName: document.getElementById('signedName').value.trim(),
+              dateSigned: document.getElementById('signedDate').value,
+              pdfBase64: base64Pdf
+            })
+          });
+          var result = await resp.json();
+          driveSent = !!(result && result.status === 'ok');
+        } catch (sendErr) {
+          console.error('Drive delivery failed', sendErr);
+          driveSent = false;
+        }
+      }
+
+      triggerBrowserDownload(blob, filename);
+      if (APPS_SCRIPT_URL) {
+        setStatus(driveSent
+          ? 'Sent to the Agency and downloaded a copy for you.'
+          : 'Downloaded your copy — but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+      } else {
+        setStatus('Downloaded: ' + filename);
+      }
+    } catch (err) {
+      console.error(err);
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+      setStatus('Could not build the PDF. Try Print instead.');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
