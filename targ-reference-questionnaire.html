@@ -498,7 +498,30 @@
         pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
         await new Promise(function (res) { setTimeout(res, 60); });
         var target = pages[i];
+
+        // Workaround for a known html2canvas issue: it can fail to
+        // "clone" a live, hand-drawn <canvas> element (reports it as
+        // "tainted" even though nothing cross-origin was ever drawn
+        // to it). Fix: swap the live canvas for a plain snapshot
+        // <img> just for this one capture, then swap it back.
+        var sigParent = null, sigPlaceholderImg = null;
+        var isSignatureStep = target.querySelector && target.querySelector('#sigCanvas');
+        if (isSignatureStep) {
+          sigParent = canvas.parentNode;
+          sigPlaceholderImg = document.createElement('img');
+          sigPlaceholderImg.src = canvas.toDataURL('image/png');
+          sigPlaceholderImg.style.display = 'block';
+          sigPlaceholderImg.style.width = '100%';
+          sigPlaceholderImg.style.height = '160px';
+          sigParent.replaceChild(sigPlaceholderImg, canvas);
+        }
+
         var canvasImg = await html2canvas(target, { backgroundColor: '#FFFFFF', scale: Math.min(window.devicePixelRatio || 1, 2) * 1.4, useCORS: true });
+
+        if (isSignatureStep) {
+          sigParent.replaceChild(canvas, sigPlaceholderImg);
+        }
+
         var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
         var pxW = canvasImg.width, pxH = canvasImg.height;
         var pdfWidth = 210; var pdfHeight = (pxH / pxW) * pdfWidth;
