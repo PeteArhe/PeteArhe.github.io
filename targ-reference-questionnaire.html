@@ -270,42 +270,7 @@
   //  AGENCY SETUP — paste your deployed Apps Script Web App URL
   //  here after deploying targ-reference-delivery.gs.
   // ============================================================
-  var APPS_SCRIPT_URL = "https://script.google.com/a/macros/targ.ca/s/AKfycbwItSABiEgrCl4xa_fjEcy6ewf5eD6jvPl2-EgOkq0K3ZjvDa4hzIcJIE5oCreh4n7WKg/exec"; // kept for reference; no longer used for sending
-  // ============================================================
-  //  GOOGLE FORM RELAY — fill these in after running
-  //  setupReferenceIntakeForm() once in Apps Script and reading
-  //  the values from its Execution log (Run > View > Execution log).
-  // ============================================================
-  var FORM_RESPONSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfq31uCaI-aGZWonjwN_zEn8FjkNAaRTrS7XtFTyzqBM4zMMg/formResponse";
-  var ENTRY_IDS = {
-    applicantName: "1642864811",
-    knownDuration: "1515832957",
-    relationship: "581972949",
-    trait_0: "1239284141",
-    trait_1: "1917669957",
-    trait_2: "1523700213",
-    trait_3: "356206584",
-    trait_4: "379379496",
-    observed: "2139007091",
-    interactionStyle: "163528803",
-    stressHandling: "633030728",
-    multitask: "1670232735",
-    safetyConcerns: "1739099971",
-    feedbackReaction: "573929473",
-    temperObserved: "272474520",
-    boundaries: "206557275",
-    safetyIncident: "1899921484",
-    trustCare: "698128168",
-    trustExplain: "1611277993",
-    personalCircumstances: "2128831982",
-    refName: "425341580",
-    refPhone: "1503403902",
-    refEmail: "1292052763",
-    refDate: "1605235695",
-    signatureImage: "480820630"
-  };
-  // ============================================================
-
+  var APPS_SCRIPT_URL = "https://script.google.com/a/macros/targ.ca/s/AKfycbwItSABiEgrCl4xa_fjEcy6ewf5eD6jvPl2-EgOkq0K3ZjvDa4hzIcJIE5oCreh4n7WKg/exec";
   function getFieldValue(id) {
     var el = document.getElementById(id);
     return el ? el.value : '';
@@ -314,72 +279,14 @@
     var checked = document.querySelector('input[name="' + name + '"]:checked');
     return checked ? checked.value : '';
   }
-
-  function submitToAgencyRelay() {
-    // Uses a real, hidden <form> POST via a hidden iframe — this is the
-    // proven-reliable way to submit into a Google Form's response endpoint.
-    // A background fetch() call was tried first but Google's servers can
-    // silently reject submissions that don't look like a genuine browser
-    // form submission — this method avoids that problem entirely.
-    return new Promise(function (resolve) {
-      var values = {
-        applicantName: getFieldValue('applicantName'),
-        knownDuration: getFieldValue('knownDuration'),
-        relationship: getFieldValue('relationship'),
-        trait_0: getRadioValue('trait_0'),
-        trait_1: getRadioValue('trait_1'),
-        trait_2: getRadioValue('trait_2'),
-        trait_3: getRadioValue('trait_3'),
-        trait_4: getRadioValue('trait_4'),
-        observed: getRadioValue('observed'),
-        interactionStyle: getFieldValue('interactionStyle'),
-        stressHandling: getFieldValue('stressHandling'),
-        multitask: getFieldValue('multitask'),
-        safetyConcerns: getFieldValue('safetyConcerns'),
-        feedbackReaction: getFieldValue('feedbackReaction'),
-        temperObserved: getFieldValue('temperObserved'),
-        boundaries: getFieldValue('boundaries'),
-        safetyIncident: getFieldValue('safetyIncident'),
-        trustCare: getRadioValue('trustCare'),
-        trustExplain: getFieldValue('trustExplain'),
-        personalCircumstances: getFieldValue('personalCircumstances'),
-        refName: getFieldValue('refName'),
-        refPhone: getFieldValue('refPhone'),
-        refEmail: getFieldValue('refEmail'),
-        refDate: getFieldValue('refDate'),
-        signatureImage: canvas.toDataURL('image/png')
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var result = reader.result; var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
       };
-
-      var iframeName = 'relay_frame_' + Date.now();
-      var iframe = document.createElement('iframe');
-      iframe.name = iframeName;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-
-      var form = document.createElement('form');
-      form.action = FORM_RESPONSE_URL;
-      form.method = 'POST';
-      form.target = iframeName;
-      form.style.display = 'none';
-
-      Object.keys(ENTRY_IDS).forEach(function (key) {
-        var input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'entry.' + ENTRY_IDS[key];
-        input.value = values[key] || '';
-        form.appendChild(input);
-      });
-
-      document.body.appendChild(form);
-      form.submit();
-
-      // Cross-origin iframe content can't be read to confirm success,
-      // but this submission method is the reliable, proven one.
-      setTimeout(function () {
-        try { document.body.removeChild(form); } catch (e) {}
-        try { document.body.removeChild(iframe); } catch (e) {}
-        resolve(true);
-      }, 1500);
+      reader.onerror = reject; reader.readAsDataURL(blob);
     });
   }
 
@@ -423,6 +330,11 @@
     var isLast = current === totalSteps - 1;
     nextBtn.style.display = isLast ? 'none' : 'block';
     downloadBtn.style.display = isLast ? 'block' : 'none';
+    // Fix for signature canvas being sized 0x0 if resized while hidden
+    // (found tonight): re-run whenever the now-active page contains it.
+    if (pages[current].querySelector && pages[current].querySelector('#sigCanvas')) {
+      setTimeout(resizeCanvas, 50);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function validateCurrentPage() {
@@ -446,6 +358,7 @@
   var drawing = false, lastX = 0, lastY = 0;
   function resizeCanvas() {
     var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0) return; // not visible right now, skip
     var ratio = window.devicePixelRatio || 1;
     canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -538,8 +451,28 @@
       var refName = document.getElementById('refName').value.trim() || 'Reference';
       var filename = ('TARG_Reference_' + applicantName + '_' + refName).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
 
-      setStatus('Sending completed reference to the Agency…');
-      var driveSent = await submitToAgencyRelay();
+      var driveSent = false;
+      if (APPS_SCRIPT_URL) {
+        setStatus('Sending completed reference to the Agency…');
+        try {
+          var base64Pdf = await blobToBase64(blob);
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename,
+              applicantName: applicantName,
+              referenceName: refName,
+              referencePhone: document.getElementById('refPhone').value.trim(),
+              referenceEmail: document.getElementById('refEmail').value.trim(),
+              dateSigned: document.getElementById('refDate').value,
+              pdfBase64: base64Pdf
+            })
+          });
+          var result = await resp.json();
+          driveSent = !!(result && result.status === 'ok');
+        } catch (sendErr) { console.error('Delivery failed', sendErr); driveSent = false; }
+      }
 
       triggerBrowserDownload(blob, filename);
       setStatus(driveSent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy — but sending to the Agency failed. Please also email this PDF to the Agency directly.');
