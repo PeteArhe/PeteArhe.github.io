@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARG Family Day Home — Home Visitor/Consultant Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1F0; --card: #FFFFFF; --ink: #1E2624; --ink-soft: #5B655F;
+    --line: #DDE3DF; --accent: #1F4E45; --accent-2: #163A33; --gold: #C79A3E;
+    --readonly-bg: #F4F6F4; --danger: #A32D2D;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14201C; } }
+  :root[data-theme="dark"] { --bg: #14201C; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100%; background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); padding: 20px 12px 50px; display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 680px; }
+  .masthead { text-align: center; color: #fff; background: linear-gradient(160deg, var(--accent), var(--accent-2)); border-radius: 14px 14px 0 0; padding: 20px 20px 16px; }
+  .masthead .org { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .masthead .title { font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 17px; margin-top: 4px; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-top: 14px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.2s ease; }
+  .progress-label { font-size: 11px; opacity: 0.85; margin-top: 6px; }
+  .card { background: var(--card); border-radius: 0 0 14px 14px; box-shadow: 0 14px 34px rgba(0,0,0,0.12); padding: 24px 18px 22px; }
+  @media (min-width: 520px) { .card { padding: 30px 32px 26px; } }
+  .step-title { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; color: var(--accent-2); }
+  .step-sub { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 16px; line-height: 1.5; }
+  .field { margin-bottom: 16px; }
+  .field label.f-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+  .field input[type="text"], .field input[type="tel"], .field input[type="email"], .field input[type="date"], .field input[type="time"], .field textarea {
+    width: 100%; font: inherit; font-size: 14.5px; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 9px; padding: 9px 11px;
+  }
+  .field textarea { min-height: 64px; resize: vertical; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+  .row-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 480px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+  .row-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 560px) { .row-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  fieldset { border: none; margin: 0 0 14px; padding: 0; }
+  legend { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 7px; padding: 0; line-height: 1.4; }
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .choice .pill { display: inline-flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 999px; border: 1.5px solid var(--line); font-size: 13px; color: var(--ink); background: #fff; user-select: none; }
+  .choice input:checked + .pill { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .choice input:focus-visible + .pill { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .q-block { border-bottom: 1px solid var(--line); padding: 11px 0; }
+  .q-block:last-of-type { border-bottom: none; }
+  .q-text { font-size: 13.5px; margin-bottom: 8px; line-height: 1.45; }
+  .standard-intro { background: var(--readonly-bg); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; }
+  .subheading { font-size: 12px; font-weight: 700; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.04em; margin: 18px 0 8px; }
+  .table-row { border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 10px; position: relative; }
+  .remove-row { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--danger); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .add-row-btn { width: 100%; padding: 10px; border-radius: 9px; border: 1.5px dashed var(--line); background: var(--readonly-bg); color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; margin-top: 4px; }
+  .nav-row { display: flex; gap: 10px; margin-top: 20px; }
+  .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; }
+  .btn:active { transform: scale(0.98); }
+  .btn-back { background: var(--readonly-bg); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-next { background: var(--accent); color: #fff; }
+  .btn-download { background: var(--gold); color: #2A2110; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status-line { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 10px; min-height: 16px; }
+  .foot-note { text-align: center; font-size: 11px; color: #8B9490; margin-top: 16px; line-height: 1.6; }
+  .form-page { display: none; } .form-page.active { display: block; }
+  .sig-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .sig-label .t { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .sig-clear { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .sig-box { position: relative; border: 1.5px solid var(--line); border-radius: 9px; background: var(--readonly-bg); touch-action: none; overflow: hidden; }
+  .sig-box canvas { display: block; width: 100%; height: 160px; touch-action: none; }
+  .sig-placeholder { position: absolute; left: 14px; bottom: 30px; font-family: 'Lora', serif; font-style: italic; color: #A7AFA9; font-size: 14px; pointer-events: none; }
+  .sig-baseline { position: absolute; left: 14px; right: 14px; bottom: 24px; border-top: 1.5px solid var(--ink-soft); }
+  @media print {
+    body { background: #fff; }
+    .nav-row, .status-line, .foot-note, .add-row-btn, .remove-row { display: none !important; }
+    .form-page { display: block !important; page-break-after: always; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="org">TARG Family Day Home Agency</div>
+    <div class="title">Home Visitor / Consultant Checklist</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1</div>
+  </div>
+  <form class="card" id="theForm">
+    <!-- STEP: General Information -->
+    <section class="form-page active" data-static="1">
+      <p class="step-title">General Information</p>
+      <p class="step-sub">Agencies must visit each program a minimum of six times per year, both scheduled and unscheduled.</p>
+      <div class="row-2">
+        <div class="field"><label class="f-label" for="agencyName">Agency Name</label><input type="text" id="agencyName" required></div>
+        <div class="field"><label class="f-label" for="visitorName">Home Visitor/Consultant's Name</label><input type="text" id="visitorName" required></div>
+      </div>
+      <div class="field"><label class="f-label" for="educatorName">Program Educator's Name</label><input type="text" id="educatorName" required></div>
+      <div class="row-3">
+        <div class="field"><label class="f-label" for="visitDate">Date of Visit</label><input type="date" id="visitDate" required></div>
+        <div class="field"><label class="f-label" for="startTime">Start Time</label><input type="time" id="startTime" required></div>
+        <div class="field"><label class="f-label" for="endTime">End Time</label><input type="time" id="endTime" required></div>
+      </div>
+      <fieldset>
+        <legend>Purpose of the Visit</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="purpose" value="Initial Screening" required><span class="pill">Initial Screening</span></label>
+          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Scheduled"><span class="pill">Regular \u2014 Scheduled</span></label>
+          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Unscheduled"><span class="pill">Regular \u2014 Unscheduled</span></label>
+          <label class="choice"><input type="radio" name="purpose" value="Other"><span class="pill">Other</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><label class="f-label" for="purposeOther">If Other, please describe</label><input type="text" id="purposeOther"></div>
+    </section>
+
+    <!-- STEP: Individuals present + Environment -->
+    <section class="form-page" data-static="1">
+      <p class="step-title">Individuals & Environment</p>
+      <div class="field"><label class="f-label" for="individualsPresent">Individuals present in the home during visit (other than the program educator and children in care)</label><textarea id="individualsPresent"></textarea></div>
+      <div class="field"><label class="f-label" for="envDescription">Description of Environment \u2014 must view ALL parts of the home (indoor/outdoor play space, napping areas, etc). Describe observations of activities occurring during the visit.</label><textarea id="envDescription" required style="min-height:110px;"></textarea></div>
+    </section>
+
+    <!-- STEP: Children Enrolled -->
+    <section class="form-page" data-static="1">
+      <p class="step-title">Children Enrolled</p>
+      <p class="step-sub">Including the program educator's own children and children attending for back-up care.</p>
+      <div id="childrenRows"></div>
+      <button type="button" class="add-row-btn" id="addChildRow">+ Add Child</button>
+    </section>
+
+    <!-- STANDARD STEPS injected here by JS -->
+    <div id="standardsContainer"></div>
+
+    <!-- STEP: Summary of Results -->
+    <section class="form-page" data-static="1">
+      <p class="step-title">Summary of Results / Next Steps</p>
+      <p class="step-sub">Identify all other topics discussed with the program and the outcome of the discussion.</p>
+      <div id="summaryRows"></div>
+      <button type="button" class="add-row-btn" id="addSummaryRow">+ Add Item</button>
+    </section>
+
+    <!-- STEP: Signature -->
+    <section class="form-page" data-static="1">
+      <p class="step-title">Home Visitor/Consultant's Signature</p>
+      <div class="sig-label">
+        <span class="t">Sign with your finger</span>
+        <button type="button" class="sig-clear" id="clearSig">Clear</button>
+      </div>
+      <div class="sig-box">
+        <canvas id="sigCanvas"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder" id="sigPlaceholder">sign here</div>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Submit &amp; download copy</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">Protected A (when completed). Alberta Licensed Family Day Home Agency Standards.</div>
+  </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const STANDARDS = [
+  {id:"std1",title:"Standard 1: Insurance Coverage",q:[{t:"All programs must have current insurance policies.",o:"yn"},{t:"All programs must be covered by general liability insurance.",o:"yn"},{t:"Where the program transports children, automobile liability insurance coverage must be obtained at a minimum of $2 million per occurrence.",o:"yn"}]},
+  {id:"std6",title:"Standard 6: Number and Ages of Children",q:[{t:"Programs may accommodate a maximum of 6 children not including the program educator's own, under the age of 13.",o:"yn"},{t:"A maximum of 3 children are 36 months old or younger.",o:"yn"},{t:"A maximum of 2 children are 24 months old or younger.",o:"yn"}]},
+  {id:"std2",title:"Standard 2: Children's Information Records",q:[{t:"Program maintains updates to children's information record for no longer than one month, and sends the agency all updates within 5 working days after the last working day of the previous month. Records are available to parents and CFS at all times.",o:"yn"}]},
+  {id:"std3",title:"Standard 3: Portable Emergency Records",q:[{t:"Records are taken on all outings.",o:"yn"},{t:"Records include child's name and date of birth.",o:"yn"},{t:"Records include parent's name, home address, home and work telephone numbers.",o:"yn"},{t:"Records include emergency contact name/telephone number.",o:"yn"},{t:"Records include relevant health information including immunization status and medical conditions.",o:"yn"}]},
+  {id:"std4a",title:"Standard 4A: Family Day Home Program \u2014 Residence",q:[{t:"The residence is in good repair.",o:"yn"},{t:"Windows in every room used by the children.",o:"yn"},{t:"Adequate ventilation.",o:"yn"},{t:"Clean, comfortable surroundings.",o:"yn"},{t:"Sufficient space for developmental activities of children in care.",o:"yn"}]},
+  {id:"std4b",title:"Standard 4B: Furnishings and Equipment",q:[{t:"Furnishings and equipment are age appropriate.",o:"yn"},{t:"Of sufficient variety and quantity for the number and ages of children.",o:"yn"},{t:"Organized and accessible so children can make own selections.",o:"yn"},{t:"Meet federal and provincial product safety legislation and are only used as recommended by the manufacturer.",o:"yn"},{t:"A change table or individual change pads are provided for each child.",o:"yna"},{t:"Children are diapered in a location that allows for supervision of other children.",o:"yna"}]},
+  {id:"std4c",title:"Standard 4C: Outdoor Play Space",q:[{t:"The program ensures children have access to outdoor play space (securely enclosed if part of the residence, or within safe walking distance if not).",o:"yn"}]},
+  {id:"std5",title:"Standard 5: Transportation and Outings",q:[{t:"Programs have written permission from parents to transport children, and parents are advised in writing of any outings/excursions including transportation and supervision arrangements.",o:"yn"}]},
+  {id:"std7",title:"Standard 7: Child Care Programming",q:[{t:"Includes both indoor and outdoor activities.",o:"yn"},{t:"Is made available to parents and is readily available.",o:"yn"},{t:"Is adapted to meet the needs and abilities of children with special needs.",o:"yn"},{t:"Ensures children's developmental needs are met, including emotional, physical, intellectual and creative/social.",o:"yn"}]},
+  {id:"std8",title:"Standard 8: Child Supervision",q:[{t:"Children receive developmentally appropriate supervision by the program educator at all times.",o:"yn"}]},
+  {id:"std9",title:"Standard 9: Child Guidance",q:[{t:"Child guidance methods are discussed with parents; consistent with the parent handbook and agency program plan.",o:"yn"},{t:"Are explicitly communicated in a written statement to the parents and the children (when developmentally appropriate).",o:"yn"},{t:"Never inflict any form of physical punishment, verbal, physical degradation or emotional deprivation.",o:"yn"},{t:"Never deny or threaten to deny any basic necessity.",o:"yn"},{t:"Never use or permit the use of physical restraint, confinement or isolation.",o:"yn"}]},
+  {id:"std10a",title:"Standard 10A: Incidents",q:[{t:"Obtain emergency medical assistance as required.",o:"yn"},{t:"Immediately notify the parent or emergency contact.",o:"yn"},{t:"Notify the agency immediately after the occurrence.",o:"yn"},{t:"Complete an incident report.",o:"yn"},{t:"Participate in investigations conducted by the agency and/or CFS or other law enforcement agencies as required.",o:"yn"}]},
+  {id:"std10b",title:"Standard 10B: Home and Safety Checklist",q:[{t:"Programs have written emergency plans for evacuation procedures, including an evacuation route.",o:"yn"},{t:"All children who are developmentally able must know the designated meeting place outside the home in the event of a fire.",o:"yn"},{t:"Fire drills are practiced monthly and recorded monthly.",o:"yn"},{t:"A working telephone is required at all times.",o:"yn"},{t:"Programs must know the procedure for calling for help.",o:"yn"},{t:"All medications and vitamins are kept under lock and key.",o:"yn"},{t:"All chemicals, alcohol, cannabis products, personal care products and household cleaning products are stored inaccessible to children.",o:"yn"},{t:"Program ensures emergency telephone numbers (medical, ambulance, fire, police, poison control, nearest hospital, child abuse hotline) are readily accessible.",o:"yn"}]},
+  {id:"std10c",title:"Standard 10C: Illness",q:[{t:"The child's parent(s) arranges for the immediate removal of the child from the program premises when signs/symptoms of illness are exhibited.",o:"yn"},{t:"The child does not return until the program educator is satisfied the child no longer poses a health risk to others in the program.",o:"yn"}]},
+  {id:"std10d",title:"Standard 10D: Medical Conditions",q:[{t:"Program educator consults with the parent(s) about special handling of children with medical conditions, and obtains special instruction/training as needed.",o:"yna"}]},
+  {id:"std10e",title:"Standard 10E: Medication",q:[{t:"Program has written consent of the parent(s) for medication administration.",o:"yna"},{t:"Medication is in its original container.",o:"yna"},{t:"Medication is administered according to the label directions.",o:"yna"},{t:"Program can recognize allergy symptoms and knows how/when to administer emergency medication.",o:"yna"},{t:"Emergency medications are available for the child at all times, including on outings.",o:"yna"},{t:"Educator can recognize the medication name, time and dose administered, and initials of the person who administered it.",o:"yna"},{t:"All medications/vitamins are kept under lock and key, excluding emergency medications which are stored inaccessible to children.",o:"yna"}]},
+  {id:"std10f",title:"Standard 10F: Animals",q:[{t:"Children must not have access to animal/pet foods or wastes.",o:"yna"},{t:"Children should not have unsupervised access to pets.",o:"yna"},{t:"Pets must be vaccinated according to local veterinarian recommendations.",o:"yna"},{t:"Reptiles and amphibians must be kept in safe, locked aquariums or cages.",o:"yna"}]},
+  {id:"std11",title:"Standard 11: Smoking/Vaping",q:[{t:"Smoking or vaping is not permitted on the premises during hours children are cared for, nor at off-site activities/field trips/program-related activities.",o:"yna"}]},
+  {id:"std12",title:"Standard 12: Meals and Snacks",q:[{t:"Programs serve meals and snacks at appropriate times, in sufficient quantities and in accordance with each child's needs, including allergies and special diets.",o:"yn"},{t:"Meals and snacks are served in accordance with the Health Canada / Alberta Health food guide.",o:"yn"},{t:"Menus are made available daily to parents or home visitors/consultants.",o:"yn"},{t:"The manner in which children are fed is appropriate to age and level of development.",o:"yn"},{t:"Children are seated while eating and seated or standing while drinking.",o:"yn"},{t:"No beverages are given to napping children.",o:"yn"},{t:"Parents of infants supply infant food, including special dietary requirements.",o:"yna"}]},
+  {id:"std13",title:"Standard 13: Visual Identity",q:[{t:"Programs display the visual identity for family day homes in a prominent place in the program residence.",o:"yn"}]},
+  {id:"std14",title:"Standard 14: Early Childhood Educator Certification",q:[{t:"Family day home program educators have obtained Level 1 ECE certification from the Government of Alberta within six months of their approval.",o:"yn"}],ef:[{k:"certLevel",l:"Certification Level"},{k:"certNumber",l:"Certification #"}]}
+];
+(function () {
+  // ============================================================
+  //  AGENCY SETUP \u2014 paste your deployed Apps Script Web App URL
+  //  here after setting up the backend (own Sheet + own Drive
+  //  folder, least-privilege scopes, same pattern as other forms).
+  // ============================================================
+  var APPS_SCRIPT_URL = "PASTE_APPS_SCRIPT_URL_HERE";
+  // ============================================================
+
+  var childRowCount = 0, summaryRowCount = 0;
+
+  function addChildRow() {
+    var idx = childRowCount++;
+    var div = document.createElement('div');
+    div.className = 'table-row';
+    div.innerHTML =
+      '<button type="button" class="remove-row" onclick="this.parentNode.remove()">Remove</button>' +
+      '<div class="row-2">' +
+        '<div class="field"><label class="f-label">Name</label><input type="text" class="child-name" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label">Date of Birth</label><input type="date" class="child-dob" data-idx="' + idx + '"></div>' +
+      '</div>' +
+      '<div class="row-2">' +
+        '<div class="field"><label class="f-label">Age (months, until 36mo)</label><input type="text" class="child-age" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label" style="margin-top:6px;"><input type="checkbox" class="child-present" data-idx="' + idx + '" style="margin-right:6px;">Present at time of visit</label></div>' +
+      '</div>';
+    document.getElementById('childrenRows').appendChild(div);
+  }
+  function addSummaryRow() {
+    var idx = summaryRowCount++;
+    var div = document.createElement('div');
+    div.className = 'table-row';
+    div.innerHTML =
+      '<button type="button" class="remove-row" onclick="this.parentNode.remove()">Remove</button>' +
+      '<div class="field"><label class="f-label">Area to Work On (Standard #)</label><input type="text" class="sum-area" data-idx="' + idx + '"></div>' +
+      '<div class="field"><label class="f-label">Required Action</label><input type="text" class="sum-action" data-idx="' + idx + '"></div>' +
+      '<div class="row-3">' +
+        '<div class="field"><label class="f-label">Remedy Date</label><input type="date" class="sum-remedy-date" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label">Actual Date Remedied</label><input type="date" class="sum-actual-date" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label">Agency Staff Initials</label><input type="text" class="sum-initials" data-idx="' + idx + '"></div>' +
+      '</div>';
+    document.getElementById('summaryRows').appendChild(div);
+  }
+  document.getElementById('addChildRow').addEventListener('click', addChildRow);
+  document.getElementById('addSummaryRow').addEventListener('click', addSummaryRow);
+  addChildRow(); addSummaryRow();
+
+  // Build the 21 Standard steps from the data array
+  var standardsContainer = document.getElementById('standardsContainer');
+  STANDARDS.forEach(function (std) {
+    var section = document.createElement('section');
+    section.className = 'form-page';
+    section.dataset.standard = std.id;
+    var qHtml = std.q.map(function (q, qi) {
+      var name = std.id + '_q' + qi;
+      var opts = q.o === 'yna'
+        ? ['Yes','No','N/A']
+        : ['Yes','No'];
+      var pills = opts.map(function (opt) {
+        return '<label class="choice"><input type="radio" name="' + name + '" value="' + opt + '" required><span class="pill">' + opt + '</span></label>';
+      }).join('');
+      return '<div class="q-block"><div class="q-text">' + q.t + '</div><div class="choice-grid">' + pills + '</div></div>';
+    }).join('');
+    var extraHtml = '';
+    if (std.ef) {
+      extraHtml = '<div class="row-2">' + std.ef.map(function (e) {
+        return '<div class="field"><label class="f-label">' + e.l + '</label><input type="text" id="' + std.id + '_' + e.k + '"></div>';
+      }).join('') + '</div>';
+    }
+    section.innerHTML =
+      '<p class="step-title">' + std.title + '</p>' +
+      qHtml +
+      extraHtml +
+      '<div class="subheading">Evidence & Follow-up</div>' +
+      '<div class="field"><label class="f-label">Evidence</label><textarea id="' + std.id + '_evidence"></textarea></div>' +
+      '<div class="field"><label class="f-label">Comments/Actions</label><textarea id="' + std.id + '_comments"></textarea></div>' +
+      '<div class="row-3">' +
+        '<div class="field"><label class="f-label">Deadline for Remedy</label><input type="date" id="' + std.id + '_deadline"></div>' +
+        '<div class="field"><label class="f-label">Actual Date Remedied</label><input type="date" id="' + std.id + '_actualDate"></div>' +
+        '<div class="field"><label class="f-label">Initials</label><input type="text" id="' + std.id + '_initials"></div>' +
+      '</div>';
+    standardsContainer.appendChild(section);
+  });
+
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length;
+  var current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var canvas = document.getElementById('sigCanvas');
+  var ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0) return; // not visible right now, skip
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.4; ctx.strokeStyle = '#1E2624';
+  }
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    // Fix for signature canvas being sized 0x0 if resized while hidden
+    // (a real bug found in an earlier form tonight): re-run whenever
+    // the now-active page contains the signature canvas.
+    if (pages[current].querySelector && pages[current].querySelector('#sigCanvas')) {
+      setTimeout(resizeCanvas, 50);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function validateCurrentPage() {
+    var page = pages[current];
+    var fields = page.querySelectorAll('input[required], textarea[required]');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+  nextBtn.addEventListener('click', function () {
+    if (!validateCurrentPage()) return;
+    if (current < totalSteps - 1) { current++; updateNav(); }
+  });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); } });
+  updateNav();
+
+  var placeholder = document.getElementById('sigPlaceholder');
+  var drawing = false;
+  window.addEventListener('resize', resizeCanvas);
+  function getPos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var p = evt.touches ? evt.touches[0] : evt;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+  function start(evt) { evt.preventDefault(); drawing = true; placeholder.style.opacity = '0'; var p = getPos(evt); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function move(evt) { if (!drawing) return; evt.preventDefault(); var p = getPos(evt); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+  function end() { drawing = false; }
+  canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, { passive: false }); canvas.addEventListener('touchmove', move, { passive: false }); canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', function () { ctx.clearRect(0, 0, canvas.width, canvas.height); placeholder.style.opacity = '1'; });
+
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var result = reader.result; var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = reject; reader.readAsDataURL(blob);
+    });
+  }
+
+  downloadBtn.addEventListener('click', async function () {
+    if (!validateCurrentPage()) return;
+    var btn = this; btn.disabled = true;
+    setStatus('Preparing PDF \u2014 capturing all ' + totalSteps + ' pages\u2026');
+    var originalStep = current;
+    try {
+      var jsPDF = window.jspdf.jsPDF; var pdf = null;
+      for (var i = 0; i < totalSteps; i++) {
+        current = i;
+        pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
+        await new Promise(function (res) { setTimeout(res, 60); });
+        var target = pages[i];
+
+        // Work around a known html2canvas issue: it clones the
+        // ENTIRE document (not just the target element) internally,
+        // so a live hand-drawn <canvas> anywhere in the DOM can
+        // break EVERY page capture, not just the one it's on. Swap
+        // it for a static image for the whole loop, swap back after.
+        var sigSwapped = false;
+        if (i === 0) {
+          var sigDataUrl = canvas.toDataURL('image/png');
+          var sigImg = document.createElement('img');
+          sigImg.src = sigDataUrl;
+          sigImg.id = 'sigCanvasSwap';
+          sigImg.style.cssText = canvas.style.cssText;
+          sigImg.width = canvas.clientWidth; sigImg.height = canvas.clientHeight;
+          canvas.parentNode.insertBefore(sigImg, canvas);
+          canvas.style.display = 'none';
+          sigSwapped = true;
+        }
+
+        var canvasImg = await html2canvas(target, { backgroundColor: '#FFFFFF', scale: Math.min(window.devicePixelRatio || 1, 2) * 1.3, useCORS: true });
+        var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
+        var pxW = canvasImg.width, pxH = canvasImg.height;
+        var pdfWidth = 210; var pdfHeight = (pxH / pxW) * pdfWidth;
+        if (!pdf) { pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] }); }
+        else { pdf.addPage([pdfWidth, pdfHeight], 'portrait'); }
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        setStatus('Capturing page ' + (i + 1) + ' of ' + totalSteps + '\u2026');
+
+        if (i === totalSteps - 1) {
+          var swapImg = document.getElementById('sigCanvasSwap');
+          if (swapImg) { swapImg.remove(); canvas.style.display = ''; }
+        }
+      }
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+
+      var blob = pdf.output('blob');
+      var educatorName = (document.getElementById('educatorName').value.trim() || 'Educator');
+      var visitDate = (document.getElementById('visitDate').value || 'Visit');
+      var filename = ('TARG_HomeVisitorChecklist_' + educatorName + '_' + visitDate).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
+
+      var sent = false;
+      if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_') !== 0) {
+        setStatus('Sending completed checklist to the Agency\u2026');
+        try {
+          var base64Pdf = await blobToBase64(blob);
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename,
+              agencyName: document.getElementById('agencyName').value.trim(),
+              visitorName: document.getElementById('visitorName').value.trim(),
+              educatorName: educatorName,
+              visitDate: visitDate,
+              pdfBase64: base64Pdf
+            })
+          });
+          var result = await resp.json();
+          sent = !!(result && result.status === 'ok');
+        } catch (sendErr) { console.error('Delivery failed', sendErr); sent = false; }
+      }
+
+      triggerBrowserDownload(blob, filename);
+      setStatus(sent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy \u2014 but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+    } catch (err) {
+      console.error(err);
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+      setStatus('Could not build the PDF. Try Print instead.');
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>
