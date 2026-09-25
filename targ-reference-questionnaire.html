@@ -167,7 +167,6 @@
         <textarea id="safetyConcerns" required></textarea>
       </div>
     </section>
-
     <!-- STEP 4 — Behavioral Character & Professionalism -->
     <section class="form-page" data-step="4">
       <p class="step-title">Behavioral Character &amp; Professionalism</p>
@@ -194,3 +193,319 @@
     <section class="form-page" data-step="5">
       <p class="step-title">Home-Based Business Aptitude</p>
       <p class="step-sub">Running a Family Day Home requires the ability to work independently and maintain high safety standards.</p>
+
+      <fieldset>
+        <legend>Is the applicant someone you would trust to care for your own child (or a relative's child) in their home for 8–10 hours a day?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="trustCare" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="trustCare" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label class="f-label" for="trustExplain">Please explain why</label>
+        <textarea id="trustExplain" required></textarea>
+      </div>
+      <div class="field">
+        <label class="f-label" for="personalCircumstances">Are there any personal circumstances (health, family, etc.) that might affect the applicant's ability to provide consistent care?</label>
+        <textarea id="personalCircumstances" required></textarea>
+      </div>
+    </section>
+
+    <!-- STEP 6 — Reference Declaration & Signature -->
+    <section class="form-page" data-step="6">
+      <p class="step-title">Reference Declaration</p>
+      <div class="legal-block">
+        <p>I certify that the information provided in this reference is true and accurate to the best of my knowledge. I understand that the Agency may contact me to verify these details.</p>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="refName">Reference name (print)</label>
+          <input type="text" id="refName" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="refPhone">Phone</label>
+          <input type="tel" id="refPhone" required>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="refEmail">Email</label>
+          <input type="email" id="refEmail" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="refDate">Date</label>
+          <input type="date" id="refDate" required>
+        </div>
+      </div>
+
+      <div class="sig-label">
+        <span class="t">Reference signature — sign with your finger</span>
+        <button type="button" class="sig-clear" id="clearSig">Clear</button>
+      </div>
+      <div class="sig-box">
+        <canvas id="sigCanvas"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder" id="sigPlaceholder">sign here</div>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Submit &amp; download copy</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">All information provided is confidential and used solely for suitability assessment.</div>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  //  AGENCY SETUP — paste your deployed Apps Script Web App URL
+  //  here after deploying targ-reference-delivery.gs.
+  // ============================================================
+  var APPS_SCRIPT_URL = "https://script.google.com/a/macros/targ.ca/s/AKfycbwItSABiEgrCl4xa_fjEcy6ewf5eD6jvPl2-EgOkq0K3ZjvDa4hzIcJIE5oCreh4n7WKg/exec"; // kept for reference; no longer used for sending
+  // ============================================================
+  //  GOOGLE FORM RELAY — fill these in after running
+  //  setupReferenceIntakeForm() once in Apps Script and reading
+  //  the values from its Execution log (Run > View > Execution log).
+  // ============================================================
+  var FORM_RESPONSE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfq31uCaI-aGZWonjwN_zEn8FjkNAaRTrS7XtFTyzqBM4zMMg/formResponse";
+  var ENTRY_IDS = {
+    applicantName: "1642864811",
+    knownDuration: "1515832957",
+    relationship: "581972949",
+    trait_0: "1239284141",
+    trait_1: "1917669957",
+    trait_2: "1523700213",
+    trait_3: "356206584",
+    trait_4: "379379496",
+    observed: "2139007091",
+    interactionStyle: "163528803",
+    stressHandling: "633030728",
+    multitask: "1670232735",
+    safetyConcerns: "1739099971",
+    feedbackReaction: "573929473",
+    temperObserved: "272474520",
+    boundaries: "206557275",
+    safetyIncident: "1899921484",
+    trustCare: "698128168",
+    trustExplain: "1611277993",
+    personalCircumstances: "2128831982",
+    refName: "425341580",
+    refPhone: "1503403902",
+    refEmail: "1292052763",
+    refDate: "1605235695",
+    signatureImage: "480820630"
+  };
+  // ============================================================
+
+  function getFieldValue(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+  function getRadioValue(name) {
+    var checked = document.querySelector('input[name="' + name + '"]:checked');
+    return checked ? checked.value : '';
+  }
+
+  async function submitToAgencyRelay() {
+    var values = {
+      applicantName: getFieldValue('applicantName'),
+      knownDuration: getFieldValue('knownDuration'),
+      relationship: getFieldValue('relationship'),
+      trait_0: getRadioValue('trait_0'),
+      trait_1: getRadioValue('trait_1'),
+      trait_2: getRadioValue('trait_2'),
+      trait_3: getRadioValue('trait_3'),
+      trait_4: getRadioValue('trait_4'),
+      observed: getRadioValue('observed'),
+      interactionStyle: getFieldValue('interactionStyle'),
+      stressHandling: getFieldValue('stressHandling'),
+      multitask: getFieldValue('multitask'),
+      safetyConcerns: getFieldValue('safetyConcerns'),
+      feedbackReaction: getFieldValue('feedbackReaction'),
+      temperObserved: getFieldValue('temperObserved'),
+      boundaries: getFieldValue('boundaries'),
+      safetyIncident: getFieldValue('safetyIncident'),
+      trustCare: getRadioValue('trustCare'),
+      trustExplain: getFieldValue('trustExplain'),
+      personalCircumstances: getFieldValue('personalCircumstances'),
+      refName: getFieldValue('refName'),
+      refPhone: getFieldValue('refPhone'),
+      refEmail: getFieldValue('refEmail'),
+      refDate: getFieldValue('refDate'),
+      signatureImage: canvas.toDataURL('image/png')
+    };
+
+    var params = new URLSearchParams();
+    Object.keys(ENTRY_IDS).forEach(function (key) {
+      params.append('entry.' + ENTRY_IDS[key], values[key] || '');
+    });
+
+    try {
+      await fetch(FORM_RESPONSE_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      });
+      return true; // no-cors means we cannot read the response, but the request was sent
+    } catch (e) {
+      console.error('Relay submission failed', e);
+      return false;
+    }
+  }
+
+  var traits = [
+    "Reliability & Punctuality",
+    "Patience & Temperament",
+    "Communication Skills",
+    "Professionalism/Integrity",
+    "Emotional Stability"
+  ];
+  var traitRowsEl = document.getElementById('traitRows');
+  traits.forEach(function (trait, i) {
+    var name = 'trait_' + i;
+    var div = document.createElement('div');
+    div.className = 'trait-row';
+    div.innerHTML =
+      '<div class="t-title">' + trait + '</div>' +
+      '<div class="choice-grid">' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="Excellent" required><span class="pill">Excellent</span></label>' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="Good"><span class="pill">Good</span></label>' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="Fair"><span class="pill">Fair</span></label>' +
+        '<label class="choice"><input type="radio" name="' + name + '" value="Poor"><span class="pill">Poor</span></label>' +
+      '</div>';
+    traitRowsEl.appendChild(div);
+  });
+
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length;
+  var current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function validateCurrentPage() {
+    var page = pages[current];
+    var fields = page.querySelectorAll('input[required], textarea[required]');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+  nextBtn.addEventListener('click', function () {
+    if (!validateCurrentPage()) return;
+    if (current < totalSteps - 1) { current++; updateNav(); }
+  });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); } });
+  updateNav();
+
+  var canvas = document.getElementById('sigCanvas');
+  var ctx = canvas.getContext('2d');
+  var placeholder = document.getElementById('sigPlaceholder');
+  var drawing = false, lastX = 0, lastY = 0;
+  function resizeCanvas() {
+    var rect = canvas.getBoundingClientRect();
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.4; ctx.strokeStyle = '#1E2624';
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  function getPos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var p = evt.touches ? evt.touches[0] : evt;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+  function start(evt) { evt.preventDefault(); drawing = true; placeholder.style.opacity = '0'; var p = getPos(evt); lastX = p.x; lastY = p.y; ctx.beginPath(); ctx.moveTo(lastX, lastY); }
+  function move(evt) { if (!drawing) return; evt.preventDefault(); var p = getPos(evt); ctx.lineTo(p.x, p.y); ctx.stroke(); lastX = p.x; lastY = p.y; }
+  function end() { drawing = false; }
+  canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, { passive: false }); canvas.addEventListener('touchmove', move, { passive: false }); canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', function () { ctx.clearRect(0, 0, canvas.width, canvas.height); placeholder.style.opacity = '1'; });
+
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var result = reader.result; var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = reject; reader.readAsDataURL(blob);
+    });
+  }
+
+  downloadBtn.addEventListener('click', async function () {
+    if (!validateCurrentPage()) return;
+    var btn = this; btn.disabled = true;
+    setStatus('Preparing PDF — capturing all ' + totalSteps + ' pages…');
+    var originalStep = current;
+    try {
+      var jsPDF = window.jspdf.jsPDF; var pdf = null;
+      for (var i = 0; i < totalSteps; i++) {
+        current = i;
+        pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
+        await new Promise(function (res) { setTimeout(res, 60); });
+        var target = pages[i];
+        var canvasImg = await html2canvas(target, { backgroundColor: '#FFFFFF', scale: Math.min(window.devicePixelRatio || 1, 2) * 1.4, useCORS: true });
+        var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
+        var pxW = canvasImg.width, pxH = canvasImg.height;
+        var pdfWidth = 210; var pdfHeight = (pxH / pxW) * pdfWidth;
+        if (!pdf) { pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] }); }
+        else { pdf.addPage([pdfWidth, pdfHeight], 'portrait'); }
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        setStatus('Capturing page ' + (i + 1) + ' of ' + totalSteps + '…');
+      }
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+
+      var blob = pdf.output('blob');
+      var applicantName = document.getElementById('applicantName').value.trim() || 'Applicant';
+      var refName = document.getElementById('refName').value.trim() || 'Reference';
+      var filename = ('TARG_Reference_' + applicantName + '_' + refName).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
+
+      setStatus('Sending completed reference to the Agency…');
+      var driveSent = await submitToAgencyRelay();
+
+      triggerBrowserDownload(blob, filename);
+      setStatus(driveSent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy — but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+    } catch (err) {
+      console.error(err);
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+      setStatus('Could not build the PDF. Try Print instead.');
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>
