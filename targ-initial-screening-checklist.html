@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARG Family Day Home — Initial Screening Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1F0; --card: #FFFFFF; --ink: #1E2624; --ink-soft: #5B655F;
+    --line: #DDE3DF; --accent: #1F4E45; --accent-2: #163A33; --gold: #C79A3E;
+    --readonly-bg: #F4F6F4; --danger: #A32D2D;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14201C; } }
+  :root[data-theme="dark"] { --bg: #14201C; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100%; background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); padding: 20px 12px 50px; display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 680px; }
+  .masthead { text-align: center; color: #fff; background: linear-gradient(160deg, var(--accent), var(--accent-2)); border-radius: 14px 14px 0 0; padding: 20px 20px 16px; }
+  .masthead .org { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .masthead .title { font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 17px; margin-top: 4px; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-top: 14px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.2s ease; }
+  .progress-label { font-size: 11px; opacity: 0.85; margin-top: 6px; }
+  .card { background: var(--card); border-radius: 0 0 14px 14px; box-shadow: 0 14px 34px rgba(0,0,0,0.12); padding: 24px 18px 22px; }
+  @media (min-width: 520px) { .card { padding: 30px 32px 26px; } }
+  .step-title { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; color: var(--accent-2); }
+  .step-sub { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 16px; line-height: 1.5; }
+  .field { margin-bottom: 16px; }
+  .field label.f-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+  .field input[type="text"], .field input[type="tel"], .field input[type="date"], .field input[type="time"], .field textarea {
+    width: 100%; font: inherit; font-size: 14.5px; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 9px; padding: 9px 11px;
+  }
+  .field textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+  .row-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 480px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+  .row-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 560px) { .row-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  fieldset { border: none; margin: 0 0 14px; padding: 0; }
+  legend { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 7px; padding: 0; line-height: 1.4; }
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .choice .pill { display: inline-flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 999px; border: 1.5px solid var(--line); font-size: 13px; color: var(--ink); background: #fff; user-select: none; }
+  .choice input:checked + .pill { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .choice input:focus-visible + .pill { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .subheading { font-size: 12px; font-weight: 700; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.04em; margin: 4px 0 10px; }
+  .table-row { border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 10px; position: relative; }
+  .remove-row { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--danger); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .add-row-btn { width: 100%; padding: 10px; border-radius: 9px; border: 1.5px dashed var(--line); background: var(--readonly-bg); color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; margin-top: 4px; }
+  .nav-row { display: flex; gap: 10px; margin-top: 20px; }
+  .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; }
+  .btn:active { transform: scale(0.98); }
+  .btn-back { background: var(--readonly-bg); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-next { background: var(--accent); color: #fff; }
+  .btn-download { background: var(--gold); color: #2A2110; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status-line { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 10px; min-height: 16px; }
+  .foot-note { text-align: center; font-size: 11px; color: #8B9490; margin-top: 16px; line-height: 1.6; }
+  .form-page { display: none; } .form-page.active { display: block; }
+  .sig-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .sig-label .t { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .sig-clear { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .sig-box { position: relative; border: 1.5px solid var(--line); border-radius: 9px; background: var(--readonly-bg); touch-action: none; overflow: hidden; }
+  .sig-box canvas { display: block; width: 100%; height: 160px; touch-action: none; }
+  .sig-placeholder { position: absolute; left: 14px; bottom: 30px; font-family: 'Lora', serif; font-style: italic; color: #A7AFA9; font-size: 14px; pointer-events: none; }
+  .sig-baseline { position: absolute; left: 14px; right: 14px; bottom: 24px; border-top: 1.5px solid var(--ink-soft); }
+  @media print {
+    body { background: #fff; }
+    .nav-row, .status-line, .foot-note, .add-row-btn, .remove-row { display: none !important; }
+    .form-page { display: block !important; page-break-after: always; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="org">TARG Family Day Home Agency</div>
+    <div class="title">Initial Screening Checklist</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1</div>
+  </div>
+  <form class="card" id="theForm">
+
+    <!-- STEP 1: General Info + Visit table -->
+    <section class="form-page active">
+      <p class="step-title">General Information</p>
+      <p class="step-sub">Recruitment and screening must include two home visits, meeting each resident at least once.</p>
+      <div class="row-2">
+        <div class="field"><label class="f-label" for="agencyName">Agency Name</label><input type="text" id="agencyName" required></div>
+        <div class="field"><label class="f-label" for="visitorName">Home Visitor/Consultant's Name</label><input type="text" id="visitorName" required></div>
+      </div>
+      <div class="field"><label class="f-label" for="educatorName">Program Educator's Name</label><input type="text" id="educatorName" required></div>
+
+      <div class="subheading">1st Initial Home Inspection</div>
+      <div class="row-3">
+        <div class="field"><label class="f-label" for="visit1Date">Date of Visit</label><input type="date" id="visit1Date"></div>
+        <div class="field"><label class="f-label" for="visit1Start">Start Time</label><input type="time" id="visit1Start"></div>
+        <div class="field"><label class="f-label" for="visit1End">End Time</label><input type="time" id="visit1End"></div>
+      </div>
+      <div class="subheading">2nd Initial Home Inspection</div>
+      <div class="row-3">
+        <div class="field"><label class="f-label" for="visit2Date">Date of Visit</label><input type="date" id="visit2Date"></div>
+        <div class="field"><label class="f-label" for="visit2Start">Start Time</label><input type="time" id="visit2Start"></div>
+        <div class="field"><label class="f-label" for="visit2End">End Time</label><input type="time" id="visit2End"></div>
+      </div>
+      <div class="field"><label class="f-label" for="finalApprovalDateEarly">Final Approval Date (if known)</label><input type="date" id="finalApprovalDateEarly"></div>
+    </section>
+
+    <!-- STEP 2: Age + Family description -->
+    <section class="form-page">
+      <p class="step-title">Applicant Background</p>
+      <fieldset>
+        <legend>1. The applicant is at least 18 years of age?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="age18" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="age18" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><label class="f-label" for="familyDescription">2. Description of the applicant's family, including names, ages and relationships to the applicant (e.g. husband, son, etc.)</label><textarea id="familyDescription" required></textarea></div>
+    </section>
+
+    <!-- STEP 3: Individuals in home (repeating) -->
+    <section class="form-page">
+      <p class="step-title">3. Individuals in the Home</p>
+      <p class="step-sub">List ALL individuals in the home, including the applicant, present during the visit.</p>
+      <div id="individualsRows"></div>
+      <button type="button" class="add-row-btn" id="addIndividualRow">+ Add Person</button>
+    </section>
+
+    <!-- STEP 4: Environment -->
+    <section class="form-page">
+      <p class="step-title">4. Description of Environment</p>
+      <p class="step-sub">Must view ALL parts of the home that may be accessible to children, including indoor/outdoor play space, napping areas, etc.</p>
+      <div class="field"><textarea id="envDescription" required style="min-height:130px;"></textarea></div>
+    </section>
+
+    <!-- STEP 5: Criminal record check -->
+    <section class="form-page">
+      <p class="step-title">5. Criminal Record Checks</p>
+      <fieldset>
+        <legend>The applicant has provided a completed criminal record check (incl. vulnerable sector search) for each resident over 18; a signed statement for residents 12\u201318 disclosing prior criminal involvement.</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="crcConfirm" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="crcConfirm" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+      <p class="step-sub" style="font-style:italic;">Important: once a resident turns 18, they must also submit a criminal record check \u2014 update the chart below accordingly.</p>
+      <div id="residentsRows"></div>
+      <button type="button" class="add-row-btn" id="addResidentRow">+ Add Resident</button>
+    </section>
+
+    <!-- STEP 6: References -->
+    <section class="form-page">
+      <p class="step-title">6. Personal References</p>
+      <p class="step-sub">Three satisfactory personal references from non-relatives, corroborating the program educator's continued suitability for working with children.</p>
+      <div class="row-2"><div class="field"><label class="f-label" for="ref1Name">Reference 1 \u2014 Name</label><input type="text" id="ref1Name"></div><div class="field"><label class="f-label" for="ref1Date">Date Received</label><input type="date" id="ref1Date"></div></div>
+      <div class="row-2"><div class="field"><label class="f-label" for="ref2Name">Reference 2 \u2014 Name</label><input type="text" id="ref2Name"></div><div class="field"><label class="f-label" for="ref2Date">Date Received</label><input type="date" id="ref2Date"></div></div>
+      <div class="row-2"><div class="field"><label class="f-label" for="ref3Name">Reference 3 \u2014 Name</label><input type="text" id="ref3Name"></div><div class="field"><label class="f-label" for="ref3Date">Date Received</label><input type="date" id="ref3Date"></div></div>
+    </section>
+
+    <!-- STEP 7: First Aid + ECE Certification -->
+    <section class="form-page">
+      <p class="step-title">7 & 8. Certifications</p>
+      <div class="subheading">7. Proof of First Aid Certificate</div>
+      <div class="row-3">
+        <div class="field"><label class="f-label" for="firstAidDate">Date of Certificate</label><input type="date" id="firstAidDate"></div>
+        <div class="field"><label class="f-label" for="firstAidExpiry">Expiry Date</label><input type="date" id="firstAidExpiry"></div>
+        <div class="field"><label class="f-label" for="firstAidCertNumber">Certificate Number</label><input type="text" id="firstAidCertNumber"></div>
+      </div>
+      <div class="subheading">8. Is the applicant a certified Early Childhood Educator?</div>
+      <fieldset>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="eceCertified" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="eceCertified" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+      <div class="row-3">
+        <div class="field"><label class="f-label" for="eceCertLevel">Certification Level (if yes)</label><input type="text" id="eceCertLevel"></div>
+        <div class="field"><label class="f-label" for="eceCertDate">Date of Certification</label><input type="date" id="eceCertDate"></div>
+        <div class="field"><label class="f-label" for="eceCertNumber">Certificate Number</label><input type="text" id="eceCertNumber"></div>
+      </div>
+      <fieldset>
+        <legend>If not currently certified, is applicant willing to obtain ECE certification within six months of approval?</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="eceWilling" value="Yes"><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="eceWilling" value="No"><span class="pill">No</span></label>
+          <label class="choice"><input type="radio" name="eceWilling" value="N/A"><span class="pill">N/A</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- STEP 8: Standards awareness + safety checklist -->
+    <section class="form-page">
+      <p class="step-title">9 & 10. Standards & Safety</p>
+      <fieldset>
+        <legend>9. The applicant is aware of the Family Day Home Standards and has been oriented to the Monitoring Checklist used during regular monitoring.</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="standardsAware" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="standardsAware" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>10. Standard 10B: Program educator has a completed home and safety checklist, and any outstanding requirements are corrected prior to accepting children. (Attach completed checklist separately.)</legend>
+        <div class="choice-grid">
+          <label class="choice"><input type="radio" name="safetyChecklist" value="Yes" required><span class="pill">Yes</span></label>
+          <label class="choice"><input type="radio" name="safetyChecklist" value="No"><span class="pill">No</span></label>
+        </div>
+      </fieldset>
+    </section>
+
+    <!-- STEP 9: Visit summaries -->
+    <section class="form-page">
+      <p class="step-title">Visit Summaries</p>
+      <div class="field"><label class="f-label" for="visit1Topics">1st Visit \u2014 topics discussed with the applicant and outcome of the discussion</label><textarea id="visit1Topics" style="min-height:100px;"></textarea></div>
+      <div class="field"><label class="f-label" for="visit2Summary">2nd Visit \u2014 summary of results/next steps or follow-up</label><textarea id="visit2Summary" style="min-height:100px;"></textarea></div>
+    </section>
+
+    <!-- STEP 10: Final Approval + Signature -->
+    <section class="form-page">
+      <p class="step-title">Final Approval</p>
+      <p class="step-sub">While approved, the program educator must display the visual identity for family day home in a prominent place in the residence.</p>
+      <div class="row-2">
+        <div class="field"><label class="f-label" for="finalApprovalDate">Date</label><input type="date" id="finalApprovalDate" required></div>
+      </div>
+      <div class="row-2">
+        <div class="field"><label class="f-label" for="firstAidFollowupDate">First Aid Certificate Follow-up Date</label><input type="date" id="firstAidFollowupDate"></div>
+        <div class="field"><label class="f-label" for="crcFollowupDate">Criminal Record Check Follow-up Date</label><input type="date" id="crcFollowupDate"></div>
+      </div>
+      <div class="sig-label">
+        <span class="t">Home Visitor/Consultant's Signature</span>
+        <button type="button" class="sig-clear" id="clearSig">Clear</button>
+      </div>
+      <div class="sig-box">
+        <canvas id="sigCanvas"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder" id="sigPlaceholder">sign here</div>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Submit &amp; download copy</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">Protected A (when completed). Alberta Licensed Family Day Home Agency Standards.</div>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  //  AGENCY SETUP — paste your deployed Apps Script Web App URL
+  //  here after setting up the backend.
+  // ============================================================
+  var APPS_SCRIPT_URL = "PASTE_APPS_SCRIPT_URL_HERE";
+  // ============================================================
+
+  var individualRowCount = 0, residentRowCount = 0;
+
+  function addIndividualRow() {
+    var idx = individualRowCount++;
+    var div = document.createElement('div');
+    div.className = 'table-row';
+    div.innerHTML =
+      '<button type="button" class="remove-row" onclick="this.parentNode.remove()">Remove</button>' +
+      '<div class="row-2">' +
+        '<div class="field"><label class="f-label">Name</label><input type="text" class="ind-name" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label">Age</label><input type="text" class="ind-age" data-idx="' + idx + '"></div>' +
+      '</div>' +
+      '<label style="font-size:13px;margin-right:14px;"><input type="checkbox" class="ind-insp1" data-idx="' + idx + '" style="margin-right:6px;">1st Home Inspection</label>' +
+      '<label style="font-size:13px;margin-right:14px;"><input type="checkbox" class="ind-insp2" data-idx="' + idx + '" style="margin-right:6px;">2nd Home Inspection</label>' +
+      '<label style="font-size:13px;"><input type="checkbox" class="ind-final" data-idx="' + idx + '" style="margin-right:6px;">Final Approval</label>';
+    document.getElementById('individualsRows').appendChild(div);
+  }
+  function addResidentRow() {
+    var idx = residentRowCount++;
+    var div = document.createElement('div');
+    div.className = 'table-row';
+    div.innerHTML =
+      '<button type="button" class="remove-row" onclick="this.parentNode.remove()">Remove</button>' +
+      '<div class="field"><label class="f-label">Name of Resident</label><input type="text" class="res-name" data-idx="' + idx + '"></div>' +
+      '<div class="row-2">' +
+        '<div class="field"><label class="f-label">Criminal Record Check Received (18+)</label><input type="date" class="res-crc" data-idx="' + idx + '"></div>' +
+        '<div class="field"><label class="f-label">Signed Statement Received (12\u201318)</label><input type="date" class="res-statement" data-idx="' + idx + '"></div>' +
+      '</div>';
+    document.getElementById('residentsRows').appendChild(div);
+  }
+  document.getElementById('addIndividualRow').addEventListener('click', addIndividualRow);
+  document.getElementById('addResidentRow').addEventListener('click', addResidentRow);
+  addIndividualRow(); addResidentRow();
+
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length;
+  var current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var canvas = document.getElementById('sigCanvas');
+  var ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    var rect = canvas.getBoundingClientRect();
+    if (rect.width === 0) return;
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.4; ctx.strokeStyle = '#1E2624';
+  }
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    if (pages[current].querySelector && pages[current].querySelector('#sigCanvas')) {
+      setTimeout(resizeCanvas, 50);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function validateCurrentPage() {
+    var page = pages[current];
+    var fields = page.querySelectorAll('input[required], textarea[required]');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+  nextBtn.addEventListener('click', function () {
+    if (!validateCurrentPage()) return;
+    if (current < totalSteps - 1) { current++; updateNav(); }
+  });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); } });
+  updateNav();
+
+  var placeholder = document.getElementById('sigPlaceholder');
+  var drawing = false;
+  window.addEventListener('resize', resizeCanvas);
+  function getPos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var p = evt.touches ? evt.touches[0] : evt;
+    return { x: p.clientX - rect.left, y: p.clientY - rect.top };
+  }
+  function start(evt) { evt.preventDefault(); drawing = true; placeholder.style.opacity = '0'; var p = getPos(evt); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+  function move(evt) { if (!drawing) return; evt.preventDefault(); var p = getPos(evt); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+  function end() { drawing = false; }
+  canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, { passive: false }); canvas.addEventListener('touchmove', move, { passive: false }); canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', function () { ctx.clearRect(0, 0, canvas.width, canvas.height); placeholder.style.opacity = '1'; });
+
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var result = reader.result; var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = reject; reader.readAsDataURL(blob);
+    });
+  }
+
+  downloadBtn.addEventListener('click', async function () {
+    if (!validateCurrentPage()) return;
+    var btn = this; btn.disabled = true;
+    setStatus('Preparing PDF — capturing all ' + totalSteps + ' pages…');
+    var originalStep = current;
+    try {
+      var jsPDF = window.jspdf.jsPDF; var pdf = null;
+      for (var i = 0; i < totalSteps; i++) {
+        current = i;
+        pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
+        await new Promise(function (res) { setTimeout(res, 60); });
+        var target = pages[i];
+
+        var sigSwapped = false;
+        if (i === 0) {
+          var sigDataUrl = canvas.toDataURL('image/png');
+          var sigImg = document.createElement('img');
+          sigImg.src = sigDataUrl;
+          sigImg.id = 'sigCanvasSwap';
+          sigImg.style.cssText = canvas.style.cssText;
+          sigImg.width = canvas.clientWidth; sigImg.height = canvas.clientHeight;
+          canvas.parentNode.insertBefore(sigImg, canvas);
+          canvas.style.display = 'none';
+          sigSwapped = true;
+        }
+
+        var canvasImg = await html2canvas(target, { backgroundColor: '#FFFFFF', scale: Math.min(window.devicePixelRatio || 1, 2) * 1.3, useCORS: true });
+        var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
+        var pxW = canvasImg.width, pxH = canvasImg.height;
+        var pdfWidth = 210; var pdfHeight = (pxH / pxW) * pdfWidth;
+        if (!pdf) { pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] }); }
+        else { pdf.addPage([pdfWidth, pdfHeight], 'portrait'); }
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        setStatus('Capturing page ' + (i + 1) + ' of ' + totalSteps + '…');
+
+        if (i === totalSteps - 1) {
+          var swapImg = document.getElementById('sigCanvasSwap');
+          if (swapImg) { swapImg.remove(); canvas.style.display = ''; }
+        }
+      }
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+
+      var blob = pdf.output('blob');
+      var educatorName = (document.getElementById('educatorName').value.trim() || 'Educator');
+      var approvalDate = (document.getElementById('finalApprovalDate').value || 'Screening');
+      var filename = ('TARG_InitialScreening_' + educatorName + '_' + approvalDate).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
+
+      var sent = false;
+      if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_') !== 0) {
+        setStatus('Sending completed checklist to the Agency…');
+        try {
+          var base64Pdf = await blobToBase64(blob);
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename,
+              agencyName: document.getElementById('agencyName').value.trim(),
+              visitorName: document.getElementById('visitorName').value.trim(),
+              educatorName: educatorName,
+              approvalDate: approvalDate,
+              pdfBase64: base64Pdf
+            })
+          });
+          var result = await resp.json();
+          sent = !!(result && result.status === 'ok');
+        } catch (sendErr) { console.error('Delivery failed', sendErr); sent = false; }
+      }
+
+      triggerBrowserDownload(blob, filename);
+      setStatus(sent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy — but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+    } catch (err) {
+      console.error(err);
+      current = originalStep;
+      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
+      setStatus('Could not build the PDF. Try Print instead.');
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>
