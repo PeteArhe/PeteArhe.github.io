@@ -87,6 +87,11 @@
     .form-page { display: block !important; page-break-after: always; }
     .card { box-shadow: none; }
   }
+
+  .field-missing input, .field-missing textarea { border-color: var(--danger) !important; }
+  .field-missing .f-label { color: var(--danger); }
+  fieldset.field-missing legend { color: var(--danger); }
+  fieldset.field-missing .choice-grid { box-shadow: 0 0 0 1.5px var(--danger); border-radius: 10px; padding: 5px; }
 </style>
 </head>
 <body>
@@ -327,11 +332,201 @@ const STANDARDS = [
     return true;
   }
   nextBtn.addEventListener('click', function () {
-    if (!validateCurrentPage()) return;
-    if (current < totalSteps - 1) { current++; updateNav(); }
+    if (current < totalSteps - 1) { current++; updateNav(); saveDraft(); }
   });
-  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); } });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); saveDraft(); } });
   updateNav();
+
+  // ============================================================
+  //  DRAFT SAVE & RESUME — same device/browser only (localStorage).
+  //  Also powers the submit-time "some fields are missing" review.
+  // ============================================================
+  var STORAGE_KEY = 'targ_homevisitor_draft_v1';
+  var DYNAMIC_TABLES = [
+    { containerId: 'childrenRows', addRowFn: addChildRow, fields: [
+      { key: 'name', cls: 'child-name' }, { key: 'dob', cls: 'child-dob' },
+      { key: 'age', cls: 'child-age' }, { key: 'present', cls: 'child-present' }
+    ]},
+    { containerId: 'summaryRows', addRowFn: addSummaryRow, fields: [
+      { key: 'area', cls: 'sum-area' }, { key: 'action', cls: 'sum-action' },
+      { key: 'remedyDate', cls: 'sum-remedy-date' }, { key: 'actualDate', cls: 'sum-actual-date' },
+      { key: 'initials', cls: 'sum-initials' }
+    ]}
+  ];
+
+  function serializeForm() {
+    var data = { simple: {}, radios: {}, rows: {}, currentStep: current, savedAt: new Date().toISOString() };
+    document.querySelectorAll('#theForm [id]').forEach(function (el) {
+      if (!el.id || el.id === 'sigCanvas') return;
+      if (el.type === 'radio' || el.type === 'checkbox') return;
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') data.simple[el.id] = el.value;
+    });
+    var radioNames = [];
+    document.querySelectorAll('#theForm input[type=radio][name]').forEach(function (r) {
+      if (radioNames.indexOf(r.name) === -1) radioNames.push(r.name);
+    });
+    radioNames.forEach(function (name) {
+      var checked = document.querySelector('input[name="' + name + '"]:checked');
+      if (checked) data.radios[name] = checked.value;
+    });
+    DYNAMIC_TABLES.forEach(function (table) {
+      var container = document.getElementById(table.containerId);
+      var rowsData = [];
+      Array.prototype.forEach.call(container.children, function (rowEl) {
+        var rowObj = {};
+        table.fields.forEach(function (f) {
+          var input = rowEl.querySelector('.' + f.cls);
+          if (input) rowObj[f.key] = (input.type === 'checkbox') ? input.checked : input.value;
+        });
+        rowsData.push(rowObj);
+      });
+      data.rows[table.containerId] = rowsData;
+    });
+    return data;
+  }
+
+  function restoreForm(data) {
+    Object.keys(data.simple || {}).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.value = data.simple[id];
+    });
+    Object.keys(data.radios || {}).forEach(function (name) {
+      var val = data.radios[name];
+      document.querySelectorAll('input[name="' + name + '"]').forEach(function (el) {
+        if (el.value === val) el.checked = true;
+      });
+    });
+    DYNAMIC_TABLES.forEach(function (table) {
+      var container = document.getElementById(table.containerId);
+      container.innerHTML = '';
+      var rowsData = (data.rows && data.rows[table.containerId]) || [];
+      rowsData.forEach(function (rowObj) {
+        table.addRowFn();
+        var rowEl = container.children[container.children.length - 1];
+        table.fields.forEach(function (f) {
+          var input = rowEl.querySelector('.' + f.cls);
+          if (input && rowObj[f.key] !== undefined) {
+            if (input.type === 'checkbox') input.checked = rowObj[f.key];
+            else input.value = rowObj[f.key];
+          }
+        });
+      });
+      if (rowsData.length === 0) table.addRowFn();
+    });
+    current = data.currentStep || 0;
+    updateNav();
+  }
+
+  function saveDraft() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm())); } catch (e) { /* storage full/unavailable — ignore */ }
+  }
+  function loadDraft() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function clearDraft() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  }
+
+  function escapeHtmlClient(v) {
+    return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function showModal(html, buttons) {
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(20,32,28,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:14px;padding:22px 20px;max-width:420px;width:100%;max-height:82vh;overflow:auto;font-family:Inter,-apple-system,sans-serif;';
+    box.innerHTML = html;
+    var btnRow = document.createElement('div');
+    btnRow.style.cssText = 'display:flex;gap:10px;margin-top:16px;';
+    buttons.forEach(function (b) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = b.label;
+      btn.style.cssText = 'flex:1;padding:11px;border-radius:999px;border:' + (b.primary ? 'none' : '1.5px solid #DDE3DF') + ';background:' + (b.primary ? '#1F4E45' : '#F4F6F4') + ';color:' + (b.primary ? '#fff' : '#1E2624') + ';font-weight:600;font-size:13.5px;cursor:pointer;';
+      btn.onclick = function () { document.body.removeChild(overlay); b.onClick(); };
+      btnRow.appendChild(btn);
+    });
+    box.appendChild(btnRow);
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+  }
+
+  function getFieldLabel(f) {
+    var fieldDiv = f.closest('.field');
+    var label = fieldDiv ? fieldDiv.querySelector('.f-label') : null;
+    if (label) return label.textContent.replace(/\s+/g, ' ').trim();
+    var fs = f.closest('fieldset');
+    var legend = fs ? fs.querySelector('legend') : null;
+    if (legend) return legend.textContent.replace(/\s+/g, ' ').trim();
+    return f.id || f.name || 'field';
+  }
+
+  function clearFieldHighlights() {
+    document.querySelectorAll('.field-missing').forEach(function (el) { el.classList.remove('field-missing'); });
+  }
+
+  function getAllMissingRequired() {
+    var missing = [];
+    var seenRadioNames = {};
+    pages.forEach(function (page, stepIdx) {
+      var reqFields = page.querySelectorAll('[required]');
+      reqFields.forEach(function (f) {
+        if (f.type === 'radio') {
+          var key = stepIdx + ':' + f.name;
+          if (seenRadioNames[key]) return;
+          seenRadioNames[key] = true;
+          var anyChecked = page.querySelector('input[name="' + f.name + '"]:checked');
+          if (!anyChecked) missing.push({ step: stepIdx, el: f, isRadio: true, label: getFieldLabel(f) });
+        } else {
+          if (!f.value || !f.value.trim()) missing.push({ step: stepIdx, el: f, isRadio: false, label: getFieldLabel(f) });
+        }
+      });
+    });
+    return missing;
+  }
+
+  function highlightMissing(missingList) {
+    clearFieldHighlights();
+    missingList.forEach(function (m) {
+      var target = m.isRadio ? m.el.closest('fieldset') : (m.el.closest('.field') || m.el);
+      if (target) target.classList.add('field-missing');
+    });
+  }
+
+  // Clear a field's "missing" highlight the moment it's filled in,
+  // and keep the draft continuously saved as the user types.
+  var saveDebounceTimer = null;
+  document.getElementById('theForm').addEventListener('input', function (e) {
+    var el = e.target;
+    var container = el.closest('.field') || el.closest('fieldset');
+    if (container && container.classList.contains('field-missing')) {
+      if (el.type === 'radio') {
+        if (document.querySelector('input[name="' + el.name + '"]:checked')) container.classList.remove('field-missing');
+      } else if (el.value && el.value.trim()) {
+        container.classList.remove('field-missing');
+      }
+    }
+    clearTimeout(saveDebounceTimer);
+    saveDebounceTimer = setTimeout(saveDraft, 800);
+  }, true);
+
+  // Offer to resume a saved draft from this device, if one exists.
+  var existingDraft = loadDraft();
+  if (existingDraft) {
+    var savedDate = existingDraft.savedAt ? new Date(existingDraft.savedAt).toLocaleString() : 'earlier';
+    showModal(
+      '<h3 style="font-family:Lora,Georgia,serif;color:#163A33;margin:0 0 8px;font-size:17px;">Resume your unfinished Home Visitor Checklist?</h3>' +
+      '<p style="font-size:13px;color:#5B655F;margin:0;">We found a saved draft from ' + escapeHtmlClient(savedDate) + ' on this device. Pick up where you left off, or start fresh?</p>',
+      [
+        { label: 'Start fresh', primary: false, onClick: function () { clearDraft(); } },
+        { label: 'Resume', primary: true, onClick: function () { restoreForm(existingDraft); } }
+      ]
+    );
+  }
 
   var placeholder = document.getElementById('sigPlaceholder');
   var drawing = false;
@@ -369,9 +564,34 @@ const STANDARDS = [
     });
   }
 
-  downloadBtn.addEventListener('click', async function () {
-    if (!validateCurrentPage()) return;
-    var btn = this; btn.disabled = true;
+  downloadBtn.addEventListener('click', function () {
+    var missing = getAllMissingRequired();
+    if (missing.length > 0) {
+      highlightMissing(missing);
+      var stepsAffected = {};
+      missing.forEach(function (m) { stepsAffected[m.step] = true; });
+      var stepCount = Object.keys(stepsAffected).length;
+      var listHtml = missing.slice(0, 12).map(function (m) { return '&bull; Step ' + (m.step + 1) + ': ' + escapeHtmlClient(m.label); }).join('<br>') + (missing.length > 12 ? '<br>&hellip; and ' + (missing.length - 12) + ' more' : '');
+      showModal(
+        '<h3 style="font-family:Lora,Georgia,serif;color:#163A33;margin:0 0 8px;font-size:17px;">Some fields are incomplete</h3>' +
+        '<p style="font-size:13px;color:#5B655F;margin:0 0 10px;">' + missing.length + ' field(s) across ' + stepCount + ' step(s) are still empty. You can submit anyway, or go back and complete them.</p>' +
+        '<div style="max-height:150px;overflow-y:auto;padding:10px;background:#F4F6F4;border-radius:8px;font-size:12px;line-height:1.6;">' + listHtml + '</div>',
+        [
+          { label: 'Go back & complete', primary: false, onClick: function () {
+              current = missing[0].step; updateNav();
+              setStatus('Missing fields are highlighted in red.');
+            }
+          },
+          { label: 'Submit anyway', primary: true, onClick: function () { proceedWithSubmit(); } }
+        ]
+      );
+      return;
+    }
+    proceedWithSubmit();
+  });
+
+  async function proceedWithSubmit() {
+    var btn = downloadBtn; btn.disabled = true;
     setStatus('Preparing PDF \u2014 capturing all ' + totalSteps + ' pages\u2026');
     var originalStep = current;
     try {
@@ -445,6 +665,7 @@ const STANDARDS = [
       }
 
       triggerBrowserDownload(blob, filename);
+      clearDraft();
       setStatus(sent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy \u2014 but sending to the Agency failed. Please also email this PDF to the Agency directly.');
     } catch (err) {
       console.error(err);
@@ -452,7 +673,7 @@ const STANDARDS = [
       pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
       setStatus('Could not build the PDF. Try Print instead.');
     } finally { btn.disabled = false; }
-  });
+  }
 })();
 </script>
 </body>
