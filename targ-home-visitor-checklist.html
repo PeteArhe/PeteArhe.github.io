@@ -129,8 +129,8 @@
         <legend>Purpose of the Visit</legend>
         <div class="choice-grid">
           <label class="choice"><input type="radio" name="purpose" value="Initial Screening" required><span class="pill">Initial Screening</span></label>
-          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Scheduled"><span class="pill">Regular \u2014 Scheduled</span></label>
-          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Unscheduled"><span class="pill">Regular \u2014 Unscheduled</span></label>
+          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Scheduled"><span class="pill">Regular — Scheduled</span></label>
+          <label class="choice"><input type="radio" name="purpose" value="Regular Home Monitoring - Unscheduled"><span class="pill">Regular — Unscheduled</span></label>
           <label class="choice"><input type="radio" name="purpose" value="Other"><span class="pill">Other</span></label>
         </div>
       </fieldset>
@@ -141,7 +141,7 @@
     <section class="form-page" data-static="1">
       <p class="step-title">Individuals & Environment</p>
       <div class="field"><label class="f-label" for="individualsPresent">Individuals present in the home during visit (other than the program educator and children in care)</label><textarea id="individualsPresent"></textarea></div>
-      <div class="field"><label class="f-label" for="envDescription">Description of Environment \u2014 must view ALL parts of the home (indoor/outdoor play space, napping areas, etc). Describe observations of activities occurring during the visit.</label><textarea id="envDescription" required style="min-height:110px;"></textarea></div>
+      <div class="field"><label class="f-label" for="envDescription">Description of Environment — must view ALL parts of the home (indoor/outdoor play space, napping areas, etc). Describe observations of activities occurring during the visit.</label><textarea id="envDescription" required style="min-height:110px;"></textarea></div>
     </section>
 
     <!-- STEP: Children Enrolled -->
@@ -186,7 +186,6 @@
     <div class="foot-note">Protected A (when completed). Alberta Licensed Family Day Home Agency Standards.</div>
   </form>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const STANDARDS = [
@@ -607,6 +606,339 @@ const STANDARDS = [
     });
   }
 
+  // Per-form settings for the shared PDF engine below.
+  var PDF_CONFIG = {
+    org: 'TARG Family Day Home Agency',
+    title: 'Home Visitor / Consultant Checklist',
+    confidentiality: 'Protected A (when completed)',
+    skipEmptyOptional: true,   // leave out optional questions nobody filled in
+    flagNoAnswers: true,       // Yes/No checklist: summary + 'Needs attention' list
+    signerFieldId: 'visitorName',
+    signerRole: 'Home Visitor/Consultant',
+    keepSignatureSectionHeight: 170
+  };
+
+  // ============================================================
+  //  TARG PDF ENGINE (shared by all TARG signable forms)
+  //  Writes a clean, text-based PDF straight from the answers - no
+  //  screenshots. Every step is included, long answers wrap and flow
+  //  across pages, add-row sections print as real tables, the text
+  //  is selectable/searchable, and the signature is embedded.
+  //  It walks each .form-page generically; the only per-form
+  //  settings are in PDF_CONFIG (set just above this block).
+  // ============================================================
+  function pdfText(s) {
+    // Standard PDF fonts cover the WinAnsi set (incl. dashes and curly
+    // quotes); anything outside it (e.g. emoji) is dropped.
+    return String(s == null ? '' : s)
+      .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF–—‘’‚“”„†‡•…‰‹›€™ŒœŠšŸŽžƒˆ˜]/g, '')
+      .replace(/[ \t]+\n/g, '\n').trim();
+  }
+  var PDF_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function prettyDate(v, short) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return v || '';
+    var mon = PDF_MONTHS[+m[2] - 1];
+    return (short ? mon.slice(0, 3) : mon) + ' ' + (+m[3]) + ', ' + m[1];
+  }
+  function prettyTime(v) {
+    var m = /^(\d{1,2}):(\d{2})/.exec(v || '');
+    if (!m) return v || '';
+    var h = +m[1], ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return h + ':' + m[2] + ' ' + ap;
+  }
+  function textOf(el) { return el ? pdfText(el.textContent.replace(/\s+/g, ' ')) : ''; }
+  function inputValue(inp, short) {
+    if (!inp) return '';
+    if (inp.type === 'checkbox') return inp.checked ? 'Yes' : '';
+    if (inp.type === 'date') return prettyDate(inp.value, short);
+    if (inp.type === 'time') return prettyTime(inp.value);
+    return pdfText(inp.value);
+  }
+  function signatureIsDrawn() {
+    var ph = document.getElementById('sigPlaceholder');
+    if (ph && ph.style.opacity === '0') return true;
+    try {
+      var d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      for (var k = 3; k < d.length; k += 16) { if (d[k] !== 0) return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  function buildDocumentPdf() {
+    var C = PDF_CONFIG;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'pt', format: 'letter', compress: true });
+    var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
+    var M = 54, CW = PW - 2 * M, BOTTOM = PH - 58;
+    var TEAL = [31, 78, 69], DARK = [30, 38, 36], MUTED = [91, 101, 95], GOLD = [199, 154, 62],
+        LINE = [221, 227, 223], SOFT = [238, 241, 240], RED = [168, 50, 50], GREY = [150, 150, 150];
+    var y = M;
+
+    function font(style, size, color) { doc.setFont('helvetica', style); doc.setFontSize(size); doc.setTextColor.apply(doc, color); }
+    function newPage() { doc.addPage(); y = M; }
+    function ensure(h) { if (y + h > BOTTOM) newPage(); }
+    function split(text, size, width, style) { doc.setFont('helvetica', style || 'normal'); doc.setFontSize(size); return doc.splitTextToSize(text, width); }
+    function write(ls, size, style, color, x, lh) {
+      lh = lh || size * 1.35;
+      ls.forEach(function (l) { ensure(lh); font(style, size, color); doc.text(l, x || M, y + size); y += lh; });
+    }
+    function rule(color, w) { doc.setDrawColor.apply(doc, color); doc.setLineWidth(w); doc.line(M, y, PW - M, y); }
+
+    // Lazily printed sub-heading: only appears if something under it prints.
+    var pendingSub = null;
+    function flushSub() {
+      if (!pendingSub) return;
+      var t = pendingSub; pendingSub = null;
+      ensure(34); y += 4;
+      font('bold', 8.5, GOLD); doc.text(t.toUpperCase(), M, y + 9); y += 15;
+    }
+
+    function isAnswered(v) { return v !== '' && v != null; }
+
+    // ---- Masthead ----
+    var logo = document.querySelector('.masthead img.logo');
+    var textX = M;
+    if (logo && logo.src && logo.src.indexOf('data:image') === 0) {
+      try {
+        var lw = 62, lh = (logo.naturalWidth && logo.naturalHeight) ? lw * logo.naturalHeight / logo.naturalWidth : 36;
+        doc.addImage(logo.src, 'PNG', M, y, lw, lh); textX = M + lw + 14;
+      } catch (e) {}
+    }
+    font('bold', 9, GOLD); doc.text(C.org.toUpperCase(), textX, y + 12);
+    doc.setFont('times', 'bold'); doc.setFontSize(17); doc.setTextColor.apply(doc, TEAL);
+    doc.text(C.title, textX, y + 32);
+    var now = new Date();
+    var stamp = prettyDate(now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2));
+    font('normal', 8.5, MUTED);
+    doc.text('Submitted ' + stamp + ' at ' + prettyTime(('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2)) + '  |  ' + C.confidentiality, textX, y + 46);
+    y += 60; rule(GOLD, 1.2); y += 14;
+
+    // ---- "Needs attention" summary for Yes/No checklists ----
+    if (C.flagNoAnswers) {
+      var counts = { Yes: 0, No: 0, 'N/A': 0, unanswered: 0 }, flagged = [];
+      pages.forEach(function (page) {
+        var sec = textOf(page.querySelector('.step-title'));
+        page.querySelectorAll('.q-block, fieldset').forEach(function (b) {
+          var r = b.querySelector('input[type=radio]:checked');
+          if (!b.querySelector('input[type=radio]')) return;
+          var v = r ? r.value : '';
+          if (!v) counts.unanswered++; else if (counts[v] != null) counts[v]++;
+          if (v === 'No') {
+            var qt = textOf(b.querySelector('.q-text, legend'));
+            if (!qt) { var prev = b.previousElementSibling; if (prev && prev.classList.contains('subheading')) qt = textOf(prev); }
+            flagged.push({ sec: sec, q: qt || 'Question' });
+          }
+        });
+      });
+      font('bold', 10, TEAL); doc.text('Checklist summary', M, y + 10);
+      font('normal', 9.5, DARK);
+      doc.text(counts.Yes + ' Yes   |   ' + counts.No + ' No   |   ' + counts['N/A'] + ' N/A   |   ' + counts.unanswered + ' not answered', PW - M, y + 10, { align: 'right' });
+      y += 18;
+      if (flagged.length) {
+        font('bold', 9, RED); doc.text('Needs attention (answered "No"):', M, y + 9); y += 14;
+        flagged.forEach(function (f) {
+          write(split('- ' + f.sec + ': ' + f.q, 9, CW - 10), 9, 'normal', DARK, M + 8, 12);
+        });
+      } else {
+        font('italic', 9, MUTED); doc.text('No items were answered "No".', M, y + 9); y += 14;
+      }
+      y += 4; rule(LINE, 0.8); y += 12;
+    }
+
+    // ---- Renderers ----
+    function choiceRow(q, a, required) {
+      var answered = isAnswered(a);
+      if (!answered && C.skipEmptyOptional && !required) return;
+      flushSub();
+      var qL = split(q || 'Answer', 9.5, CW - 96);
+      ensure(qL.length * 12.5 + 8);
+      var top = y;
+      write(qL, 9.5, 'normal', DARK, M, 12.5);
+      var bad = C.flagNoAnswers && a === 'No';
+      font(answered ? 'bold' : 'italic', answered ? 10.5 : 9, answered ? (bad ? RED : TEAL) : GREY);
+      doc.text(answered ? a : 'Not answered', PW - M, top + 10, { align: 'right' });
+      y += 4; rule(LINE, 0.4); y += 6;
+    }
+    function qaBlock(q, a, required) {
+      var answered = isAnswered(a);
+      if (!answered && C.skipEmptyOptional && !required) return;
+      flushSub();
+      var qL = q ? split(q, 9.5, CW, 'bold') : [];
+      var aL = answered ? split(a, 10.5, CW - 12) : ['Not answered'];
+      ensure(qL.length * 12.8 + Math.min(aL.length, 3) * 14.5 + 6);
+      write(qL, 9.5, 'bold', MUTED);
+      y += 2;
+      var segTop = y;
+      aL.forEach(function (l) {
+        if (y + 14.5 > BOTTOM) {
+          doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+          newPage(); segTop = y;
+        }
+        font(answered ? 'normal' : 'italic', 10.5, answered ? DARK : GREY);
+        doc.text(l, M + 10, y + 10.5); y += 14.5;
+      });
+      doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+      y += 9;
+    }
+    function gridRow(fields) {
+      // A row of short inputs (dates, times, names) printed side by side.
+      var cells = fields.map(function (f) {
+        var inp = f.querySelector('input, select');
+        var v = inputValue(inp);
+        return { l: textOf(f.querySelector('.f-label')), v: v, req: inp && inp.required };
+      }).filter(function (c) { return isAnswered(c.v) || !C.skipEmptyOptional || c.req; });
+      if (!cells.length) return;
+      flushSub();
+      var colW = CW / Math.max(cells.length, 2), gap = 12, heights = [];
+      cells.forEach(function (c) {
+        c.lL = split(c.l, 8.5, colW - gap, 'bold');
+        c.vL = split(isAnswered(c.v) ? c.v : 'Not answered', 10.5, colW - gap);
+        heights.push(c.lL.length * 11 + c.vL.length * 14 + 4);
+      });
+      var h = Math.max.apply(null, heights);
+      ensure(h + 8);
+      cells.forEach(function (c, i) {
+        var x = M + i * colW, yy = y;
+        c.lL.forEach(function (l) { font('bold', 8.5, MUTED); doc.text(l, x, yy + 8.5); yy += 11; });
+        yy += 2;
+        c.vL.forEach(function (l) { font(isAnswered(c.v) ? 'normal' : 'italic', 10.5, isAnswered(c.v) ? DARK : GREY); doc.text(l, x, yy + 10.5); yy += 14; });
+      });
+      y += h + 8;
+    }
+    function table(container) {
+      var rows = Array.prototype.slice.call(container.querySelectorAll('.table-row'));
+      if (!rows.length) return;
+      var headers = [], data = [];
+      Array.prototype.forEach.call(rows[0].querySelectorAll('input, select, textarea'), function (inp) {
+        var fieldEl = inp.closest('.field');
+        var lab = inp.type === 'checkbox' ? inp.closest('label') : (fieldEl && fieldEl.querySelector('.f-label'));
+        headers.push(textOf(lab));
+      });
+      rows.forEach(function (r) {
+        var vals = Array.prototype.map.call(r.querySelectorAll('input, select, textarea'), function (inp) { return inputValue(inp, true); });
+        if (vals.some(isAnswered)) data.push(vals);
+      });
+      flushSub();
+      if (!data.length) { ensure(18); font('italic', 9.5, GREY); doc.text('None recorded', M, y + 10); y += 20; return; }
+      var n = headers.length;
+      // Column widths: weight by the longest content in each column.
+      var weights = headers.map(function (h, i) {
+        var longest = Math.max(h.length * 0.6, 6);
+        data.forEach(function (row) { longest = Math.max(longest, Math.min(String(row[i]).length, 40)); });
+        return longest;
+      });
+      var total = weights.reduce(function (s, w) { return s + w; }, 0);
+      var widths = weights.map(function (w) { return CW * w / total; });
+      var pad = 5;
+      function drawHeader() {
+        var hl = headers.map(function (h, i) { return split(h, 8, widths[i] - 2 * pad, 'bold'); });
+        var hh = Math.max.apply(null, hl.map(function (l) { return l.length; })) * 10 + 2 * pad;
+        ensure(hh + 20);
+        doc.setFillColor.apply(doc, SOFT); doc.rect(M, y, CW, hh, 'F');
+        var x = M;
+        hl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('bold', 8, TEAL); doc.text(l, x + pad, y + pad + 8 + k * 10); });
+          x += widths[i];
+        });
+        y += hh;
+      }
+      drawHeader();
+      data.forEach(function (row) {
+        var cl = row.map(function (v, i) { return split(isAnswered(v) ? String(v) : '-', 9.5, widths[i] - 2 * pad); });
+        var rh = Math.max.apply(null, cl.map(function (l) { return l.length; })) * 12 + 2 * pad;
+        if (y + rh > BOTTOM) { newPage(); drawHeader(); }
+        var x = M;
+        cl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('normal', 9.5, isAnswered(row[i]) ? DARK : GREY); doc.text(l, x + pad, y + pad + 9 + k * 12); });
+          x += widths[i];
+        });
+        y += rh; rule(LINE, 0.5);
+      });
+      y += 12;
+    }
+    function signatureBlock() {
+      flushSub();
+      ensure(120);
+      font('bold', 9, MUTED); doc.text('Signature', M, y + 9); y += 14;
+      if (signatureIsDrawn()) {
+        var sw = 250, sh = (canvas.width && canvas.height) ? sw * canvas.height / canvas.width : 70;
+        sh = Math.min(sh, 80);
+        try { doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, y, sw, sh); } catch (e) {}
+        y += sh;
+      } else {
+        font('italic', 10, RED); doc.text('Not signed', M, y + 30); y += 40;
+      }
+      doc.setDrawColor.apply(doc, DARK); doc.setLineWidth(0.6); doc.line(M, y + 2, M + 250, y + 2); y += 14;
+      var signer = C.signerFieldId && document.getElementById(C.signerFieldId);
+      var who = signer ? pdfText(signer.value) : '';
+      font('normal', 9, MUTED);
+      doc.text((who ? who + (C.signerRole ? ', ' + C.signerRole : '') + '  |  ' : '') + 'Signed electronically on ' + stamp, M, y + 9);
+      y += 22;
+    }
+
+    // Walk a page's content in document order.
+    function walk(node) {
+      Array.prototype.forEach.call(node.children, function (el) {
+        var cl = el.classList;
+        if (cl.contains('step-title') || cl.contains('sig-label') || cl.contains('add-row-btn') ||
+            cl.contains('remove-row') || el.tagName === 'BUTTON' || el.tagName === 'SCRIPT') return;
+        if (cl.contains('step-sub')) { write(split(textOf(el), 9, CW, 'italic'), 9, 'italic', MUTED); y += 5; return; }
+        if (cl.contains('subheading')) { pendingSub = textOf(el); return; }
+        if (cl.contains('legal-block')) { flushSub(); write(split(textOf(el), 10, CW), 10, 'normal', DARK); y += 8; return; }
+        if (cl.contains('sig-box')) { signatureBlock(); return; }
+        if (el.querySelector(':scope > .table-row')) { table(el); return; }
+        if (cl.contains('q-block') || cl.contains('trait-row') || el.tagName === 'FIELDSET') {
+          var qEl = el.querySelector('.q-text, .t-title, legend');
+          var r = el.querySelector('input[type=radio]:checked');
+          var anyReq = !!el.querySelector('input[required]');
+          var q = textOf(qEl);
+          if (!q && pendingSub) { q = pendingSub; pendingSub = null; }
+          choiceRow(q, r ? r.value : '', anyReq);
+          return;
+        }
+        if (cl.contains('row-2') || cl.contains('row-3')) {
+          var fields = Array.prototype.slice.call(el.querySelectorAll(':scope > .field'));
+          var allShort = fields.length && fields.every(function (f) { return !f.querySelector('textarea'); });
+          if (allShort) { gridRow(fields); return; }
+          walk(el); return;
+        }
+        if (cl.contains('field')) {
+          var inp = el.querySelector('input, textarea, select');
+          if (!inp) return;
+          qaBlock(textOf(el.querySelector('.f-label')), inputValue(inp), inp.required);
+          return;
+        }
+        if (el.children.length) walk(el);
+      });
+    }
+
+    pages.forEach(function (page) {
+      pendingSub = null;
+      var title = textOf(page.querySelector('.step-title'));
+      if (title) {
+        ensure(page.querySelector('.sig-box') ? C.keepSignatureSectionHeight : 64);
+        y += 6;
+        doc.setFont('times', 'bold'); doc.setFontSize(13.5); doc.setTextColor.apply(doc, TEAL);
+        doc.text(title, M, y + 13.5); y += 19;
+        rule(LINE, 0.8); y += 9;
+      }
+      walk(page);
+    });
+
+    // ---- Footer on every page ----
+    var n = doc.getNumberOfPages();
+    for (var p = 1; p <= n; p++) {
+      doc.setPage(p);
+      doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6); doc.line(M, PH - 40, PW - M, PH - 40);
+      font('normal', 7.5, MUTED);
+      doc.text(C.org + '  |  ' + C.title + '  |  ' + C.confidentiality, M, PH - 28);
+      doc.text('Page ' + p + ' of ' + n, PW - M, PH - 28, { align: 'right' });
+    }
+    return doc;
+  }
+  // ============================ end PDF engine ============================
+
   downloadBtn.addEventListener('click', function () {
     var missing = getAllMissingRequired();
     if (missing.length > 0) {
@@ -635,51 +967,14 @@ const STANDARDS = [
 
   async function proceedWithSubmit() {
     var btn = downloadBtn; btn.disabled = true;
-    setStatus('Preparing PDF \u2014 capturing all ' + totalSteps + ' pages\u2026');
+    if (!signatureIsDrawn()) {
+      setStatus('Please sign in the signature box before submitting.');
+      btn.disabled = false; return;
+    }
+    setStatus('Preparing your PDF…');
     var originalStep = current;
     try {
-      var jsPDF = window.jspdf.jsPDF; var pdf = null;
-      for (var i = 0; i < totalSteps; i++) {
-        current = i;
-        pages.forEach(function (p, idx) { p.classList.toggle('active', idx === i); });
-        await new Promise(function (res) { setTimeout(res, 60); });
-        var target = pages[i];
-
-        // Work around a known html2canvas issue: it clones the
-        // ENTIRE document (not just the target element) internally,
-        // so a live hand-drawn <canvas> anywhere in the DOM can
-        // break EVERY page capture, not just the one it's on. Swap
-        // it for a static image for the whole loop, swap back after.
-        var sigSwapped = false;
-        if (i === 0) {
-          var sigDataUrl = canvas.toDataURL('image/png');
-          var sigImg = document.createElement('img');
-          sigImg.src = sigDataUrl;
-          sigImg.id = 'sigCanvasSwap';
-          sigImg.style.cssText = canvas.style.cssText;
-          sigImg.width = canvas.clientWidth; sigImg.height = canvas.clientHeight;
-          canvas.parentNode.insertBefore(sigImg, canvas);
-          canvas.style.display = 'none';
-          sigSwapped = true;
-        }
-
-        var canvasImg = await html2canvas(target, { backgroundColor: '#FFFFFF', scale: Math.min(window.devicePixelRatio || 1, 2) * 1.3, useCORS: true });
-        var imgData = canvasImg.toDataURL('image/jpeg', 0.92);
-        var pxW = canvasImg.width, pxH = canvasImg.height;
-        var pdfWidth = 210; var pdfHeight = (pxH / pxW) * pdfWidth;
-        if (!pdf) { pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] }); }
-        else { pdf.addPage([pdfWidth, pdfHeight], 'portrait'); }
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        setStatus('Capturing page ' + (i + 1) + ' of ' + totalSteps + '\u2026');
-
-        if (i === totalSteps - 1) {
-          var swapImg = document.getElementById('sigCanvasSwap');
-          if (swapImg) { swapImg.remove(); canvas.style.display = ''; }
-        }
-      }
-      current = originalStep;
-      pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
-
+      var pdf = buildDocumentPdf();
       var blob = pdf.output('blob');
       var educatorName = (document.getElementById('educatorName').value.trim() || 'Educator');
       var visitDate = (document.getElementById('visitDate').value || 'Visit');
@@ -714,7 +1009,7 @@ const STANDARDS = [
       console.error(err);
       current = originalStep;
       pages.forEach(function (p, idx) { p.classList.toggle('active', idx === originalStep); });
-      setStatus('Could not build the PDF. Try Print instead.');
+      setStatus('Sorry, the PDF could not be created. Please refresh the page and try again, or contact the Agency.');
     } finally { btn.disabled = false; }
   }
 })();
