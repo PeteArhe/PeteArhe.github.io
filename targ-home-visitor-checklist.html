@@ -217,7 +217,7 @@ const STANDARDS = [
   //  here after setting up the backend (own Sheet + own Drive
   //  folder, least-privilege scopes, same pattern as other forms).
   // ============================================================
-  var APPS_SCRIPT_URL = "PASTE_APPS_SCRIPT_URL_HERE";
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzN8r4RM4jxQIKTape50jpNxQhzqngDPTonZGkft3BnLlDjqcDhRKG60Kw05Or8jV8x/exec";
   // ============================================================
 
   var childRowCount = 0, summaryRowCount = 0;
@@ -611,8 +611,9 @@ const STANDARDS = [
     org: 'TARG Family Day Home Agency',
     title: 'Home Visitor / Consultant Checklist',
     confidentiality: 'Protected A (when completed)',
-    skipEmptyOptional: true,   // leave out optional questions nobody filled in
+    skipEmptyOptional: false,   // true = leave out every blank optional question
     flagNoAnswers: true,       // Yes/No checklist: summary + 'Needs attention' list
+    quietFollowUpWhenNoIssues: true, // hide empty follow-up boxes on all-Yes standards
     signerFieldId: 'visitorName',
     signerRole: 'Home Visitor/Consultant',
     keepSignatureSectionHeight: 170
@@ -696,6 +697,33 @@ const STANDARDS = [
 
     function isAnswered(v) { return v !== '' && v != null; }
 
+    // Which blank, optional questions to leave out of the PDF:
+    //  - "if ..." follow-ups ("If Other, please describe", "Level (if yes)")
+    //    that simply didn't apply;
+    //  - a standard's Evidence & Follow-up boxes when every answer in that
+    //    standard was Yes/N/A (nothing to follow up). If the standard has a
+    //    "No", its follow-up boxes always print, so a missing remedy plan
+    //    shows up as "Not answered".
+    //  Every other blank prints as "Not answered" so gaps stay visible.
+    var inQuietFollowUp = false;
+    function conditionApplies(label, el) {
+      // "If yes/no/other/not ..." -> did the answer just before it match?
+      var m = /(?:^|\()\s*if\s+(yes|no|not|other|so)\b/i.exec(label || '');
+      if (!m || !el) return false;
+      var want = { yes: 'yes', so: 'yes', no: 'no', not: 'no', other: 'other' }[m[1].toLowerCase()];
+      var page = el.closest('.form-page'), prev = null;
+      Array.prototype.forEach.call(page.querySelectorAll('input[type=radio]:checked'), function (r) {
+        if (r.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) prev = r;
+      });
+      return !!prev && prev.value.toLowerCase().indexOf(want) === 0;
+    }
+    function hideBlank(label, answered, required, el) {
+      if (answered || required) return false;
+      if (/^\s*if\b|\(if\b/i.test(label || '')) return !conditionApplies(label, el);
+      if (inQuietFollowUp) return true;
+      return !!C.skipEmptyOptional;
+    }
+
     // ---- Masthead ----
     var logo = document.querySelector('.masthead img.logo');
     var textX = M;
@@ -747,9 +775,9 @@ const STANDARDS = [
     }
 
     // ---- Renderers ----
-    function choiceRow(q, a, required) {
+    function choiceRow(q, a, required, el) {
       var answered = isAnswered(a);
-      if (!answered && C.skipEmptyOptional && !required) return;
+      if (hideBlank(q, answered, required, el)) return;
       flushSub();
       var qL = split(q || 'Answer', 9.5, CW - 96);
       ensure(qL.length * 12.5 + 8);
@@ -760,9 +788,9 @@ const STANDARDS = [
       doc.text(answered ? a : 'Not answered', PW - M, top + 10, { align: 'right' });
       y += 4; rule(LINE, 0.4); y += 6;
     }
-    function qaBlock(q, a, required) {
+    function qaBlock(q, a, required, el) {
       var answered = isAnswered(a);
-      if (!answered && C.skipEmptyOptional && !required) return;
+      if (hideBlank(q, answered, required, el)) return;
       flushSub();
       var qL = q ? split(q, 9.5, CW, 'bold') : [];
       var aL = answered ? split(a, 10.5, CW - 12) : ['Not answered'];
@@ -786,8 +814,8 @@ const STANDARDS = [
       var cells = fields.map(function (f) {
         var inp = f.querySelector('input, select');
         var v = inputValue(inp);
-        return { l: textOf(f.querySelector('.f-label')), v: v, req: inp && inp.required };
-      }).filter(function (c) { return isAnswered(c.v) || !C.skipEmptyOptional || c.req; });
+        return { l: textOf(f.querySelector('.f-label')), v: v, req: inp && inp.required, el: f };
+      }).filter(function (c) { return !hideBlank(c.l, isAnswered(c.v), c.req, c.el); });
       if (!cells.length) return;
       flushSub();
       var colW = CW / Math.max(cells.length, 2), gap = 12, heights = [];
@@ -884,7 +912,13 @@ const STANDARDS = [
         if (cl.contains('step-title') || cl.contains('sig-label') || cl.contains('add-row-btn') ||
             cl.contains('remove-row') || el.tagName === 'BUTTON' || el.tagName === 'SCRIPT') return;
         if (cl.contains('step-sub')) { write(split(textOf(el), 9, CW, 'italic'), 9, 'italic', MUTED); y += 5; return; }
-        if (cl.contains('subheading')) { pendingSub = textOf(el); return; }
+        if (cl.contains('subheading')) {
+          pendingSub = textOf(el);
+          // Follow-up zone of a Yes/No standard with no "No" answers.
+          if (C.quietFollowUpWhenNoIssues && el.closest('.form-page').querySelector('.q-block') &&
+              !el.closest('.form-page').querySelector('.q-block input[value="No"]:checked')) inQuietFollowUp = true;
+          return;
+        }
         if (cl.contains('legal-block')) { flushSub(); write(split(textOf(el), 10, CW), 10, 'normal', DARK); y += 8; return; }
         if (cl.contains('sig-box')) { signatureBlock(); return; }
         if (el.querySelector(':scope > .table-row')) { table(el); return; }
@@ -894,7 +928,7 @@ const STANDARDS = [
           var anyReq = !!el.querySelector('input[required]');
           var q = textOf(qEl);
           if (!q && pendingSub) { q = pendingSub; pendingSub = null; }
-          choiceRow(q, r ? r.value : '', anyReq);
+          choiceRow(q, r ? r.value : '', anyReq, el);
           return;
         }
         if (cl.contains('row-2') || cl.contains('row-3')) {
@@ -906,7 +940,7 @@ const STANDARDS = [
         if (cl.contains('field')) {
           var inp = el.querySelector('input, textarea, select');
           if (!inp) return;
-          qaBlock(textOf(el.querySelector('.f-label')), inputValue(inp), inp.required);
+          qaBlock(textOf(el.querySelector('.f-label')), inputValue(inp), inp.required, el);
           return;
         }
         if (el.children.length) walk(el);
@@ -914,7 +948,7 @@ const STANDARDS = [
     }
 
     pages.forEach(function (page) {
-      pendingSub = null;
+      pendingSub = null; inQuietFollowUp = false;
       var title = textOf(page.querySelector('.step-title'));
       if (title) {
         ensure(page.querySelector('.sig-box') ? C.keepSignatureSectionHeight : 64);
