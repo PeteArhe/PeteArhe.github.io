@@ -98,6 +98,23 @@
     .form-page { display: block !important; page-break-after: always; }
     .card { box-shadow: none; }
   }
+
+  .gate { display: none; }
+  .gate .step-sub { margin-bottom: 14px; }
+  .gate-staff { font-size: 12px; color: var(--ink-soft); margin: 18px 0 0; }
+  .gate-staff a { color: var(--accent); font-weight: 600; }
+  .field input.locked { background: #EAF1EE; color: var(--accent-2); border-style: dashed; font-weight: 600; }
+  .locked-note { font-size: 11.5px; color: var(--ink-soft); margin: 5px 0 0; }
+
+  .intro-note { background: #F2F7F5; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; line-height: 1.6; color: var(--ink); margin: 4px 0 26px; }
+  .intro-note p { margin: 0 0 9px; } .intro-note p:last-child { margin-bottom: 0; }
+  .intro-note strong { color: var(--accent-2); }
+  .hint { font-size: 12px; color: var(--ink-soft); margin: -12px 0 16px; }
+  .modal-back { position: fixed; inset: 0; background: rgba(20,32,28,0.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+  .modal { background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 22px 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+  .modal h3 { font-family: 'Lora', Georgia, serif; color: var(--accent-2); margin: 0 0 8px; font-size: 17px; }
+  .modal p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 16px; }
+  .modal-btns { display: flex; gap: 10px; }
 </style>
 </head>
 <body>
@@ -111,16 +128,23 @@
     <div class="progress-label" id="progressLabel">Step 1 of 6</div>
   </div>
 
-  <form class="card" id="theForm">
+  <div class="card gate" id="handoffGate"></div>
+  <form class="card" id="theForm" style="display:none;">
 
     <!-- STEP 1 — General Information -->
     <section class="form-page active" data-step="1">
       <p class="step-title">General Information</p>
-      <p class="step-sub">This reference check is part of the screening process for approval of a Family Day Home Educator by TARG E-comm &amp; T-comm Ltd, o/a TARG Family Day Home Agency. All information provided is kept confidential and used solely for suitability assessment.</p>
+      <div class="intro-note">
+        <p>Dear Reference,</p>
+        <p>TARG Family Day Home Agency is writing on behalf of <strong data-fill="applicantName">the applicant</strong>, who has named you as a personal or professional reference as part of our Family Day Home Educator screening process.</p>
+        <p>Please answer each question truthfully and complete this brief questionnaire as soon as you can &mdash; your timely response helps us move the screening forward. All information you provide is kept confidential and used solely for assessment purposes.</p>
+        <p>Thank you for your time and support.<br>Best regards,<br><strong>TARG Team</strong></p>
+      </div>
+      <p class="hint">Your answers save automatically on this device — you can close the page and come back later using the same link.</p>
 
       <div class="field">
         <label class="f-label" for="applicantName">Applicant name (Educator)</label>
-        <input type="text" id="applicantName" required>
+        <input type="text" id="applicantName" required readonly>
       </div>
       <div class="field">
         <label class="f-label" for="knownDuration">How long have you known the applicant?</label>
@@ -262,6 +286,17 @@
   </form>
 </div>
 
+<div class="modal-back" id="resumeModal" style="display:none;">
+  <div class="modal">
+    <h3>Resume your unfinished form?</h3>
+    <p>We found answers you started earlier on this device. Your signature is not saved and will need to be signed again.</p>
+    <div class="modal-btns">
+      <button type="button" class="btn btn-back" id="startFreshBtn">Start fresh</button>
+      <button type="button" class="btn btn-next" id="resumeBtn">Resume</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 (function () {
@@ -346,9 +381,13 @@
   }
   nextBtn.addEventListener('click', function () {
     if (!validateCurrentPage()) return;
-    if (current < totalSteps - 1) { current++; updateNav(); }
+    if (current < totalSteps - 1) { current++; prefillDate(); updateNav(); saveDraft(); }
   });
-  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); } });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); saveDraft(); } });
+  function prefillDate() {
+    var d = document.getElementById('refDate');
+    if (d && !d.value && current === totalSteps - 1) { var n = new Date(); d.value = n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); }
+  }
   updateNav();
 
   var canvas = document.getElementById('sigCanvas');
@@ -397,6 +436,141 @@
       reader.onerror = reject; reader.readAsDataURL(blob);
     });
   }
+
+
+  // ============================================================
+  //  TWO-STAGE HANDOFF + AUTOSAVE (PRP 5.21)
+  //  The Agency starts this form on its staff page; the recipient
+  //  receives it by email as  <this page>?request=<private id>.
+  //  The page loads the Agency's part (shown locked), then the
+  //  recipient completes and signs. Every answer autosaves to this
+  //  device for that request (signature never saved) until submitted.
+  // ============================================================
+  var HANDOFF = {"storageBase": "targ_reference_draft_v1", "lockedFields": ["applicantName"], "staffPortalUrl": "https://script.google.com/a/macros/targ.ca/s/AKfycbwItSABiEgrCl4xa_fjEcy6ewf5eD6jvPl2-EgOkq0K3ZjvDa4hzIcJIE5oCreh4n7WKg/exec"};
+  var form = document.getElementById('theForm');
+  var gate = document.getElementById('handoffGate');
+  var progressBits = document.querySelectorAll('.progress-track, .progress-label');
+  var requestId = '';
+  try { requestId = (new URLSearchParams(window.location.search).get('request') || '').trim(); } catch (e) {}
+  var STORAGE_KEY = HANDOFF.storageBase + '_' + requestId;
+  var draftEnabled = false;
+
+  function showGate(title, text, opts) {
+    opts = opts || {};
+    form.style.display = 'none';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = 'hidden'; });
+    gate.innerHTML = '<p class="step-title">' + title + '</p>' + (text ? '<p class="step-sub">' + text + '</p>' : '') +
+      (opts.retry ? '<button type="button" class="btn btn-next" id="gateRetry">Try again</button>' : '') +
+      (opts.staff ? '<p class="gate-staff">Agency staff: send this form from the <a href="' + HANDOFF.staffPortalUrl + '">staff page</a>.</p>' : '');
+    gate.style.display = 'block';
+    if (opts.retry) document.getElementById('gateRetry').addEventListener('click', loadRequest);
+    window.scrollTo({ top: 0 });
+  }
+  function openForm(stage1) {
+    // Show the Agency's detail wherever the page asks for it (e.g. the applicant's name in an intro).
+    Array.prototype.forEach.call(document.querySelectorAll('[data-fill]'), function (el) {
+      var v = stage1 && stage1[el.getAttribute('data-fill')]; if (v) el.textContent = v;
+    });
+    HANDOFF.lockedFields.forEach(function (id) {
+      var el = document.getElementById(id); if (!el) return;
+      el.value = (stage1 && stage1[id]) || '';
+      el.readOnly = true; el.classList.add('locked');
+      if (!el.parentNode.querySelector('.locked-note')) {
+        var note = document.createElement('p'); note.className = 'locked-note'; note.textContent = 'Filled in by the Agency';
+        el.parentNode.appendChild(note);
+      }
+    });
+    gate.style.display = 'none'; form.style.display = '';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = ''; });
+    draftEnabled = true; current = 0; updateNav(); offerResume();
+  }
+  function loadRequest() {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
+      showGate('Please use the link from your email',
+        'This form is sent by TARG Family Day Home Agency by email. Please open it using the button or link in that email. ' +
+        'If you cannot find the email, please contact the Agency.', { staff: true });
+      return;
+    }
+    showGate('Loading your form…', '');
+    fetch(APPS_SCRIPT_URL + '?request=' + encodeURIComponent(requestId))
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.status === 'ok') openForm(res.stage1 || {});
+        else if (res && res.status === 'completed') showGate('This form has already been submitted', 'Thank you — the Agency has received it. If something needs to change, please contact the Agency.');
+        else showGate('This link is no longer active', 'Please contact TARG Family Day Home Agency for a new link.');
+      })
+      .catch(function () { showGate('We could not load the form', 'Please check your internet connection and try again.', { retry: true }); });
+  }
+
+  function serializeForm() {
+    var data = { v: 2, step: current, fields: {}, radios: {} };
+    Array.prototype.forEach.call(form.querySelectorAll('input[id], textarea[id], select[id]'), function (el) {
+      if (el.readOnly || el.type === 'radio') return;
+      data.fields[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]:checked'), function (r) { data.radios[r.name] = r.value; });
+    return data;
+  }
+  function saveDraft() {
+    if (!draftEnabled) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm())); } catch (e) { /* storage unavailable - ignore */ }
+  }
+  function clearDraft() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} }
+  function restoreForm(data) {
+    Object.keys(data.fields || {}).forEach(function (id) {
+      var el = document.getElementById(id); if (!el || el.readOnly) return;
+      if (el.type === 'checkbox') el.checked = !!data.fields[id]; else el.value = data.fields[id];
+    });
+    Object.keys(data.radios || {}).forEach(function (name) {
+      Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]'), function (r) {
+        if (r.name === name && r.value === data.radios[name]) r.checked = true;
+      });
+    });
+    // Return to the furthest step, but never past the first incomplete one.
+    var target = Math.min(data.step || 0, totalSteps - 1), i;
+    for (i = 0; i < target; i++) {
+      var bad = Array.prototype.some.call(pages[i].querySelectorAll('input[required], textarea[required]'), function (f) { return !f.checkValidity(); });
+      if (bad) { target = i; break; }
+    }
+    current = target; updateNav();
+  }
+  var saveTimer = null;
+  function queueSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 300); }
+  form.addEventListener('input', queueSave);
+  form.addEventListener('change', saveDraft);
+  window.addEventListener('pagehide', saveDraft);
+  function offerResume() {
+    var raw = null; try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+    if (!raw) return;
+    var data; try { data = JSON.parse(raw); } catch (e) { clearDraft(); return; }
+    var anything = Object.keys(data.radios || {}).length ||
+      Object.keys(data.fields || {}).some(function (k) { return data.fields[k] !== '' && data.fields[k] !== false; });
+    if (!anything) return;
+    var modal = document.getElementById('resumeModal');
+    modal.style.display = 'flex';
+    document.getElementById('resumeBtn').onclick = function () { modal.style.display = 'none'; restoreForm(data); };
+    document.getElementById('startFreshBtn').onclick = function () { modal.style.display = 'none'; clearDraft(); };
+  }
+  // What the page shows after the server answers a submission.
+  function afterSubmit(result, sent) {
+    if (sent) {
+      clearDraft(); draftEnabled = false;
+      showGate('Thank you — your form has been sent',
+        'The Agency has received your signed form. A copy has also been downloaded to your device for your records. You can now close this page.');
+      return true;
+    }
+    if (result && result.code === 'completed') {
+      clearDraft(); draftEnabled = false;
+      showGate('This form has already been submitted', 'Thank you — the Agency already has it. If something needs to change, please contact the Agency.');
+      return true;
+    }
+    if (result && (result.code === 'cancelled' || result.code === 'invalid')) {
+      showGate('This link is no longer active', 'Your copy was downloaded to your device. Please contact TARG Family Day Home Agency for a new link.');
+      return true;
+    }
+    return false;
+  }
+  loadRequest();
 
   // Per-form settings for the shared PDF engine below.
   var PDF_CONFIG = {
@@ -781,7 +955,7 @@
       var refName = document.getElementById('refName').value.trim() || 'Reference';
       var filename = ('TARG_Reference_' + applicantName + '_' + refName).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
 
-      var driveSent = false;
+      var driveSent = false, result = null;
       if (APPS_SCRIPT_URL) {
         setStatus('Sending completed reference to the Agency…');
         try {
@@ -790,6 +964,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify({
+              requestId: requestId,
               filename: filename,
               applicantName: applicantName,
               referenceName: refName,
@@ -805,7 +980,9 @@
       }
 
       triggerBrowserDownload(blob, filename);
-      setStatus(driveSent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy — but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+      if (!afterSubmit(result, driveSent)) {
+        setStatus('Downloaded your copy — but sending to the Agency failed. Please check your internet connection and press Submit again, or email this PDF to the Agency.');
+      }
     } catch (err) {
       console.error(err);
       current = originalStep;

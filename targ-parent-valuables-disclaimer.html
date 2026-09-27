@@ -112,6 +112,13 @@
   .modal h3 { font-family: 'Lora', Georgia, serif; color: var(--accent-2); margin: 0 0 8px; font-size: 17px; }
   .modal p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 16px; }
   .modal-btns { display: flex; gap: 10px; }
+
+  .gate { display: none; }
+  .gate .step-sub { margin-bottom: 14px; }
+  .gate-staff { font-size: 12px; color: var(--ink-soft); margin: 18px 0 0; }
+  .gate-staff a { color: var(--accent); font-weight: 600; }
+  .field input.locked { background: #EAF1EE; color: var(--accent-2); border-style: dashed; font-weight: 600; }
+  .locked-note { font-size: 11.5px; color: var(--ink-soft); margin: 5px 0 0; }
 </style>
 </head>
 <body>
@@ -126,7 +133,8 @@
     <div class="save-hint">Parent Responsibility &amp; Valuables Disclaimer</div>
   </div>
 
-  <form class="card" id="theForm" novalidate>
+  <div class="card gate" id="handoffGate"></div>
+  <form class="card" id="theForm" novalidate style="display:none;">
 
     <!-- STEP 1 — Details -->
     <section class="form-page active">
@@ -361,29 +369,90 @@
   }
 
 
+
   // ============================================================
-  //  AUTOSAVE — every field saves to this device as it is filled in
-  //  (same device/browser only; signature is never saved). Cleared
-  //  once the form is submitted.
+  //  TWO-STAGE HANDOFF + AUTOSAVE (PRP 5.21)
+  //  The Agency starts this form on its staff page; the recipient
+  //  receives it by email as  <this page>?request=<private id>.
+  //  The page loads the Agency's part (shown locked), then the
+  //  recipient completes and signs. Every answer autosaves to this
+  //  device for that request (signature never saved) until submitted.
   // ============================================================
-  var STORAGE_KEY = 'targ_valuables_draft_v1';
+  var HANDOFF = {"storageBase": "targ_valuables_draft_v2", "lockedFields": ["educatorProgram"], "staffPortalUrl": "https://script.google.com/a/macros/targ.ca/s/AKfycbzXX1e3WPCoSCysBJ2PXhrb3fPwXolqdIVgRrLyoPwqyRLhSLkn-K8DJ40grtn_ZdRrJg/exec"};
   var form = document.getElementById('theForm');
+  var gate = document.getElementById('handoffGate');
+  var progressBits = document.querySelectorAll('.progress-track, .progress-label');
+  var requestId = '';
+  try { requestId = (new URLSearchParams(window.location.search).get('request') || '').trim(); } catch (e) {}
+  var STORAGE_KEY = HANDOFF.storageBase + '_' + requestId;
+  var draftEnabled = false;
+
+  function showGate(title, text, opts) {
+    opts = opts || {};
+    form.style.display = 'none';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = 'hidden'; });
+    gate.innerHTML = '<p class="step-title">' + title + '</p>' + (text ? '<p class="step-sub">' + text + '</p>' : '') +
+      (opts.retry ? '<button type="button" class="btn btn-next" id="gateRetry">Try again</button>' : '') +
+      (opts.staff ? '<p class="gate-staff">Agency staff: send this form from the <a href="' + HANDOFF.staffPortalUrl + '">staff page</a>.</p>' : '');
+    gate.style.display = 'block';
+    if (opts.retry) document.getElementById('gateRetry').addEventListener('click', loadRequest);
+    window.scrollTo({ top: 0 });
+  }
+  function openForm(stage1) {
+    HANDOFF.lockedFields.forEach(function (id) {
+      var el = document.getElementById(id); if (!el) return;
+      el.value = (stage1 && stage1[id]) || '';
+      el.readOnly = true; el.classList.add('locked');
+      if (!el.parentNode.querySelector('.locked-note')) {
+        var note = document.createElement('p'); note.className = 'locked-note'; note.textContent = 'Filled in by the Agency';
+        el.parentNode.appendChild(note);
+      }
+    });
+    gate.style.display = 'none'; form.style.display = '';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = ''; });
+    draftEnabled = true; current = 0; updateNav(); offerResume();
+  }
+  function loadRequest() {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
+      showGate('Please use the link from your email',
+        'This form is sent by TARG Family Day Home Agency by email. Please open it using the button or link in that email. ' +
+        'If you cannot find the email, please contact the Agency.', { staff: true });
+      return;
+    }
+    showGate('Loading your form…', '');
+    fetch(APPS_SCRIPT_URL + '?request=' + encodeURIComponent(requestId))
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.status === 'ok') openForm(res.stage1 || {});
+        else if (res && res.status === 'completed') showGate('This form has already been submitted', 'Thank you — the Agency has received it. If something needs to change, please contact the Agency.');
+        else showGate('This link is no longer active', 'Please contact TARG Family Day Home Agency for a new link.');
+      })
+      .catch(function () { showGate('We could not load the form', 'Please check your internet connection and try again.', { retry: true }); });
+  }
+
   function serializeForm() {
-    var data = { v: 1, step: current, fields: {} };
+    var data = { v: 2, step: current, fields: {}, radios: {} };
     Array.prototype.forEach.call(form.querySelectorAll('input[id], textarea[id], select[id]'), function (el) {
-      if (el.readOnly) return;
+      if (el.readOnly || el.type === 'radio') return;
       data.fields[el.id] = el.type === 'checkbox' ? el.checked : el.value;
     });
+    Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]:checked'), function (r) { data.radios[r.name] = r.value; });
     return data;
   }
   function saveDraft() {
+    if (!draftEnabled) return;
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm())); } catch (e) { /* storage unavailable - ignore */ }
   }
   function clearDraft() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} }
   function restoreForm(data) {
     Object.keys(data.fields || {}).forEach(function (id) {
-      var el = document.getElementById(id); if (!el) return;
+      var el = document.getElementById(id); if (!el || el.readOnly) return;
       if (el.type === 'checkbox') el.checked = !!data.fields[id]; else el.value = data.fields[id];
+    });
+    Object.keys(data.radios || {}).forEach(function (name) {
+      Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]'), function (r) {
+        if (r.name === name && r.value === data.radios[name]) r.checked = true;
+      });
     });
     // Return to the furthest step, but never past the first incomplete one.
     var target = Math.min(data.step || 0, totalSteps - 1), i;
@@ -398,17 +467,38 @@
   form.addEventListener('input', queueSave);
   form.addEventListener('change', saveDraft);
   window.addEventListener('pagehide', saveDraft);
-  (function offerResume() {
+  function offerResume() {
     var raw = null; try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) {}
     if (!raw) return;
     var data; try { data = JSON.parse(raw); } catch (e) { clearDraft(); return; }
-    var anything = Object.keys(data.fields || {}).some(function (k) { return data.fields[k] !== '' && data.fields[k] !== false; });
+    var anything = Object.keys(data.radios || {}).length ||
+      Object.keys(data.fields || {}).some(function (k) { return data.fields[k] !== '' && data.fields[k] !== false; });
     if (!anything) return;
     var modal = document.getElementById('resumeModal');
     modal.style.display = 'flex';
-    document.getElementById('resumeBtn').addEventListener('click', function () { modal.style.display = 'none'; restoreForm(data); });
-    document.getElementById('startFreshBtn').addEventListener('click', function () { modal.style.display = 'none'; clearDraft(); });
-  })();
+    document.getElementById('resumeBtn').onclick = function () { modal.style.display = 'none'; restoreForm(data); };
+    document.getElementById('startFreshBtn').onclick = function () { modal.style.display = 'none'; clearDraft(); };
+  }
+  // What the page shows after the server answers a submission.
+  function afterSubmit(result, sent) {
+    if (sent) {
+      clearDraft(); draftEnabled = false;
+      showGate('Thank you — your form has been sent',
+        'The Agency has received your signed form. A copy has also been downloaded to your device for your records. You can now close this page.');
+      return true;
+    }
+    if (result && result.code === 'completed') {
+      clearDraft(); draftEnabled = false;
+      showGate('This form has already been submitted', 'Thank you — the Agency already has it. If something needs to change, please contact the Agency.');
+      return true;
+    }
+    if (result && (result.code === 'cancelled' || result.code === 'invalid')) {
+      showGate('This link is no longer active', 'Your copy was downloaded to your device. Please contact TARG Family Day Home Agency for a new link.');
+      return true;
+    }
+    return false;
+  }
+  loadRequest();
 
   // Per-form settings for the shared PDF engine below.
   var PDF_CONFIG = {
@@ -828,7 +918,7 @@
       var childNames = v('childNames') || 'Child';
       var filename = ('TARG_ValuablesDisclaimer_' + parentName + '_' + childNames).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_').slice(0, 120) + '.pdf';
 
-      var driveSent = false;
+      var driveSent = false, result = null;
       if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_') !== 0) {
         setStatus('Sending your signed form to the Agency\u2026');
         try {
@@ -840,6 +930,7 @@
               filename: filename,
               parentName: parentName,
               childNames: childNames,
+              requestId: requestId,
               educatorProgram: v('educatorProgram'),
               effectiveDate: v('effectiveDate'),
               signerName: v('signerName'),
@@ -853,8 +944,9 @@
       }
 
       triggerBrowserDownload(blob, filename);
-      clearDraft();
-      setStatus(driveSent ? 'Sent to the Agency and downloaded a copy for you.' : 'Downloaded your copy \u2014 but sending to the Agency failed. Please also email this PDF to the Agency directly.');
+      if (!afterSubmit(result, driveSent)) {
+        setStatus('Downloaded your copy \u2014 but sending to the Agency failed. Please check your internet connection and press Submit again, or email this PDF to the Agency.');
+      }
     } catch (err) {
       console.error(err);
       setStatus('Sorry, the PDF could not be created. Please refresh the page and try again, or contact the Agency.');
