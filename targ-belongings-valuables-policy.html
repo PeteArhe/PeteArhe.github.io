@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARG Family Day Home — Children's Belongings, Prohibited Items &amp; Valuables Policy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1F0; --card: #FFFFFF; --ink: #1E2624; --ink-soft: #5B655F;
+    --line: #DDE3DF; --accent: #1F4E45; --accent-2: #163A33; --gold: #C79A3E;
+    --readonly-bg: #F4F6F4;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14201C; } }
+  :root[data-theme="dark"] { --bg: #14201C; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100%; background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); padding: 20px 12px 50px; display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 640px; }
+
+  .masthead { text-align: center; color: #fff; background: linear-gradient(160deg, var(--accent), var(--accent-2)); border-radius: 14px 14px 0 0; padding: 22px 20px 18px; }
+  .masthead .logo { height: 40px; margin-bottom: 8px; }
+  .masthead .org { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .masthead .title { font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 19px; margin-top: 4px; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-top: 16px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.25s ease; }
+  .progress-label { font-size: 11px; opacity: 0.85; margin-top: 8px; }
+
+  .card { background: var(--card); border-radius: 0 0 14px 14px; box-shadow: 0 14px 34px rgba(0,0,0,0.12); padding: 26px 20px 24px; }
+  @media (min-width: 520px) { .card { padding: 32px 34px 28px; } }
+
+  .step-title { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 18px; margin: 0 0 4px; color: var(--accent-2); }
+  .step-sub { font-size: 13px; color: var(--ink-soft); margin: 0 0 20px; line-height: 1.5; }
+
+  .field { margin-bottom: 18px; }
+  .field label.f-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }
+  .field input[type="text"], .field input[type="tel"], .field input[type="email"], .field input[type="date"], .field textarea {
+    width: 100%; font: inherit; font-size: 15px; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 9px; padding: 10px 12px;
+  }
+  .field textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+
+  .row-2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  @media (min-width: 480px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+
+  fieldset { border: none; margin: 0 0 18px; padding: 0; }
+  legend { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; padding: 0; line-height: 1.4; }
+
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .choice .pill { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 999px; border: 1.5px solid var(--line); font-size: 13.5px; color: var(--ink); background: #fff; user-select: none; }
+  .choice input:checked + .pill { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .choice input:focus-visible + .pill { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  .trait-row { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+  .trait-row .t-title { font-weight: 600; font-size: 13.5px; margin-bottom: 10px; }
+
+  .legal-block { background: var(--readonly-bg); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; font-size: 13px; line-height: 1.65; color: var(--ink); margin-bottom: 18px; }
+  .legal-block p { margin: 0 0 10px; } .legal-block p:last-child { margin-bottom: 0; }
+
+  .divider { border: none; border-top: 1px dashed var(--line); margin: 20px 0; }
+
+  .sig-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .sig-label .t { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .sig-clear { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .sig-box { position: relative; border: 1.5px solid var(--line); border-radius: 9px; background: var(--readonly-bg); touch-action: none; overflow: hidden; }
+  .sig-box canvas { display: block; width: 100%; height: 160px; touch-action: none; }
+  .sig-placeholder { position: absolute; left: 14px; bottom: 30px; font-family: 'Lora', serif; font-style: italic; color: #A7AFA9; font-size: 14px; pointer-events: none; }
+  .sig-baseline { position: absolute; left: 14px; right: 14px; bottom: 24px; border-top: 1.5px solid var(--ink-soft); }
+
+  .nav-row { display: flex; gap: 10px; margin-top: 22px; }
+  .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; }
+  .btn:active { transform: scale(0.98); }
+  .btn-back { background: var(--readonly-bg); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-next { background: var(--accent); color: #fff; }
+  .btn-download { background: var(--gold); color: #2A2110; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .status-line { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 10px; min-height: 16px; }
+  .foot-note { text-align: center; font-size: 11px; color: #8B9490; margin-top: 18px; line-height: 1.6; }
+
+  .form-page { display: none; } .form-page.active { display: block; }
+
+  @media print {
+    body { background: #fff; }
+    .nav-row, .status-line, .foot-note { display: none !important; }
+    .form-page { display: block !important; page-break-after: always; }
+    .card { box-shadow: none; }
+  }
+  .field input[readonly] { background: var(--readonly-bg); color: var(--ink-soft); }
+  .legal-block h4 { font-family: 'Lora', Georgia, serif; font-size: 14.5px; color: var(--accent-2); margin: 4px 0 6px; }
+  .legal-block h4:not(:first-child) { margin-top: 14px; }
+  .legal-block ul, .legal-block ol { margin: 0 0 10px; padding-left: 20px; } .legal-block li { margin-bottom: 6px; }
+  .ack { display: flex; gap: 10px; align-items: flex-start; border: 1.5px solid var(--line); border-radius: 10px; padding: 11px 13px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.5; cursor: pointer; background: #fff; }
+  .ack input { width: 19px; height: 19px; margin: 1px 0 0; flex: 0 0 auto; accent-color: var(--accent); cursor: pointer; }
+  .ack:has(input:checked) { border-color: var(--accent); background: #F2F7F5; }
+  .save-hint { font-size: 11px; opacity: 0.8; margin-top: 6px; }
+  .hint { font-size: 12px; color: var(--ink-soft); margin: -12px 0 16px; }
+  .modal-back { position: fixed; inset: 0; background: rgba(20,32,28,0.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+  .modal { background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 22px 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+  .modal h3 { font-family: 'Lora', Georgia, serif; color: var(--accent-2); margin: 0 0 8px; font-size: 17px; }
+  .modal p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; margin: 0 0 16px; }
+  .modal-btns { display: flex; gap: 10px; }
+
+  .gate { display: none; }
+  .gate .step-sub { margin-bottom: 14px; }
+  .gate-staff { font-size: 12px; color: var(--ink-soft); margin: 18px 0 0; }
+  .gate-staff a { color: var(--accent); font-weight: 600; }
+  .field input.locked { background: #EAF1EE; color: var(--accent-2); border-style: dashed; font-weight: 600; }
+  .locked-note { font-size: 11.5px; color: var(--ink-soft); margin: 5px 0 0; }
+  .subheading { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 15px; color: var(--accent-2); margin: 18px 0 10px; }
+  .legal-block strong { color: var(--accent-2); }
+  .note-box { background: #F2F7F5; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--ink-soft); margin-top: 18px; }
+  .note-box p { margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <img class="logo" src="data:image/png;base64,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" alt="TARG Family Day Home Agency logo">
+    <div class="org">TARG Family Day Home Agency</div>
+    <div class="title">Children's Belongings, Prohibited Items &amp; Valuables Policy</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1 of 5</div>
+    <div class="save-hint">Policy &amp; Parent Acknowledgement</div>
+  </div>
+
+  <div class="card gate" id="handoffGate"></div>
+  <form class="card" id="theForm" novalidate style="display:none;">
+
+    <!-- STEP 1 — About this policy, Purpose, Scope, Definitions -->
+    <section class="form-page active">
+      <p class="step-title">About This Policy</p>
+      <p class="step-sub">Children's Belongings, Prohibited Items and Valuables Policy &mdash; Agency policy for Parents, Educators, Approved Backups and Agency staff.</p>
+      <p class="hint">Please read each section and tick the box at the bottom to continue. Your progress saves automatically on this device.</p>
+      <div class="field">
+        <label class="f-label" for="childName">Child's name</label>
+        <input type="text" id="childName" required>
+      </div>
+      <div class="legal-block">
+        <p><strong>Policy owner:</strong> Agency Director or Program Coordinator</p>
+        <p><strong>Applies to:</strong> Parents and guardians, educators, approved backups, assistants and Agency staff</p>
+        <p><strong>Review cycle:</strong> Annually and after a related complaint, incident or regulatory change</p>
+        <p><strong>Related requirements:</strong> Family Day Home Standards Manual for Alberta and Agency medication, health, privacy, complaint and incident procedures</p>
+        <p><strong>Version:</strong> 1.0</p>
+        <h4>1 Purpose</h4>
+        <p>This policy establishes consistent requirements for children's backpacks and other belongings. Its primary rule is that parents and guardians must inspect and pack their child's belongings before every drop-off. The policy also gives educators limited authority to respond to safety concerns without creating a requirement to search every bag at every arrival.</p>
+        <p>The policy protects children from hazardous or prohibited items, supports proper medication handling, reduces disputes involving cash or valuables, and respects the privacy and dignity of children and families. The Family Day Home Standards do not require a search of every backpack or guarantee the security of undeclared valuables.</p>
+        <h4>2 Scope</h4>
+        <p>This policy applies in every family day home operating under the Agency and to every backpack, lunch bag, diaper bag, purse, clothing bag, school bag or other container brought for a child. Educators, approved backups and assistants apply the operational requirements. Agency staff provide training, monitoring, complaint management and corrective direction.</p>
+        <h4>3 Definitions</h4>
+        <p><strong>Arrival safety check:</strong> A brief, limited visual check that may be conducted when reasonably considered necessary or practical for safety, care or compliance. It is not a routine inventory or an invasive search.</p>
+        <p><strong>Prohibited item:</strong> An item that may not be brought because it is unlawful, dangerous, developmentally inappropriate or inconsistent with Agency policy.</p>
+        <p><strong>Restricted item:</strong> An item accepted only with advance disclosure, required authorization and secure handling, such as medication or specialized care equipment.</p>
+        <p><strong>Valuable:</strong> Cash, gift cards, jewellery, financial or identity documents, electronic devices or other property whose loss could cause material financial, privacy or personal harm.</p>
+        <p><strong>Unexpected item:</strong> A prohibited, restricted or valuable item discovered after the parent has left and that was not disclosed at arrival.</p>
+      </div>
+      <label class="ack"><input type="checkbox" id="read1" required><span>I have read and understood this section.</span></label>
+    </section>
+
+    <!-- STEP 2 — Core rules + Parent responsibilities -->
+    <section class="form-page">
+      <p class="step-title">Core Rules &amp; Parent Responsibilities</p>
+      <div class="legal-block">
+        <h4>4 Core Policy Rules</h4>
+        <ul>
+          <li>Parents and guardians have the primary and continuing responsibility to inspect every bag before drop-off and ensure it contains only items required for the child's care.</li>
+          <li>Cash, gift cards, jewellery, financial or identity documents, expensive electronics and other valuables must not be placed in a child's belongings.</li>
+          <li>Medication, emergency medication, medical devices and unusual care items must be disclosed and handed directly to the educator under the applicable authorization process.</li>
+          <li>Educators are not required to search every bag at every arrival. They may ask questions or conduct a brief, respectful visual check when reasonably necessary or practical for safety, care or compliance.</li>
+          <li>A limited check is not an inventory, guarantee or acceptance of custody for the contents of a child's bag.</li>
+          <li>A child must not be made responsible for carrying, declaring, guarding or accounting for an adult's cash, medication, documents or valuables.</li>
+          <li>Checks and decisions must be applied respectfully and without discrimination or profiling.</li>
+        </ul>
+        <h4>5 Parent and Guardian Responsibilities</h4>
+        <ul>
+          <li>Inspect the child's belongings at home before every drop-off.</li>
+          <li>Pack only necessary care items and label them where appropriate.</li>
+          <li>Remove all cash, valuables, prohibited items and unnecessary personal property before handing the bag to the educator.</li>
+          <li>Disclose medication, emergency supplies, medical devices, confidential documents or any unusual item before leaving.</li>
+          <li>Hand medication directly to the educator and complete all required authorizations; never leave medication loose or undisclosed in a bag.</li>
+          <li>Remain briefly at drop-off when the educator reasonably requests the parent's presence to resolve a concern or conduct a limited check.</li>
+          <li>Take back an identified prohibited, unsafe or unnecessary valuable item immediately.</li>
+          <li>Report missing property promptly and preserve relevant messages, receipts and other supporting information.</li>
+        </ul>
+      </div>
+      <label class="ack"><input type="checkbox" id="read2" required><span>I have read and understood this section.</span></label>
+    </section>
+
+    <!-- STEP 3 — Arrival procedure, prohibited, restricted -->
+    <section class="form-page">
+      <p class="step-title">Arrival, Prohibited &amp; Restricted Items</p>
+      <div class="legal-block">
+        <h4>6 Educator Arrival Procedure</h4>
+        <p>Morning drop-off can be brief and busy. The educator's procedure is therefore risk-based and does not require a bag search at every arrival.</p>
+        <ul>
+          <li>Receive the child and observe for any immediate safety or care concern.</li>
+          <li>The educator may ask whether the bag contains medication, emergency supplies, valuables or an unusual item. The parent's duty to disclose applies whether or not the question is asked.</li>
+          <li>When a concern exists or a check is otherwise reasonably considered necessary or practical, ask the parent to remain and conduct a brief visual check of the main compartments.</li>
+          <li>Do not rummage unnecessarily, read documents, open sealed personal containers or treat the check as an inventory.</li>
+          <li>Ask the parent to remove any identified prohibited, hazardous or unnecessary valuable item before leaving.</li>
+          <li>Receive authorized medication directly from the parent and store it under the medication policy.</li>
+          <li>Place the bag in the child's designated storage area. If it contains authorized restricted care items, ensure the storage arrangement meets the applicable safety requirement.</li>
+          <li>Document only exceptions, concerns, refusals and unexpected items. A routine arrival with no concern does not require a bag inventory.</li>
+        </ul>
+        <h4>7 Prohibited Items</h4>
+        <p>The following items must not be brought unless legally permitted, required for care and specifically authorized under another Agency procedure:</p>
+        <ul>
+          <li>weapons, ammunition, replicas capable of causing alarm, knives or sharp tools not required for care;</li>
+          <li>illegal drugs, cannabis products, tobacco, vaping products, alcohol or related paraphernalia;</li>
+          <li>unsecured prescription or non-prescription medication, vitamins, herbal products or supplements;</li>
+          <li>toxic chemicals, cleaning agents, matches, lighters, fireworks or combustible materials;</li>
+          <li>small objects, loose batteries, magnets, cords or other items presenting a choking, ingestion, strangulation or burn hazard;</li>
+          <li>foods that conflict with the program's allergy controls or notified safety restrictions; and</li>
+          <li>items containing violent, sexually explicit, hateful or otherwise age-inappropriate content.</li>
+        </ul>
+        <h4>8 Restricted and Authorized Items</h4>
+        <p>Restricted items may be accepted only when required for the child's care and handled under the applicable authorization process. Examples include emergency medication, prescribed medication, medical devices, specialized feeding supplies, sunscreen, insect repellent and culturally or religiously significant items.</p>
+        <p>If required documentation or authorization is missing, the educator must contact the Agency and follow the medication, health, allergy or consent policy before accepting or using the item.</p>
+      </div>
+      <label class="ack"><input type="checkbox" id="read3" required><span>I have read and understood this section.</span></label>
+    </section>
+
+    <!-- STEP 4 — Valuables, unexpected items, documentation -->
+    <section class="form-page">
+      <p class="step-title">Valuables, Unexpected Items &amp; Records</p>
+      <div class="legal-block">
+        <h4>9 Cash, Valuables and Confidential Documents</h4>
+        <ul>
+          <li>Cash and valuables are not childcare supplies and must remain with the parent.</li>
+          <li>An educator must decline a request to hold a valuable unless the Agency has approved a documented exceptional arrangement.</li>
+          <li>A valuable identified while the parent is present must be returned immediately. The educator should document the return when the item is significant.</li>
+          <li>If immediate return is impossible, contact the Agency. Any unavoidable temporary custody must be brief, securely managed and documented, with two-adult verification where reasonably available.</li>
+          <li>Educators must not count substantial cash, photograph financial documents unnecessarily or disclose the presence of a valuable to unrelated persons.</li>
+        </ul>
+        <p>The educator, day home and Agency do not accept custody of an undeclared valuable merely because it was placed in a child's belongings. To the fullest extent permitted by law, they are not responsible for loss, damage, theft, disappearance or misplacement of undeclared valuables brought contrary to this policy. Nothing in this policy excludes responsibility that cannot lawfully be excluded, including responsibility arising from proven intentional misconduct or negligence where applicable.</p>
+        <h4>10 Unexpected Item Discovered After Drop-off</h4>
+        <ol>
+          <li>Protect children first and remove the item from children's access without unnecessary handling.</li>
+          <li>For an immediate danger, call 911 or the appropriate emergency service and notify the Agency as soon as safely possible.</li>
+          <li>For medication, hazardous items or controlled substances, secure the item appropriately, contact the Agency and parent, and follow regulatory or emergency direction.</li>
+          <li>For cash or another valuable, avoid counting or displaying it unless reasonably necessary to document and secure it. Use a second adult witness where reasonably available.</li>
+          <li>Complete an Unexpected Item Record before the end of the day using objective facts only.</li>
+          <li>Return the item directly to the parent or another authorized adult and obtain written acknowledgement.</li>
+        </ol>
+        <h4>11 Documentation</h4>
+        <p>Documentation is required when a prohibited, restricted, hazardous or significant valuable item is identified; a parent refuses to remove an item or cooperate with a reasonably required safety check; temporary custody is unavoidable; or property is reported missing.</p>
+        <ul>
+          <li>date, time, child and program;</li>
+          <li>objective description of the item and where it was found;</li>
+          <li>whether the parent was present and what action was requested;</li>
+          <li>persons who witnessed handling, storage or return;</li>
+          <li>notifications to the parent, Agency, emergency services, police or Childcare Connect; and</li>
+          <li>final disposition and follow-up direction.</li>
+        </ul>
+        <p>Records must not contain speculation or accusations. Corrections must be made through a dated addendum; original records must not be altered or backdated.</p>
+      </div>
+      <label class="ack"><input type="checkbox" id="read4" required><span>I have read and understood this section.</span></label>
+    </section>
+
+    <!-- STEP 5 — Privacy, refusal, missing property, roles, training, compliance, references -->
+    <section class="form-page">
+      <p class="step-title">Privacy, Non-compliance &amp; Accountability</p>
+      <div class="legal-block">
+        <h4>12 Privacy, Dignity and Limits of Inspection</h4>
+        <ul>
+          <li>Conduct any check discreetly and, where practicable, with the parent present and away from unrelated families.</li>
+          <li>Limit the check to what is reasonably necessary for safety, care and compliance.</li>
+          <li>Do not search a child's clothing or body, electronic device, wallet, sealed correspondence or locked container.</li>
+          <li>Do not photograph or copy personal information unless reasonably necessary and authorized under Agency procedure.</li>
+          <li>Share records only with persons who need the information for care, investigation, insurance, legal or regulatory purposes.</li>
+          <li>Store records securely under the Agency's privacy and records-retention requirements.</li>
+        </ul>
+        <h4>13 Parent Refusal or Repeated Non-compliance</h4>
+        <p>An educator must not forcibly seize property or physically prevent a parent from leaving. If a parent refuses a reasonably required safety check or refuses to remove an identified hazardous or prohibited item, the educator must explain that care cannot safely begin, keep the child with the parent and contact the Agency immediately.</p>
+        <p>The Agency may issue written direction, require a meeting, impose a safety condition, suspend care or end the placement in accordance with the Parent Agreement and applicable law. Immediate threats must be escalated to emergency services and the Agency.</p>
+        <h4>14 Missing Property Allegations</h4>
+        <ul>
+          <li>Treat every report seriously and neutrally; do not presume theft or accuse any person.</li>
+          <li>Notify the Agency immediately and preserve relevant records and available evidence.</li>
+          <li>Request a written statement describing the item, last confirmed possession, timing, access and supporting information.</li>
+          <li>Obtain separate factual statements from relevant adults; do not conduct accusatory interviews of children.</li>
+          <li>Encourage the owner to contact police where criminal conduct may be involved and follow Childcare Connect or Licensing direction.</li>
+          <li>Do not promise reimbursement, deduct money from an educator or admit liability without Agency authorization and appropriate insurer or legal advice.</li>
+        </ul>
+        <h4>15 Roles and Accountability</h4>
+        <p><strong>Parents and guardians:</strong> Inspect and pack bags, disclose restricted items, remove prohibited items, cooperate with reasonably required checks and sign the acknowledgement form.</p>
+        <p><strong>Educators and backups:</strong> Use the risk-based procedure, protect children, manage authorized items, document exceptions and notify the Agency.</p>
+        <p><strong>Agency staff:</strong> Train and monitor educators, maintain records, manage complaints fairly and consult Licensing, insurers or legal counsel where required.</p>
+        <p><strong>Home visitors:</strong> Review storage, medication controls, documentation and educator understanding during monitoring visits where relevant.</p>
+        <h4>16 Training, Monitoring and Review</h4>
+        <p>The Agency will provide this policy and the acknowledgement form to parents and educators, review the procedure during orientation, and monitor implementation where relevant. The policy will be reviewed annually and after a related complaint, incident, legal development or regulatory direction.</p>
+        <p>This policy must be read with the Agency's medication, allergy, emergency, privacy, records management, complaint, incident reporting, supervision and conduct policies. A stricter legal or regulatory requirement prevails.</p>
+        <h4>17 Compliance Basis</h4>
+        <p>This is an Agency risk-control procedure. It supports the Agency's monitoring and program-plan responsibilities and the health, safety, home-safety, medical-condition and medication requirements in the Family Day Home Standards Manual for Alberta, including Agency Standards 2, 6 and 7 and Program Standards 10, 10B, 10D and 10E. It must not be represented as a provincial requirement to search every backpack.</p>
+        <p>Collection, use, disclosure and safeguarding of personal information must comply with Alberta's Personal Information Protection Act, where applicable, and the Agency's privacy policy.</p>
+        <h4>References</h4>
+        <ul>
+          <li>Government of Alberta. Family Day Home Standards Manual for Alberta, current publication.</li>
+          <li>Government of Alberta. Licensed family day home agencies and approved family day homes guidance.</li>
+          <li>Government of Alberta. Personal Information Protection Act information for private-sector organizations.</li>
+        </ul>
+      </div>
+      <label class="ack"><input type="checkbox" id="read5" required><span>I have read and understood this section.</span></label>
+    </section>
+
+    <!-- STEP 6 — 18 Parent Acknowledgement Form -->
+    <section class="form-page">
+      <p class="step-title">18 Parent Acknowledgement Form</p>
+      <div class="legal-block">
+        <p>I/We, the parent(s) or guardian(s) named below, acknowledge that I/we have received, read, and understand the policies and procedures outlined in the Children's Belongings Prohibited Items and Valuables Policy. I/We agree to abide by all terms and conditions set forth.</p>
+      </div>
+      <label class="ack"><input type="checkbox" id="agree" required><span>I/We agree to the acknowledgement above.</span></label>
+
+      <p class="subheading">Parent/Guardian 1</p>
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="guardian1Name">Parent/Guardian 1 name</label>
+          <input type="text" id="guardian1Name" required>
+        </div>
+        <div class="field">
+          <label class="f-label" for="guardian1Date">Date</label>
+          <input type="date" id="guardian1Date" required>
+        </div>
+      </div>
+      <div class="sig-label">
+        <span class="t">Parent/Guardian 1 signature &mdash; sign with your finger</span>
+        <button type="button" class="sig-clear" data-clear="sig1">Clear</button>
+      </div>
+      <div class="sig-box" data-signer="guardian1Name" data-role="Parent/Guardian 1">
+        <canvas id="sig1"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder">sign here</div>
+      </div>
+
+      <p class="subheading" style="margin-top:22px;">Parent/Guardian 2 (optional)</p>
+      <p class="hint" style="margin-top:0;">Only if a second parent or guardian is also signing. Leave blank otherwise.</p>
+      <div class="row-2">
+        <div class="field">
+          <label class="f-label" for="guardian2Name">Parent/Guardian 2 name</label>
+          <input type="text" id="guardian2Name">
+        </div>
+        <div class="field">
+          <label class="f-label" for="guardian2Date">Date</label>
+          <input type="date" id="guardian2Date">
+        </div>
+      </div>
+      <div class="sig-label">
+        <span class="t">Parent/Guardian 2 signature</span>
+        <button type="button" class="sig-clear" data-clear="sig2">Clear</button>
+      </div>
+      <div class="sig-box" data-signer="guardian2Name" data-role="Parent/Guardian 2" data-optional="1">
+        <canvas id="sig2"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-placeholder">sign here</div>
+      </div>
+
+      <div class="note-box">
+        <p>Section 19 (Approval) is completed and signed by the Agency after you submit. You will not need to do anything further.</p>
+      </div>
+    </section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Submit &amp; download copy</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">Your answers save automatically on this device until you submit.</div>
+  </form>
+</div>
+
+<div class="modal-back" id="resumeModal" style="display:none;">
+  <div class="modal">
+    <h3>Resume your unfinished form?</h3>
+    <p>We found answers you started earlier on this device. Your signature is not saved and will need to be signed again.</p>
+    <div class="modal-btns">
+      <button type="button" class="btn btn-back" id="startFreshBtn">Start fresh</button>
+      <button type="button" class="btn btn-next" id="resumeBtn">Resume</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  //  AGENCY SETUP — deployed Apps Script Web App URL (the public
+  //  /macros/s/<id>/exec form). See PRP 5.3.
+  // ============================================================
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypxBXB64eW9O-kK3CoMCuVRISv6PkmKV_9aV2F2AuYdYw33vkVr9YvZmAeh0SFgb90jA/exec";
+
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length;
+  var current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    // Fix for signature canvas being sized 0x0 if resized while hidden
+    // (found tonight): re-run whenever the now-active page contains it.
+    if (pages[current].querySelector && pages[current].querySelector('.sig-box canvas')) {
+      setTimeout(resizeCanvas, 50);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function validateCurrentPage() {
+    var page = pages[current];
+    var fields = page.querySelectorAll('input[required], textarea[required]');
+    for (var i = 0; i < fields.length; i++) {
+      if (!fields[i].checkValidity()) { fields[i].reportValidity(); return false; }
+    }
+    return true;
+  }
+  nextBtn.addEventListener('click', function () {
+    if (!validateCurrentPage()) return;
+    if (current < totalSteps - 1) { current++; prefillSigner(); updateNav(); saveDraft(); }
+  });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); saveDraft(); } });
+  function prefillSigner() {
+    var d = document.getElementById('guardian1Date');
+    if (d && !d.value && current === totalSteps - 1) { var n = new Date(); d.value = n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); }
+  }
+  updateNav();
+
+  updateNav();
+
+  // Signature pads — one per .sig-box (Parent/Guardian 1 required, 2 optional).
+  var pads = [];
+  Array.prototype.forEach.call(document.querySelectorAll('.sig-box'), function (box) {
+    var c = box.querySelector('canvas'), cx = c.getContext('2d'), ph = box.querySelector('.sig-placeholder');
+    var pad = { box: box, canvas: c, ctx: cx, placeholder: ph }, drawing = false;
+    function pos(evt) { var r = c.getBoundingClientRect(), p = evt.touches ? evt.touches[0] : evt; return { x: p.clientX - r.left, y: p.clientY - r.top }; }
+    function start(evt) { evt.preventDefault(); drawing = true; ph.style.opacity = '0'; var p = pos(evt); cx.beginPath(); cx.moveTo(p.x, p.y); }
+    function move(evt) { if (!drawing) return; evt.preventDefault(); var p = pos(evt); cx.lineTo(p.x, p.y); cx.stroke(); }
+    function end() { drawing = false; }
+    c.addEventListener('mousedown', start); c.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+    c.addEventListener('touchstart', start, { passive: false }); c.addEventListener('touchmove', move, { passive: false }); c.addEventListener('touchend', end);
+    pads.push(pad);
+  });
+  function padFor(id) { return pads.filter(function (p) { return p.canvas.id === id; })[0]; }
+  function resizeCanvas() {
+    pads.forEach(function (pad) {
+      var rect = pad.canvas.getBoundingClientRect();
+      if (rect.width === 0) return; // not visible right now, skip
+      var ratio = window.devicePixelRatio || 1;
+      pad.canvas.width = rect.width * ratio; pad.canvas.height = rect.height * ratio;
+      pad.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      pad.ctx.lineCap = 'round'; pad.ctx.lineJoin = 'round'; pad.ctx.lineWidth = 2.4; pad.ctx.strokeStyle = '#1E2624';
+      pad.placeholder.style.opacity = '1';
+    });
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-clear]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var pad = padFor(btn.getAttribute('data-clear'));
+      pad.ctx.clearRect(0, 0, pad.canvas.width, pad.canvas.height); pad.placeholder.style.opacity = '1';
+    });
+  });
+
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var result = reader.result; var comma = result.indexOf(',');
+        resolve(comma >= 0 ? result.slice(comma + 1) : result);
+      };
+      reader.onerror = reject; reader.readAsDataURL(blob);
+    });
+  }
+
+
+
+  // ============================================================
+  //  TWO-STAGE HANDOFF + AUTOSAVE (PRP 5.21)
+  //  The Agency starts this form on its staff page; the recipient
+  //  receives it by email as  <this page>?request=<private id>.
+  //  The page loads the Agency's part (shown locked), then the
+  //  recipient completes and signs. Every answer autosaves to this
+  //  device for that request (signature never saved) until submitted.
+  // ============================================================
+  var HANDOFF = {"storageBase": "targ_belongings_policy_v1", "lockedFields": [], "staffPortalUrl": "https://script.google.com/a/macros/targ.ca/s/AKfycbypxBXB64eW9O-kK3CoMCuVRISv6PkmKV_9aV2F2AuYdYw33vkVr9YvZmAeh0SFgb90jA/exec"};
+  var form = document.getElementById('theForm');
+  var gate = document.getElementById('handoffGate');
+  var progressBits = document.querySelectorAll('.progress-track, .progress-label');
+  var requestId = '';
+  try { requestId = (new URLSearchParams(window.location.search).get('request') || '').trim(); } catch (e) {}
+  var STORAGE_KEY = HANDOFF.storageBase + '_' + requestId;
+  var draftEnabled = false;
+
+  function showGate(title, text, opts) {
+    opts = opts || {};
+    form.style.display = 'none';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = 'hidden'; });
+    gate.innerHTML = '<p class="step-title">' + title + '</p>' + (text ? '<p class="step-sub">' + text + '</p>' : '') +
+      (opts.retry ? '<button type="button" class="btn btn-next" id="gateRetry">Try again</button>' : '') +
+      (opts.staff ? '<p class="gate-staff">Agency staff: send this form from the <a href="' + HANDOFF.staffPortalUrl + '">staff page</a>.</p>' : '');
+    gate.style.display = 'block';
+    if (opts.retry) document.getElementById('gateRetry').addEventListener('click', loadRequest);
+    window.scrollTo({ top: 0 });
+  }
+  function openForm(stage1) {
+    // Show the Agency's detail wherever the page asks for it (e.g. the applicant's name in an intro).
+    Array.prototype.forEach.call(document.querySelectorAll('[data-fill]'), function (el) {
+      var v = stage1 && stage1[el.getAttribute('data-fill')]; if (v) el.textContent = v;
+    });
+    HANDOFF.lockedFields.forEach(function (id) {
+      var el = document.getElementById(id); if (!el) return;
+      el.value = (stage1 && stage1[id]) || '';
+      el.readOnly = true; el.classList.add('locked');
+      if (!el.parentNode.querySelector('.locked-note')) {
+        var note = document.createElement('p'); note.className = 'locked-note'; note.textContent = 'Filled in by the Agency';
+        el.parentNode.appendChild(note);
+      }
+    });
+    gate.style.display = 'none'; form.style.display = '';
+    Array.prototype.forEach.call(progressBits, function (el) { el.style.visibility = ''; });
+    draftEnabled = true; current = 0; updateNav(); offerResume();
+  }
+  function loadRequest() {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId)) {
+      showGate('Please use the link from your email',
+        'This form is sent by TARG Family Day Home Agency by email. Please open it using the button or link in that email. ' +
+        'If you cannot find the email, please contact the Agency.', { staff: true });
+      return;
+    }
+    showGate('Loading your form…', '');
+    fetch(APPS_SCRIPT_URL + '?request=' + encodeURIComponent(requestId))
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.status === 'ok') openForm(res.stage1 || {});
+        else if (res && res.status === 'completed') showGate('This form has already been submitted', 'Thank you — the Agency has received it. If something needs to change, please contact the Agency.');
+        else showGate('This link is no longer active', 'Please contact TARG Family Day Home Agency for a new link.');
+      })
+      .catch(function () { showGate('We could not load the form', 'Please check your internet connection and try again.', { retry: true }); });
+  }
+
+  function serializeForm() {
+    var data = { v: 2, step: current, fields: {}, radios: {} };
+    Array.prototype.forEach.call(form.querySelectorAll('input[id], textarea[id], select[id]'), function (el) {
+      if (el.readOnly || el.type === 'radio') return;
+      data.fields[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]:checked'), function (r) { data.radios[r.name] = r.value; });
+    return data;
+  }
+  function saveDraft() {
+    if (!draftEnabled) return;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm())); } catch (e) { /* storage unavailable - ignore */ }
+  }
+  function clearDraft() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} }
+  function restoreForm(data) {
+    Object.keys(data.fields || {}).forEach(function (id) {
+      var el = document.getElementById(id); if (!el || el.readOnly) return;
+      if (el.type === 'checkbox') el.checked = !!data.fields[id]; else el.value = data.fields[id];
+    });
+    Object.keys(data.radios || {}).forEach(function (name) {
+      Array.prototype.forEach.call(form.querySelectorAll('input[type=radio]'), function (r) {
+        if (r.name === name && r.value === data.radios[name]) r.checked = true;
+      });
+    });
+    // Return to the furthest step, but never past the first incomplete one.
+    var target = Math.min(data.step || 0, totalSteps - 1), i;
+    for (i = 0; i < target; i++) {
+      var bad = Array.prototype.some.call(pages[i].querySelectorAll('input[required], textarea[required]'), function (f) { return !f.checkValidity(); });
+      if (bad) { target = i; break; }
+    }
+    current = target; updateNav();
+  }
+  var saveTimer = null;
+  function queueSave() { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 300); }
+  form.addEventListener('input', queueSave);
+  form.addEventListener('change', saveDraft);
+  window.addEventListener('pagehide', saveDraft);
+  function offerResume() {
+    var raw = null; try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+    if (!raw) return;
+    var data; try { data = JSON.parse(raw); } catch (e) { clearDraft(); return; }
+    var anything = Object.keys(data.radios || {}).length ||
+      Object.keys(data.fields || {}).some(function (k) { return data.fields[k] !== '' && data.fields[k] !== false; });
+    if (!anything) return;
+    var modal = document.getElementById('resumeModal');
+    modal.style.display = 'flex';
+    document.getElementById('resumeBtn').onclick = function () { modal.style.display = 'none'; restoreForm(data); };
+    document.getElementById('startFreshBtn').onclick = function () { modal.style.display = 'none'; clearDraft(); };
+  }
+  // What the page shows after the server answers a submission.
+  function afterSubmit(result, sent) {
+    if (sent) {
+      clearDraft(); draftEnabled = false;
+      showGate('Thank you — your form has been sent',
+        'The Agency has received your signed form. A copy has also been downloaded to your device for your records. You can now close this page.');
+      return true;
+    }
+    if (result && result.code === 'completed') {
+      clearDraft(); draftEnabled = false;
+      showGate('This form has already been submitted', 'Thank you — the Agency already has it. If something needs to change, please contact the Agency.');
+      return true;
+    }
+    if (result && (result.code === 'cancelled' || result.code === 'invalid')) {
+      showGate('This link is no longer active', 'Your copy was downloaded to your device. Please contact TARG Family Day Home Agency for a new link.');
+      return true;
+    }
+    return false;
+  }
+  openForm({});   // opens directly from the public link; no staff request needed
+
+  // Per-form settings for the shared PDF engine below.
+  var PDF_CONFIG = {
+    org: 'TARG Family Day Home Agency',
+    title: "Children's Belongings, Prohibited Items and Valuables Policy",
+    confidentiality: 'Policy & Parent Acknowledgement',
+    skipEmptyOptional: true,    // the only optional fields are Parent/Guardian 2's
+    flagNoAnswers: false,
+    quietFollowUpWhenNoIssues: false,
+    signerFieldId: 'guardian1Name',
+    signerRole: 'Parent/Guardian',
+    keepSignatureSectionHeight: 260
+  };
+  // ============================================================
+  //  TARG PDF ENGINE (shared by all TARG signable forms)
+  //  Writes a clean, text-based PDF straight from the answers - no
+  //  screenshots. Every step is included, long answers wrap and flow
+  //  across pages, add-row sections print as real tables, the text
+  //  is selectable/searchable, and the signature is embedded.
+  //  It walks each .form-page generically; the only per-form
+  //  settings are in PDF_CONFIG (set just above this block).
+  // ============================================================
+  function pdfText(s) {
+    // Standard PDF fonts cover the WinAnsi set (incl. dashes and curly
+    // quotes); anything outside it (e.g. emoji) is dropped.
+    return String(s == null ? '' : s)
+      .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF–—‘’‚“”„†‡•…‰‹›€™ŒœŠšŸŽžƒˆ˜]/g, '')
+      .replace(/[ \t]+\n/g, '\n').trim();
+  }
+  var PDF_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function prettyDate(v, short) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return v || '';
+    var mon = PDF_MONTHS[+m[2] - 1];
+    return (short ? mon.slice(0, 3) : mon) + ' ' + (+m[3]) + ', ' + m[1];
+  }
+  function prettyTime(v) {
+    var m = /^(\d{1,2}):(\d{2})/.exec(v || '');
+    if (!m) return v || '';
+    var h = +m[1], ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return h + ':' + m[2] + ' ' + ap;
+  }
+  function textOf(el) { return el ? pdfText(el.textContent.replace(/\s+/g, ' ')) : ''; }
+  function inputValue(inp, short) {
+    if (!inp) return '';
+    if (inp.type === 'checkbox') return inp.checked ? 'Yes' : '';
+    if (inp.type === 'date') return prettyDate(inp.value, short);
+    if (inp.type === 'time') return prettyTime(inp.value);
+    return pdfText(inp.value);
+  }
+  function signatureIsDrawn(pad) {
+    pad = pad || pads[0];
+    if (pad.placeholder && pad.placeholder.style.opacity === '0') return true;
+    try {
+      var d = pad.ctx.getImageData(0, 0, pad.canvas.width, pad.canvas.height).data;
+      for (var k = 3; k < d.length; k += 16) { if (d[k] !== 0) return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  function buildDocumentPdf() {
+    var C = PDF_CONFIG;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'pt', format: 'letter', compress: true });
+    var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
+    var M = 54, CW = PW - 2 * M, BOTTOM = PH - 58;
+    var TEAL = [31, 78, 69], DARK = [30, 38, 36], MUTED = [91, 101, 95], GOLD = [199, 154, 62],
+        LINE = [221, 227, 223], SOFT = [238, 241, 240], RED = [168, 50, 50], GREY = [150, 150, 150];
+    var y = M;
+
+    function font(style, size, color) { doc.setFont('helvetica', style); doc.setFontSize(size); doc.setTextColor.apply(doc, color); }
+    function newPage() { doc.addPage(); y = M; }
+    function ensure(h) { if (y + h > BOTTOM) newPage(); }
+    function split(text, size, width, style) { doc.setFont('helvetica', style || 'normal'); doc.setFontSize(size); return doc.splitTextToSize(text, width); }
+    function write(ls, size, style, color, x, lh) {
+      lh = lh || size * 1.35;
+      ls.forEach(function (l) { ensure(lh); font(style, size, color); doc.text(l, x || M, y + size); y += lh; });
+    }
+    function rule(color, w) { doc.setDrawColor.apply(doc, color); doc.setLineWidth(w); doc.line(M, y, PW - M, y); }
+
+    // Lazily printed sub-heading: only appears if something under it prints.
+    var pendingSub = null;
+    function flushSub() {
+      if (!pendingSub) return;
+      var t = pendingSub; pendingSub = null;
+      ensure(34); y += 4;
+      font('bold', 8.5, GOLD); doc.text(t.toUpperCase(), M, y + 9); y += 15;
+    }
+
+    function isAnswered(v) { return v !== '' && v != null; }
+
+    // Which blank, optional questions to leave out of the PDF:
+    //  - "if ..." follow-ups ("If Other, please describe", "Level (if yes)")
+    //    that simply didn't apply;
+    //  - a standard's Evidence & Follow-up boxes when every answer in that
+    //    standard was Yes/N/A (nothing to follow up). If the standard has a
+    //    "No", its follow-up boxes always print, so a missing remedy plan
+    //    shows up as "Not answered".
+    //  Every other blank prints as "Not answered" so gaps stay visible.
+    var inQuietFollowUp = false;
+    function conditionApplies(label, el) {
+      // "If yes/no/other/not ..." -> did the answer just before it match?
+      var m = /(?:^|\()\s*if\s+(yes|no|not|other|so)\b/i.exec(label || '');
+      if (!m || !el) return false;
+      var want = { yes: 'yes', so: 'yes', no: 'no', not: 'no', other: 'other' }[m[1].toLowerCase()];
+      var page = el.closest('.form-page'), prev = null;
+      Array.prototype.forEach.call(page.querySelectorAll('input[type=radio]:checked'), function (r) {
+        if (r.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) prev = r;
+      });
+      return !!prev && prev.value.toLowerCase().indexOf(want) === 0;
+    }
+    function hideBlank(label, answered, required, el) {
+      if (answered || required) return false;
+      if (/^\s*if\b|\(if\b/i.test(label || '')) return !conditionApplies(label, el);
+      if (inQuietFollowUp) return true;
+      return !!C.skipEmptyOptional;
+    }
+
+    // ---- Masthead ----
+    var logo = document.querySelector('.masthead img.logo');
+    var textX = M;
+    if (logo && logo.src && logo.src.indexOf('data:image') === 0) {
+      try {
+        var lw = 62, lh = (logo.naturalWidth && logo.naturalHeight) ? lw * logo.naturalHeight / logo.naturalWidth : 36;
+        doc.addImage(logo.src, 'PNG', M, y, lw, lh); textX = M + lw + 14;
+      } catch (e) {}
+    }
+    font('bold', 9, GOLD); doc.text(C.org.toUpperCase(), textX, y + 12);
+    doc.setFont('times', 'bold'); doc.setFontSize(17); doc.setTextColor.apply(doc, TEAL);
+    var titleLines = doc.splitTextToSize(C.title, PW - M - textX);
+    doc.text(titleLines, textX, y + 32);
+    var titleExtra = (titleLines.length - 1) * 19;
+    var now = new Date();
+    var stamp = prettyDate(now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2));
+    font('normal', 8.5, MUTED);
+    doc.text('Submitted ' + stamp + ' at ' + prettyTime(('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2)) + '  |  ' + C.confidentiality, textX, y + 46 + titleExtra);
+    y += 60 + titleExtra; rule(GOLD, 1.2); y += 14;
+
+    // ---- "Needs attention" summary for Yes/No checklists ----
+    if (C.flagNoAnswers) {
+      var counts = { Yes: 0, No: 0, 'N/A': 0, unanswered: 0 }, flagged = [];
+      pages.forEach(function (page) {
+        var sec = textOf(page.querySelector('.step-title'));
+        page.querySelectorAll('.q-block, fieldset').forEach(function (b) {
+          var r = b.querySelector('input[type=radio]:checked');
+          if (!b.querySelector('input[type=radio]')) return;
+          var v = r ? r.value : '';
+          if (!v) counts.unanswered++; else if (counts[v] != null) counts[v]++;
+          if (v === 'No') {
+            var qt = textOf(b.querySelector('.q-text, legend'));
+            if (!qt) { var prev = b.previousElementSibling; if (prev && prev.classList.contains('subheading')) qt = textOf(prev); }
+            flagged.push({ sec: sec, q: qt || 'Question' });
+          }
+        });
+      });
+      font('bold', 10, TEAL); doc.text('Checklist summary', M, y + 10);
+      font('normal', 9.5, DARK);
+      doc.text(counts.Yes + ' Yes   |   ' + counts.No + ' No   |   ' + counts['N/A'] + ' N/A   |   ' + counts.unanswered + ' not answered', PW - M, y + 10, { align: 'right' });
+      y += 18;
+      if (flagged.length) {
+        font('bold', 9, RED); doc.text('Needs attention (answered "No"):', M, y + 9); y += 14;
+        flagged.forEach(function (f) {
+          write(split('- ' + f.sec + ': ' + f.q, 9, CW - 10), 9, 'normal', DARK, M + 8, 12);
+        });
+      } else {
+        font('italic', 9, MUTED); doc.text('No items were answered "No".', M, y + 9); y += 14;
+      }
+      y += 4; rule(LINE, 0.8); y += 12;
+    }
+
+    // ---- Renderers ----
+    function choiceRow(q, a, required, el) {
+      var answered = isAnswered(a);
+      if (hideBlank(q, answered, required, el)) return;
+      flushSub();
+      var qL = split(q || 'Answer', 9.5, CW - 96);
+      ensure(qL.length * 12.5 + 8);
+      var top = y;
+      write(qL, 9.5, 'normal', DARK, M, 12.5);
+      var bad = C.flagNoAnswers && a === 'No';
+      font(answered ? 'bold' : 'italic', answered ? 10.5 : 9, answered ? (bad ? RED : TEAL) : GREY);
+      doc.text(answered ? a : 'Not answered', PW - M, top + 10, { align: 'right' });
+      y += 4; rule(LINE, 0.4); y += 6;
+    }
+    function qaBlock(q, a, required, el) {
+      var answered = isAnswered(a);
+      if (hideBlank(q, answered, required, el)) return;
+      flushSub();
+      var qL = q ? split(q, 9.5, CW, 'bold') : [];
+      var aL = answered ? split(a, 10.5, CW - 12) : ['Not answered'];
+      ensure(qL.length * 12.8 + Math.min(aL.length, 3) * 14.5 + 6);
+      write(qL, 9.5, 'bold', MUTED);
+      y += 2;
+      var segTop = y;
+      aL.forEach(function (l) {
+        if (y + 14.5 > BOTTOM) {
+          doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+          newPage(); segTop = y;
+        }
+        font(answered ? 'normal' : 'italic', 10.5, answered ? DARK : GREY);
+        doc.text(l, M + 10, y + 10.5); y += 14.5;
+      });
+      doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+      y += 9;
+    }
+    function gridRow(fields) {
+      // A row of short inputs (dates, times, names) printed side by side.
+      var cells = fields.map(function (f) {
+        var inp = f.querySelector('input, select');
+        var v = inputValue(inp);
+        return { l: textOf(f.querySelector('.f-label')), v: v, req: inp && inp.required, el: f };
+      }).filter(function (c) { return !hideBlank(c.l, isAnswered(c.v), c.req, c.el); });
+      if (!cells.length) return;
+      flushSub();
+      var colW = CW / Math.max(cells.length, 2), gap = 12, heights = [];
+      cells.forEach(function (c) {
+        c.lL = split(c.l, 8.5, colW - gap, 'bold');
+        c.vL = split(isAnswered(c.v) ? c.v : 'Not answered', 10.5, colW - gap);
+        heights.push(c.lL.length * 11 + c.vL.length * 14 + 4);
+      });
+      var h = Math.max.apply(null, heights);
+      ensure(h + 8);
+      cells.forEach(function (c, i) {
+        var x = M + i * colW, yy = y;
+        c.lL.forEach(function (l) { font('bold', 8.5, MUTED); doc.text(l, x, yy + 8.5); yy += 11; });
+        yy += 2;
+        c.vL.forEach(function (l) { font(isAnswered(c.v) ? 'normal' : 'italic', 10.5, isAnswered(c.v) ? DARK : GREY); doc.text(l, x, yy + 10.5); yy += 14; });
+      });
+      y += h + 8;
+    }
+    function table(container) {
+      var rows = Array.prototype.slice.call(container.querySelectorAll('.table-row'));
+      if (!rows.length) return;
+      var headers = [], data = [];
+      Array.prototype.forEach.call(rows[0].querySelectorAll('input, select, textarea'), function (inp) {
+        var fieldEl = inp.closest('.field');
+        var lab = inp.type === 'checkbox' ? inp.closest('label') : (fieldEl && fieldEl.querySelector('.f-label'));
+        headers.push(textOf(lab));
+      });
+      rows.forEach(function (r) {
+        var vals = Array.prototype.map.call(r.querySelectorAll('input, select, textarea'), function (inp) { return inputValue(inp, true); });
+        if (vals.some(isAnswered)) data.push(vals);
+      });
+      flushSub();
+      if (!data.length) { ensure(18); font('italic', 9.5, GREY); doc.text('None recorded', M, y + 10); y += 20; return; }
+      var n = headers.length;
+      // Column widths: weight by the longest content in each column.
+      var weights = headers.map(function (h, i) {
+        var longest = Math.max(h.length * 0.6, 6);
+        data.forEach(function (row) { longest = Math.max(longest, Math.min(String(row[i]).length, 40)); });
+        return longest;
+      });
+      var total = weights.reduce(function (s, w) { return s + w; }, 0);
+      var widths = weights.map(function (w) { return CW * w / total; });
+      var pad = 5;
+      function drawHeader() {
+        var hl = headers.map(function (h, i) { return split(h, 8, widths[i] - 2 * pad, 'bold'); });
+        var hh = Math.max.apply(null, hl.map(function (l) { return l.length; })) * 10 + 2 * pad;
+        ensure(hh + 20);
+        doc.setFillColor.apply(doc, SOFT); doc.rect(M, y, CW, hh, 'F');
+        var x = M;
+        hl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('bold', 8, TEAL); doc.text(l, x + pad, y + pad + 8 + k * 10); });
+          x += widths[i];
+        });
+        y += hh;
+      }
+      drawHeader();
+      data.forEach(function (row) {
+        var cl = row.map(function (v, i) { return split(isAnswered(v) ? String(v) : '-', 9.5, widths[i] - 2 * pad); });
+        var rh = Math.max.apply(null, cl.map(function (l) { return l.length; })) * 12 + 2 * pad;
+        if (y + rh > BOTTOM) { newPage(); drawHeader(); }
+        var x = M;
+        cl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('normal', 9.5, isAnswered(row[i]) ? DARK : GREY); doc.text(l, x + pad, y + pad + 9 + k * 12); });
+          x += widths[i];
+        });
+        y += rh; rule(LINE, 0.5);
+      });
+      y += 12;
+    }
+    function signatureBlock(box) {
+      var pad = padFor(box.querySelector('canvas').id), canvas = pad.canvas;
+      var optional = box.getAttribute('data-optional') === '1';
+      if (optional && !signatureIsDrawn(pad)) return;   // optional second signer who did not sign
+      flushSub();
+      ensure(120);
+      font('bold', 9, MUTED); doc.text((box.getAttribute('data-role') ? box.getAttribute('data-role') + ' signature' : 'Signature'), M, y + 9); y += 14;
+      if (signatureIsDrawn(pad)) {
+        var sw = 250, sh = (canvas.width && canvas.height) ? sw * canvas.height / canvas.width : 70;
+        sh = Math.min(sh, 80);
+        try { doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, y, sw, sh); } catch (e) {}
+        y += sh;
+      } else {
+        font('italic', 10, RED); doc.text('Not signed', M, y + 30); y += 40;
+      }
+      doc.setDrawColor.apply(doc, DARK); doc.setLineWidth(0.6); doc.line(M, y + 2, M + 250, y + 2); y += 14;
+      var signer = document.getElementById(box.getAttribute('data-signer') || C.signerFieldId);
+      var who = signer ? pdfText(signer.value) : '';
+      font('normal', 9, MUTED);
+      doc.text((who ? who + (box.getAttribute('data-role') ? ', ' + box.getAttribute('data-role') : (C.signerRole ? ', ' + C.signerRole : '')) + '  |  ' : '') + 'Signed electronically on ' + stamp, M, y + 9);
+      y += 22;
+    }
+
+    function legalBlock(el) {
+      // Policy text: headings, paragraphs and bullet lists keep their structure.
+      var kids = el.children.length ? Array.prototype.slice.call(el.children) : [el];
+      kids.forEach(function (k) {
+        var tag = k.tagName;
+        if (/^H[1-6]$/.test(tag)) { ensure(40); y += 2; write(split(textOf(k), 10.5, CW, 'bold'), 10.5, 'bold', TEAL); y += 2; }
+        else if (tag === 'UL' || tag === 'OL') {
+          Array.prototype.forEach.call(k.querySelectorAll('li'), function (li, n) {
+            var ls = split(textOf(li), 10, CW - 16);
+            var mark = tag === 'OL' ? (n + 1) + '.' : '\u2022';
+            ls.forEach(function (l, i) { ensure(13.5); font('normal', 10, DARK); if (i === 0) doc.text(mark, M + 3, y + 10); doc.text(l, M + 16, y + 10); y += 13.5; });
+            y += 2;
+          });
+          y += 4;
+        } else {
+          var italic = !!k.querySelector('em') || tag === 'EM';
+          write(split(textOf(k), 10, CW, italic ? 'italic' : 'normal'), 10, italic ? 'italic' : 'normal', italic ? MUTED : DARK);
+          y += 6;
+        }
+      });
+      y += 4;
+    }
+
+    // Walk a page's content in document order.
+    function walk(node) {
+      Array.prototype.forEach.call(node.children, function (el) {
+        var cl = el.classList;
+        if (cl.contains('step-title') || cl.contains('sig-label') || cl.contains('add-row-btn') ||
+            cl.contains('remove-row') || el.tagName === 'BUTTON' || el.tagName === 'SCRIPT') return;
+        if (cl.contains('step-sub')) { write(split(textOf(el), 9, CW, 'italic'), 9, 'italic', MUTED); y += 5; return; }
+        if (cl.contains('subheading')) {
+          pendingSub = textOf(el);
+          // Follow-up zone of a Yes/No standard with no "No" answers.
+          if (C.quietFollowUpWhenNoIssues && el.closest('.form-page').querySelector('.q-block') &&
+              !el.closest('.form-page').querySelector('.q-block input[value="No"]:checked')) inQuietFollowUp = true;
+          return;
+        }
+        if (cl.contains('legal-block')) { flushSub(); legalBlock(el); return; }
+        if (cl.contains('ack')) {
+          var cb = el.querySelector('input[type=checkbox]');
+          choiceRow(textOf(el.querySelector('span') || el), cb && cb.checked ? 'Confirmed' : '', !!(cb && cb.required), el);
+          return;
+        }
+        if (cl.contains('sig-box')) { signatureBlock(el); return; }
+        if (el.querySelector(':scope > .table-row')) { table(el); return; }
+        if (cl.contains('q-block') || cl.contains('trait-row') || el.tagName === 'FIELDSET') {
+          var qEl = el.querySelector('.q-text, .t-title, legend');
+          var r = el.querySelector('input[type=radio]:checked');
+          var anyReq = !!el.querySelector('input[required]');
+          var q = textOf(qEl);
+          if (!q && pendingSub) { q = pendingSub; pendingSub = null; }
+          choiceRow(q, r ? r.value : '', anyReq, el);
+          return;
+        }
+        if (cl.contains('row-2') || cl.contains('row-3')) {
+          var fields = Array.prototype.slice.call(el.querySelectorAll(':scope > .field'));
+          var allShort = fields.length && fields.every(function (f) { return !f.querySelector('textarea'); });
+          if (allShort) {
+            var nx = el.nextElementSibling;
+            if (nx && (nx.classList.contains('sig-label') || nx.classList.contains('sig-box'))) ensure(190);
+            gridRow(fields); return;
+          }
+          walk(el); return;
+        }
+        if (cl.contains('field')) {
+          var inp = el.querySelector('input, textarea, select');
+          if (!inp) return;
+          qaBlock(textOf(el.querySelector('.f-label')), inputValue(inp), inp.required, el);
+          return;
+        }
+        if (el.children.length) walk(el);
+      });
+    }
+
+    pages.forEach(function (page) {
+      pendingSub = null; inQuietFollowUp = false;
+      var title = textOf(page.querySelector('.step-title'));
+      if (title) {
+        ensure(page.querySelector('.sig-box') ? C.keepSignatureSectionHeight : 64);
+        y += 6;
+        doc.setFont('times', 'bold'); doc.setFontSize(13.5); doc.setTextColor.apply(doc, TEAL);
+        doc.text(title, M, y + 13.5); y += 19;
+        rule(LINE, 0.8); y += 9;
+      }
+      walk(page);
+    });
+
+    // ---- Footer on every page ----
+    var n = doc.getNumberOfPages();
+    for (var p = 1; p <= n; p++) {
+      doc.setPage(p);
+      doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6); doc.line(M, PH - 40, PW - M, PH - 40);
+      font('normal', 7.5, MUTED);
+      var foot = C.org + '  |  ' + C.title + '  |  ' + C.confidentiality;
+      if (doc.getTextWidth(foot) > CW - 70) foot = C.org + '  |  ' + C.title;
+      if (doc.getTextWidth(foot) > CW - 70) foot = C.org;
+      doc.text(foot, M, PH - 28);
+      doc.text('Page ' + p + ' of ' + n, PW - M, PH - 28, { align: 'right' });
+    }
+    return doc;
+  }
+  // ============================ end PDF engine ============================
+
+  downloadBtn.addEventListener('click', async function () {
+    if (!validateCurrentPage()) return;
+    var btn = this; btn.disabled = true;
+    var v = function (id) { return document.getElementById(id).value.trim(); };
+    if (!signatureIsDrawn(padFor('sig1'))) {
+      setStatus('Please sign in the Parent/Guardian 1 signature box before submitting.');
+      btn.disabled = false; return;
+    }
+    // Parent/Guardian 2 is optional, but if any part is filled in, all of it is needed.
+    var g2Signed = signatureIsDrawn(padFor('sig2')), g2Any = g2Signed || v('guardian2Name') || v('guardian2Date');
+    if (g2Any && !(g2Signed && v('guardian2Name') && v('guardian2Date'))) {
+      setStatus('Parent/Guardian 2: please fill in the name, date and signature \u2014 or leave all three blank.');
+      btn.disabled = false; return;
+    }
+    setStatus('Preparing your PDF\u2026');
+    try {
+      var pdf = buildDocumentPdf();
+      var blob = pdf.output('blob');
+      var filename = ('TARG_BelongingsPolicy_' + (v('guardian1Name') || 'Parent') + '_' + (v('childName') || 'Child'))
+        .replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_').slice(0, 120) + '.pdf';
+
+      var driveSent = false, result = null;
+      if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('__') !== 0) {
+        setStatus('Sending your signed form to the Agency\u2026');
+        try {
+          var base64Pdf = await blobToBase64(blob);
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename,
+              childName: v('childName'),
+              guardian1Name: v('guardian1Name'), guardian1Date: v('guardian1Date'),
+              guardian2Name: g2Any ? v('guardian2Name') : '', guardian2Date: g2Any ? v('guardian2Date') : '',
+              pdfBase64: base64Pdf
+            })
+          });
+          result = await resp.json();
+          driveSent = !!(result && result.status === 'ok');
+        } catch (sendErr) { console.error('Delivery failed', sendErr); driveSent = false; }
+      }
+
+      triggerBrowserDownload(blob, filename);
+      if (!afterSubmit(result, driveSent)) {
+        setStatus('Downloaded your copy \u2014 but sending to the Agency failed. Please check your internet connection and press Submit again, or email this PDF to the Agency.');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('Sorry, the PDF could not be created. Please refresh the page and try again, or contact the Agency.');
+    } finally { btn.disabled = false; }
+  });
+})();
+</script>
+</body>
+</html>
