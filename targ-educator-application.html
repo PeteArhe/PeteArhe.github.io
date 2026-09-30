@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TARG Family Day Home — Educator Application Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF1F0; --card: #FFFFFF; --ink: #1E2624; --ink-soft: #5B655F;
+    --line: #DDE3DF; --accent: #1F4E45; --accent-2: #163A33; --gold: #C79A3E;
+    --readonly-bg: #F4F6F4; --danger: #A32D2D;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14201C; } }
+  :root[data-theme="dark"] { --bg: #14201C; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100%; background: var(--bg);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink); padding: 20px 12px 50px; display: flex; justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 680px; }
+  .masthead { text-align: center; color: #fff; background: linear-gradient(160deg, var(--accent), var(--accent-2)); border-radius: 14px 14px 0 0; padding: 20px 20px 16px; }
+  .masthead .org { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+  .masthead .title { font-family: 'Lora', Georgia, serif; font-weight: 700; font-size: 17px; margin-top: 4px; }
+  .progress-track { height: 6px; background: rgba(255,255,255,0.18); border-radius: 999px; margin-top: 14px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.2s ease; }
+  .progress-label { font-size: 11px; opacity: 0.85; margin-top: 6px; }
+  .card { background: var(--card); border-radius: 0 0 14px 14px; box-shadow: 0 14px 34px rgba(0,0,0,0.12); padding: 24px 18px 22px; }
+  @media (min-width: 520px) { .card { padding: 30px 32px 26px; } }
+  .step-title { font-family: 'Lora', Georgia, serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; color: var(--accent-2); }
+  .step-sub { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 16px; line-height: 1.5; }
+  .field { margin-bottom: 16px; }
+  .field label.f-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+  .field input[type="text"], .field input[type="tel"], .field input[type="email"], .field input[type="date"], .field input[type="time"], .field textarea {
+    width: 100%; font: inherit; font-size: 14.5px; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 9px; padding: 9px 11px;
+  }
+  .field textarea { min-height: 64px; resize: vertical; line-height: 1.5; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+  .row-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 480px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+  .row-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  @media (min-width: 560px) { .row-3 { grid-template-columns: 1fr 1fr 1fr; } }
+  fieldset { border: none; margin: 0 0 14px; padding: 0; }
+  legend { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 7px; padding: 0; line-height: 1.4; }
+  .choice-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+  .choice { position: relative; }
+  .choice input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .choice .pill { display: inline-flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 999px; border: 1.5px solid var(--line); font-size: 13px; color: var(--ink); background: #fff; user-select: none; }
+  .choice input:checked + .pill { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .choice input:focus-visible + .pill { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .q-block { border-bottom: 1px solid var(--line); padding: 11px 0; }
+  .q-block:last-of-type { border-bottom: none; }
+  .q-text { font-size: 13.5px; margin-bottom: 8px; line-height: 1.45; }
+  .standard-intro { background: var(--readonly-bg); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--ink-soft); margin-bottom: 14px; }
+  .subheading { font-size: 12px; font-weight: 700; color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.04em; margin: 18px 0 8px; }
+  .table-row { border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 10px; position: relative; }
+  .remove-row { position: absolute; top: 8px; right: 8px; background: none; border: none; color: var(--danger); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .add-row-btn { width: 100%; padding: 10px; border-radius: 9px; border: 1.5px dashed var(--line); background: var(--readonly-bg); color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; margin-top: 4px; }
+  .nav-row { display: flex; gap: 10px; margin-top: 20px; }
+  .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 20px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; flex: 1; }
+  .btn:active { transform: scale(0.98); }
+  .btn-back { background: var(--readonly-bg); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-next { background: var(--accent); color: #fff; }
+  .btn-download { background: var(--gold); color: #2A2110; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status-line { text-align: center; font-size: 12px; color: var(--ink-soft); margin-top: 10px; min-height: 16px; }
+  .foot-note { text-align: center; font-size: 11px; color: #8B9490; margin-top: 16px; line-height: 1.6; }
+  .form-page { display: none; } .form-page.active { display: block; }
+  .sig-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .sig-label .t { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .sig-clear { background: none; border: none; color: var(--accent); font-size: 12px; font-weight: 600; cursor: pointer; }
+  .sig-box { position: relative; border: 1.5px solid var(--line); border-radius: 9px; background: var(--readonly-bg); touch-action: none; overflow: hidden; }
+  .sig-box canvas { display: block; width: 100%; height: 160px; touch-action: none; }
+  .sig-placeholder { position: absolute; left: 14px; bottom: 30px; font-family: 'Lora', serif; font-style: italic; color: #A7AFA9; font-size: 14px; pointer-events: none; }
+  .sig-baseline { position: absolute; left: 14px; right: 14px; bottom: 24px; border-top: 1.5px solid var(--ink-soft); }
+  @media print {
+    body { background: #fff; }
+    .nav-row, .status-line, .foot-note, .add-row-btn, .remove-row { display: none !important; }
+    .form-page { display: block !important; page-break-after: always; }
+    .card { box-shadow: none; }
+  }
+
+  .field-missing input, .field-missing textarea { border-color: var(--danger) !important; }
+  .field-missing .f-label { color: var(--danger); }
+  fieldset.field-missing legend { color: var(--danger); }
+  fieldset.field-missing .choice-grid { box-shadow: 0 0 0 1.5px var(--danger); border-radius: 10px; padding: 5px; }
+
+  .save-hint { text-align: center; font-size: 11px; opacity: 0.85; margin-top: 8px; }
+  .jump-btn { display: block; margin: 8px auto 0; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 999px; padding: 6px 14px; font-size: 11.5px; font-weight: 600; cursor: pointer; }
+  .jump-item { display: block; width: 100%; text-align: left; padding: 10px 16px; border: none; border-bottom: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 13px; color: var(--ink); font-family: inherit; }
+  .jump-item:hover { background: var(--readonly-bg); }
+  .jump-item.jump-current { background: var(--readonly-bg); font-weight: 600; color: var(--accent-2); }
+
+  .field select, .field input[type="number"] { width: 100%; font: inherit; font-size: 14.5px; color: var(--ink); background: #fff; border: 1.5px solid var(--line); border-radius: 9px; padding: 9px 11px; }
+  .field select:focus, .field input[type="number"]:focus { outline: none; border-color: var(--accent); }
+  .field-missing select { border-color: var(--danger) !important; }
+  .opt { font-weight: 400; color: #8B9490; }
+  .cond-hidden { display: none !important; }
+  .q-group { margin: 0 0 16px; }
+  .note { background: #F2F7F5; border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 10px; padding: 11px 13px; font-size: 12.5px; line-height: 1.55; color: var(--ink); margin: 0 0 16px; }
+  .legal-block { font-size: 13px; line-height: 1.6; color: var(--ink); margin: 0 0 10px; }
+  .tick { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .tick input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--accent); }
+  .tick .f-label { color: var(--ink); font-weight: 600; font-size: 13px; line-height: 1.45; margin: 0; }
+  .field-missing .tick .f-label { color: var(--danger); }
+  .none-field { background: var(--readonly-bg); border-radius: 9px; padding: 10px 12px; }
+  .dyn-wrap.field-missing .add-row-btn { border-color: var(--danger); color: var(--danger); }
+  .avail-row { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+  .avail-day { font-weight: 700; font-size: 13.5px; color: var(--accent-2); margin-bottom: 6px; }
+  .avail-row .q-group { margin-bottom: 6px; }
+  .avail-row .row-3 { margin-top: 6px; }
+  .avail-row .field { margin-bottom: 4px; }
+  .ref-num { font-weight: 700; font-size: 12.5px; color: var(--accent-2); margin-bottom: 8px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .doc-item { border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; margin-bottom: 9px; }
+  .doc-item.field-missing { border-color: var(--danger); box-shadow: 0 0 0 1px var(--danger); }
+  .doc-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; display: flex; gap: 8px; }
+  .doc-num { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+  .doc-auto { font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .doc-status { margin: 0 0 6px; }
+  .upload-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; border: 1.5px dashed var(--accent); color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; background: #F2F7F5; position: relative; margin-top: 4px; }
+  .upload-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .file-chip { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 12px; background: var(--readonly-bg); border-radius: 8px; padding: 6px 10px; margin-top: 6px; word-break: break-all; }
+  .file-chip em { color: var(--ink-soft); font-style: normal; }
+  .file-chip button { border: none; background: none; color: var(--danger); font-weight: 600; font-size: 12px; cursor: pointer; flex: none; }
+  .info-block { font-size: 13px; line-height: 1.6; max-height: 60vh; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; padding: 4px 14px 10px; margin-bottom: 16px; background: #FBFCFB; }
+  .info-block h4 { font-family: 'Lora', Georgia, serif; color: var(--accent-2); font-size: 14.5px; margin: 14px 0 4px; }
+  .info-block p { margin: 0 0 8px; } .info-block ul, .info-block ol { margin: 0 0 8px; padding-left: 20px; }
+  .sig-wrap { margin: 6px 0 12px; }
+  .sig-box.field-missing { border-color: var(--danger); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(20,32,28,0.55); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+  .modal-box { background: #fff; border-radius: 14px; padding: 22px 20px; max-width: 440px; width: 100%; max-height: 82vh; overflow: auto; }
+  .modal-box h3 { font-family: 'Lora', Georgia, serif; color: var(--accent-2); margin: 0 0 8px; font-size: 17px; }
+  .modal-p { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; line-height: 1.5; }
+  .modal-list { max-height: 190px; overflow-y: auto; padding: 10px; background: var(--readonly-bg); border-radius: 8px; font-size: 12px; line-height: 1.6; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 16px; }
+  .jump-box { padding: 12px 0; }
+  .jump-head { padding: 0 16px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .jump-head h3 { margin: 0; }
+  .jump-close { border: none; background: none; font-size: 22px; cursor: pointer; color: var(--ink-soft); }
+  .jump-badge { float: right; font-size: 10.5px; font-weight: 700; color: #fff; background: var(--danger); border-radius: 999px; padding: 2px 8px; }
+  .jump-done { float: right; color: var(--accent); font-weight: 700; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">
+    <div class="org">TARG Family Day Home Agency</div>
+    <div class="title">Educator Application Form</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1</div>
+    <div class="save-hint">Your answers save automatically on this device — close anytime and resume later.</div>
+    <button type="button" class="jump-btn" id="jumpMenuBtn">Jump to a step ▾</button>
+  </div>
+  <form class="card" id="theForm" novalidate autocomplete="on">
+<section class="form-page"><p class="step-title">1. Applicant Information</p><div class="note">Thank you for your interest in operating a Family Day Home with our agency. Please provide accurate information to the best of your knowledge. <strong>Every question must be answered before you can submit</strong> — follow-up questions only appear when they apply to you.</div><div class="field"><label class="f-label" for="applicantName">Applicant name (full legal name)</label><input type="text" id="applicantName" required></div><div class="field"><label class="f-label" for="address">Address</label><input type="text" id="address" required></div><div class="row-2"><div class="field"><label class="f-label" for="city">City</label><input type="text" id="city" required></div><div class="field"><label class="f-label" for="province">Province</label><input type="text" id="province" required value="Alberta"></div></div><div class="row-2"><div class="field"><label class="f-label" for="community">Community</label><input type="text" id="community" required></div><div class="field"><label class="f-label" for="postalCode">Postal code</label><input type="text" id="postalCode" required placeholder="e.g. T2X 4T9"></div></div><div class="row-2"><div class="field"><label class="f-label" for="phone">Phone number</label><input type="tel" id="phone" required></div><div class="field"><label class="f-label" for="email">Email</label><input type="email" id="email" required></div></div><div class="field"><label class="f-label" for="preferredLanguages">Preferred language(s) spoken</label><input type="text" id="preferredLanguages" required></div><fieldset class="q-group"><legend>Are you 18 years or above?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="age18" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="age18" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group"><legend>Marital status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="marital" value="Single" required><span class="pill">Single</span></label><label class="choice"><input type="radio" name="marital" value="Married" required><span class="pill">Married</span></label><label class="choice"><input type="radio" name="marital" value="Common-law" required><span class="pill">Common-law</span></label><label class="choice"><input type="radio" name="marital" value="Separated" required><span class="pill">Separated</span></label><label class="choice"><input type="radio" name="marital" value="Divorced" required><span class="pill">Divorced</span></label><label class="choice"><input type="radio" name="marital" value="Widowed" required><span class="pill">Widowed</span></label></div></fieldset><div class="field" data-show-if="marital=Married|Common-law"><label class="f-label" for="spouseName">Name of spouse/partner</label><input type="text" id="spouseName" required></div><div class="row-2" data-show-if="marital=Married|Common-law"><div class="field"><label class="f-label" for="spouseEmployer">Spouse's place of employment</label><input type="text" id="spouseEmployer" required placeholder="Type “None” if this does not apply"></div><div class="field"><label class="f-label" for="spouseHours">Spouse's hours of work</label><input type="text" id="spouseHours" required placeholder="Type “None” if this does not apply"></div></div></section>
+<section class="form-page"><p class="step-title">2. Household & Family Members</p><p class="step-sub">List all family members living in your home, including your own children, relatives and boarders.</p><div class="subheading">a. Own children</div><div class="field tick-field none-field"><label class="tick"><input type="checkbox" id="ownKidsNone" data-none-for="ownKidsRows"><span class="f-label">I have no children of my own living in the home</span></label></div><div class="dyn-wrap" data-hide-if-checked="ownKidsNone"><div id="ownKidsRows" class="dyn-rows" data-table="ownKids"></div><button type="button" class="add-row-btn" data-add="ownKids">+ Add child</button></div><div class="subheading">b. Other household members (relatives, boarders)</div><div class="field tick-field none-field"><label class="tick"><input type="checkbox" id="othersNone" data-none-for="othersRows"><span class="f-label">No other household members live in my home</span></label></div><div class="dyn-wrap" data-hide-if-checked="othersNone"><div id="othersRows" class="dyn-rows" data-table="others"></div><button type="button" class="add-row-btn" data-add="others">+ Add household member</button></div><div class="subheading">c. Household members assisting with childcare</div><fieldset class="q-group"><legend>Will any household members assist with childcare?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="assist" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="assist" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="assist=Yes"><label class="f-label" for="assistRole">Describe their role and responsibilities</label><textarea id="assistRole" required></textarea></div></section>
+<section class="form-page"><p class="step-title">3. Current & Past Childcare Experience</p><fieldset class="q-group"><legend>a. Are you currently caring for children other than your own?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="careNow" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="careNow" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="careNow=Yes"><label class="f-label" for="careNowDetail">b. Indicate number and ages</label><input type="text" id="careNowDetail" required></div><fieldset class="q-group" data-show-if="careNow=No"><legend>c. Have you provided childcare in the past?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="carePast" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="carePast" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="carePast=Yes"><label class="f-label" for="carePastDetail">d. List duration and age range of children cared for</label><textarea id="carePastDetail" required></textarea></div></section>
+<section class="form-page"><p class="step-title">4. Dwelling & Safety  |  5. Insurance</p><fieldset class="q-group"><legend>a. Do you own or rent your residence?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="ownRent" value="Own" required><span class="pill">Own</span></label><label class="choice"><input type="radio" name="ownRent" value="Rent" required><span class="pill">Rent</span></label></div></fieldset><fieldset class="q-group"><legend>b. Type of dwelling</legend><div class="choice-grid"><label class="choice"><input type="radio" name="dwelling" value="Single" required><span class="pill">Single</span></label><label class="choice"><input type="radio" name="dwelling" value="Duplex" required><span class="pill">Duplex</span></label><label class="choice"><input type="radio" name="dwelling" value="Condo" required><span class="pill">Condo</span></label><label class="choice"><input type="radio" name="dwelling" value="Apartment" required><span class="pill">Apartment</span></label><label class="choice"><input type="radio" name="dwelling" value="Mobile home" required><span class="pill">Mobile home</span></label><label class="choice"><input type="radio" name="dwelling" value="Fourplex" required><span class="pill">Fourplex</span></label></div></fieldset><div class="note" data-show-if="ownRent=Rent">c. Because you rent, you must provide proof, in writing, that the landlord approves the operation of a day home on the premises. You can attach it in the <strong>Documents</strong> step.</div><fieldset class="q-group"><legend>d. Do you have a fenced yard with a secured gate?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="fenced" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="fenced" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group"><legend>e. Is the yard safe and tidy?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="yardSafe" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="yardSafe" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field"><label class="f-label" for="security">f. Describe the home security systems you have in place</label><textarea id="security" required placeholder="Type “None” if this does not apply"></textarea></div><div class="subheading">5. General Liability Insurance / Home Insurance</div><fieldset class="q-group"><legend>Do you have home insurance that covers indoor and outdoor day home operations?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="homeIns" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="homeIns" value="No" required><span class="pill">No</span></label></div></fieldset><div class="note" data-show-if="homeIns=Yes">Please attach a copy of the policy in the <strong>Documents</strong> step.</div><div class="note" data-show-if="homeIns=No">No problem — if you need help getting coverage, the Agency will assist you.</div></section>
+<section class="form-page"><p class="step-title">6. Motivation & Support  |  7. Skills & Language</p><div class="field"><label class="f-label" for="whyInterested">a. Why are you interested in operating a family day home at this time?</label><textarea id="whyInterested" required></textarea></div><fieldset class="q-group"><legend>b. Do your household members (e.g., parents, spouse/partner, children) support your decision to operate a family day home in your residence?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="householdSupport" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="householdSupport" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="householdSupport=No"><label class="f-label" for="supportExplain">Please explain</label><textarea id="supportExplain" required></textarea></div><div class="subheading">7. Skills & Language</div><div class="field"><label class="f-label" for="skills">List the skills and personal qualities you have that would make you a successful educator</label><textarea id="skills" required></textarea></div><div class="field"><label class="f-label" for="languagesSpoken">Languages spoken</label><input type="text" id="languagesSpoken" required></div></section>
+<section class="form-page"><p class="step-title">8. Education & Employment History</p><div class="field"><label class="f-label" for="eduHistory">List previous childcare education, years of experience, duties, positions and employer names (start with most recent)</label><textarea id="eduHistory" required style="min-height:160px;"></textarea></div></section>
+<section class="form-page"><p class="step-title">9. Pets & Hazards</p><fieldset class="q-group"><legend>a. Do you have pets?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="pets" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="pets" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="pets=Yes"><label class="f-label" for="petType">Type of pet(s)</label><input type="text" id="petType" required></div><fieldset class="q-group" data-show-if="pets=Yes"><legend>b. Are your pets' vaccinations up to date?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="petVacc" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="petVacc" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group" data-show-if="pets=Yes"><legend>c. Do your pets pose any safety risks to children?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="petRisk" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="petRisk" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group"><legend>d. Do you or anyone in your household smoke or vape?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="smoke" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="smoke" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group"><legend>e. Do you have any poisonous plants in your home?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="plants" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="plants" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="plants=Yes"><label class="f-label" for="plantsExplain">f. Explain how they will be kept away from children</label><textarea id="plantsExplain" required></textarea></div></section>
+<section class="form-page"><p class="step-title">10. Previous Agency Approval  |  11. Certification & Preferences</p><fieldset class="q-group"><legend>a. Have you ever been approved by a Family Day Home Agency in the past?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="prevAgency" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="prevAgency" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group" data-show-if="prevAgency=Yes"><legend>b. May we contact them as a reference?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="prevAgencyRef" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="prevAgencyRef" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="prevAgencyRef=Yes"><label class="f-label" for="prevAgencyContact">c. Provide their contact information</label><textarea id="prevAgencyContact" required></textarea></div><div class="subheading">11. Certification & Preferences</div><fieldset class="q-group"><legend>a. Do you have any form of Early Childhood Education Certification Level?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="ece" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="ece" value="No" required><span class="pill">No</span></label></div></fieldset><div class="row-2" data-show-if="ece=Yes"><div class="field"><label class="f-label" for="eceLevel">b. Level</label><select id="eceLevel" required><option value="">Select…</option><option>Level 1</option><option>Level 2</option><option>Level 3</option></select></div><div class="field"><label class="f-label" for="eceType">Type</label><input type="text" id="eceType" required placeholder="e.g. ECE Assistant, Worker, Supervisor"></div></div><div class="row-2"><div class="field"><label class="f-label" for="desiredStart">c. Desired start date for operating your day home</label><input type="date" id="desiredStart" required></div><div class="field"><label class="f-label" for="numChildren">d. How many children would you like to care for (not including your own)?</label><input type="number" id="numChildren" required min="1" max="6" inputmode="numeric"></div></div><fieldset class="q-group"><legend>e. Do you have any preference regarding sex of children to care for?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="sexPref" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="sexPref" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="sexPref=Yes"><label class="f-label" for="sexPrefExplain">f. Please explain</label><textarea id="sexPrefExplain" required></textarea></div><fieldset class="q-group"><legend>g. Are you willing to provide care for children with special needs?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="specialNeeds" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="specialNeeds" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="specialNeeds=Yes"><label class="f-label" for="specialNeedsExplain">h. Please explain</label><textarea id="specialNeedsExplain" required></textarea></div></section>
+<section class="form-page"><p class="step-title">12. Local Amenities & Transportation</p><fieldset class="q-group"><legend>a. Do you have an ‘in-premise’ outside playground?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="playground" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="playground" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group" data-show-if="playground=No"><legend>b. How far is the nearest playground to your home?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="parkDistance" value="Less than one block" required><span class="pill">Less than one block</span></label><label class="choice"><input type="radio" name="parkDistance" value="More than one block" required><span class="pill">More than one block</span></label><label class="choice"><input type="radio" name="parkDistance" value="Other" required><span class="pill">Other</span></label></div></fieldset><div class="field" data-show-if="parkDistance=Other"><label class="f-label" for="parkDistanceOther">Other — please describe</label><input type="text" id="parkDistanceOther" required></div><div class="field"><label class="f-label" for="parkEquipment">c. Describe playground equipment at the nearest park</label><textarea id="parkEquipment" required></textarea></div><fieldset class="q-group"><legend>d. Are you willing to transport children in your vehicle?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="transport" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="transport" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group" data-show-if="transport=Yes"><legend>e. Do you have a commercial auto insurance policy with passenger liability coverage, and for at least $2,000,000 liability on the vehicle?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="commercialAuto" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="commercialAuto" value="No" required><span class="pill">No</span></label></div></fieldset><div class="note" data-show-if="commercialAuto=No">f. You must obtain it prior to transporting children and provide proof to the agency.</div><div class="field"><label class="f-label" for="schools">g. What schools are within walking distance of your home?</label><textarea id="schools" required></textarea></div></section>
+<section class="form-page"><p class="step-title">13. Age Groups & Equipment  |  14. Standards & Commitment</p><fieldset class="q-group" data-min-one="1"><legend>a. Age groups of children you are willing to care for (check all that apply)</legend><div class="choice-grid"><label class="choice"><input type="checkbox" id="ageGroups_0" name="ageGroups" value="Infants"><span class="pill">Infants</span></label><label class="choice"><input type="checkbox" id="ageGroups_1" name="ageGroups" value="Toddlers"><span class="pill">Toddlers</span></label><label class="choice"><input type="checkbox" id="ageGroups_2" name="ageGroups" value="Preschoolers"><span class="pill">Preschoolers</span></label><label class="choice"><input type="checkbox" id="ageGroups_3" name="ageGroups" value="School-age"><span class="pill">School-age</span></label><label class="choice"><input type="checkbox" id="ageGroups_4" name="ageGroups" value="All ages"><span class="pill">All ages</span></label></div></fieldset><div class="note">Care for infants is highly sought after.</div><div class="field"><label class="f-label" for="equipment">b. List indoor and outdoor play/childcare equipment you have</label><textarea id="equipment" required></textarea></div><div class="subheading">14. Standards & Commitment</div><fieldset class="q-group"><legend>a. Have you read the “Family Day Homes Standards Manual for Alberta”?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="readStandards" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="readStandards" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field tick-field" data-show-if="readStandards=Yes"><label class="tick"><input type="checkbox" id="followStandards" required><span class="f-label">b. Yes — I am willing to follow all standards</span></label></div><div class="field" data-show-if="readStandards=Yes"><label class="f-label" for="followStandardsInitials">Your initials</label><input type="text" id="followStandardsInitials" required maxlength="6" style="max-width:140px;"></div><fieldset class="q-group"><legend>c. Do you agree to adhere to agency policies, home approval procedures and required monthly consultant visits throughout the duration of your contract?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="agreePolicies" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="agreePolicies" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group"><legend>d. How long do you commit to running the day home (unless unforeseen circumstances occur)?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="commitment" value="One year" required><span class="pill">One year</span></label><label class="choice"><input type="radio" name="commitment" value="Two to three years" required><span class="pill">Two to three years</span></label><label class="choice"><input type="radio" name="commitment" value="Over three years" required><span class="pill">Over three years</span></label></div></fieldset><div class="field"><label class="f-label" for="guidance">e. How would you describe your preferred approach to guiding children’s behaviour?</label><textarea id="guidance" required></textarea></div></section>
+<section class="form-page"><p class="step-title">15. Availability & Extended Hours</p><div class="subheading">a. What hours and days will you be available to provide care?</div><div class="avail-wrap"><div class="avail-row" data-day="Monday"><div class="avail-day">Monday</div><fieldset class="q-group"><legend class="sr">Monday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availMonday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availMonday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availMonday=Available"><div class="field"><label class="f-label" for="startMonday">Start time</label><input type="time" id="startMonday" required></div><div class="field"><label class="f-label" for="endMonday">End time</label><input type="time" id="endMonday" required></div><div class="field"><label class="f-label" for="commMonday">Comments <span class="opt">(optional)</span></label><input type="text" id="commMonday"></div></div></div><div class="avail-row" data-day="Tuesday"><div class="avail-day">Tuesday</div><fieldset class="q-group"><legend class="sr">Tuesday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availTuesday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availTuesday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availTuesday=Available"><div class="field"><label class="f-label" for="startTuesday">Start time</label><input type="time" id="startTuesday" required></div><div class="field"><label class="f-label" for="endTuesday">End time</label><input type="time" id="endTuesday" required></div><div class="field"><label class="f-label" for="commTuesday">Comments <span class="opt">(optional)</span></label><input type="text" id="commTuesday"></div></div></div><div class="avail-row" data-day="Wednesday"><div class="avail-day">Wednesday</div><fieldset class="q-group"><legend class="sr">Wednesday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availWednesday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availWednesday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availWednesday=Available"><div class="field"><label class="f-label" for="startWednesday">Start time</label><input type="time" id="startWednesday" required></div><div class="field"><label class="f-label" for="endWednesday">End time</label><input type="time" id="endWednesday" required></div><div class="field"><label class="f-label" for="commWednesday">Comments <span class="opt">(optional)</span></label><input type="text" id="commWednesday"></div></div></div><div class="avail-row" data-day="Thursday"><div class="avail-day">Thursday</div><fieldset class="q-group"><legend class="sr">Thursday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availThursday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availThursday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availThursday=Available"><div class="field"><label class="f-label" for="startThursday">Start time</label><input type="time" id="startThursday" required></div><div class="field"><label class="f-label" for="endThursday">End time</label><input type="time" id="endThursday" required></div><div class="field"><label class="f-label" for="commThursday">Comments <span class="opt">(optional)</span></label><input type="text" id="commThursday"></div></div></div><div class="avail-row" data-day="Friday"><div class="avail-day">Friday</div><fieldset class="q-group"><legend class="sr">Friday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availFriday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availFriday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availFriday=Available"><div class="field"><label class="f-label" for="startFriday">Start time</label><input type="time" id="startFriday" required></div><div class="field"><label class="f-label" for="endFriday">End time</label><input type="time" id="endFriday" required></div><div class="field"><label class="f-label" for="commFriday">Comments <span class="opt">(optional)</span></label><input type="text" id="commFriday"></div></div></div><div class="avail-row" data-day="Saturday"><div class="avail-day">Saturday</div><fieldset class="q-group"><legend class="sr">Saturday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availSaturday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availSaturday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availSaturday=Available"><div class="field"><label class="f-label" for="startSaturday">Start time</label><input type="time" id="startSaturday" required></div><div class="field"><label class="f-label" for="endSaturday">End time</label><input type="time" id="endSaturday" required></div><div class="field"><label class="f-label" for="commSaturday">Comments <span class="opt">(optional)</span></label><input type="text" id="commSaturday"></div></div></div><div class="avail-row" data-day="Sunday"><div class="avail-day">Sunday</div><fieldset class="q-group"><legend class="sr">Sunday available?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="availSunday" value="Available" required><span class="pill">Available</span></label><label class="choice"><input type="radio" name="availSunday" value="Not available"><span class="pill">Not available</span></label></div></fieldset><div class="row-3" data-show-if="availSunday=Available"><div class="field"><label class="f-label" for="startSunday">Start time</label><input type="time" id="startSunday" required></div><div class="field"><label class="f-label" for="endSunday">End time</label><input type="time" id="endSunday" required></div><div class="field"><label class="f-label" for="commSunday">Comments <span class="opt">(optional)</span></label><input type="text" id="commSunday"></div></div></div></div><fieldset class="q-group"><legend>b. Are you willing to offer extended hours of care?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="extended" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="extended" value="No" required><span class="pill">No</span></label></div></fieldset><fieldset class="q-group" data-min-one="1" data-show-if="extended=Yes"><legend>c. Indicate which (check all that apply)</legend><div class="choice-grid"><label class="choice"><input type="checkbox" id="extendedTypes_0" name="extendedTypes" value="After-hours (6 p.m. – 12 a.m.)"><span class="pill">After-hours (6 p.m. – 12 a.m.)</span></label><label class="choice"><input type="checkbox" id="extendedTypes_1" name="extendedTypes" value="Overnight (12 a.m. – 5 a.m.)"><span class="pill">Overnight (12 a.m. – 5 a.m.)</span></label><label class="choice"><input type="checkbox" id="extendedTypes_2" name="extendedTypes" value="Weekends"><span class="pill">Weekends</span></label><label class="choice"><input type="checkbox" id="extendedTypes_3" name="extendedTypes" value="Statutory holidays"><span class="pill">Statutory holidays</span></label></div></fieldset><div class="note">If care is provided outside regular scheduled hours, it is considered a private arrangement between the educator and the parent. A provider should not offer care for more than 18 hours in any 24-hour period. The agency needs to be informed of such private arrangements.</div></section>
+<section class="form-page"><p class="step-title">16. Workshops & Training  |  17. Health & First Aid</p><fieldset class="q-group"><legend>a. Will you have any difficulty attending required workshops?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="workshops" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="workshops" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="workshops=Yes"><label class="f-label" for="workshopsExplain">b. Please explain</label><textarea id="workshopsExplain" required></textarea></div><div class="subheading">17. Health & First Aid</div><fieldset class="q-group"><legend>a. Do you have current First Aid & CPR certification?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="firstAid" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="firstAid" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="firstAid=Yes"><label class="f-label" for="firstAidExpiry">b. Expiry date</label><input type="date" id="firstAidExpiry" required></div><fieldset class="q-group"><legend>c. Are immunizations up to date? — Educator</legend><div class="choice-grid"><label class="choice"><input type="radio" name="immEducator" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="immEducator" value="No" required><span class="pill">No</span></label><label class="choice"><input type="radio" name="immEducator" value="N/A" required><span class="pill">N/A</span></label></div></fieldset><fieldset class="q-group"><legend>Family (adults)</legend><div class="choice-grid"><label class="choice"><input type="radio" name="immAdults" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="immAdults" value="No" required><span class="pill">No</span></label><label class="choice"><input type="radio" name="immAdults" value="N/A" required><span class="pill">N/A</span></label></div></fieldset><fieldset class="q-group"><legend>Family (children)</legend><div class="choice-grid"><label class="choice"><input type="radio" name="immChildren" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="immChildren" value="No" required><span class="pill">No</span></label><label class="choice"><input type="radio" name="immChildren" value="N/A" required><span class="pill">N/A</span></label></div></fieldset><fieldset class="q-group"><legend>d. Do you have health conditions at this time?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="healthCond" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="healthCond" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="healthCond=Yes"><label class="f-label" for="healthCondExplain">e. Please explain</label><textarea id="healthCondExplain" required></textarea></div><fieldset class="q-group"><legend>f. Do you or any members of your household have medical conditions that could affect your ability to provide childcare?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="householdMedical" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="householdMedical" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="householdMedical=Yes"><label class="f-label" for="householdMedicalExplain">g. Please explain</label><textarea id="householdMedicalExplain" required></textarea></div><div class="field"><label class="f-label" for="medicalResponse">Describe how you would respond if a child required medical attention in your day home</label><textarea id="medicalResponse" required></textarea></div></section>
+<section class="form-page"><p class="step-title">18. Child Welfare & Personal History  |  19. Referral</p><fieldset class="q-group"><legend>a. Have you ever been involved in a child welfare matter or been a party to one?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="childWelfare" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="childWelfare" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="childWelfare=Yes"><label class="f-label" for="childWelfareExplain">b. Please explain the situation and how you were involved</label><textarea id="childWelfareExplain" required></textarea></div><fieldset class="q-group"><legend>Have you or any household member required professional assistance for marital, behavioural or emotional issues in the past one to two years?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="profAssist" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="profAssist" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="profAssist=Yes"><label class="f-label" for="profAssistExplain">Please explain</label><textarea id="profAssistExplain" required></textarea></div><fieldset class="q-group"><legend>Have you or any member of your family ever been charged with an assault-related crime?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="assault" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="assault" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="assault=Yes"><label class="f-label" for="assaultExplain">c. Please explain</label><textarea id="assaultExplain" required></textarea></div><div class="field"><label class="f-label" for="neatness">On a scale of 1 to 10, how would you rate the neatness of your home?</label><select id="neatness" required><option value="">Select…</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><div class="subheading">19. Referral information</div><div class="field"><label class="f-label" for="referral">How did you hear about us?</label><input type="text" id="referral" required></div></section>
+<section class="form-page"><p class="step-title">20. References  |  21. Rates & Payments</p><div class="note">Please provide the names of three professional references who can speak to your character, parenting abilities, and capacity to care for young children. Each reference must have known you for at least one year and cannot be a family member.</div><div class="refs"><div class="table-row ref-row"><div class="ref-num">Reference 1</div><div class="row-3"><div class="field"><label class="f-label" for="ref1Name">Name</label><input type="text" id="ref1Name" required></div><div class="field"><label class="f-label" for="ref1Phone">Phone</label><input type="tel" id="ref1Phone" required></div><div class="field"><label class="f-label" for="ref1Email">Email</label><input type="email" id="ref1Email" required></div></div></div><div class="table-row ref-row"><div class="ref-num">Reference 2</div><div class="row-3"><div class="field"><label class="f-label" for="ref2Name">Name</label><input type="text" id="ref2Name" required></div><div class="field"><label class="f-label" for="ref2Phone">Phone</label><input type="tel" id="ref2Phone" required></div><div class="field"><label class="f-label" for="ref2Email">Email</label><input type="email" id="ref2Email" required></div></div></div><div class="table-row ref-row"><div class="ref-num">Reference 3</div><div class="row-3"><div class="field"><label class="f-label" for="ref3Name">Name</label><input type="text" id="ref3Name" required></div><div class="field"><label class="f-label" for="ref3Phone">Phone</label><input type="tel" id="ref3Phone" required></div><div class="field"><label class="f-label" for="ref3Email">Email</label><input type="email" id="ref3Email" required></div></div></div></div><div class="subheading">21. Rates & Payments</div><div class="note">Refer to the “Family Day Home Educator Factsheet” for current rates. Educators are paid their fees and any applicable government funding on the 5th of the month following completion of work (i.e., payments are made monthly, after services are rendered).</div></section>
+<section class="form-page"><p class="step-title">22. Transporting Children  |  23. Consent</p><fieldset class="q-group" data-show-if="transport=Yes"><legend>a. Do you carry at least $2,000,000 liability insurance on your vehicle?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="vehicleIns" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="vehicleIns" value="No" required><span class="pill">No</span></label></div></fieldset><div class="note" data-show-if="vehicleIns=No">b. You need to obtain appropriate coverage and submit written validation of the increased insurance coverage to the agency before transporting children.</div><div class="field" data-show-if="transport=Yes"><label class="f-label" for="vehicleType">c. What type of motor vehicle do you drive?</label><input type="text" id="vehicleType" required></div><fieldset class="q-group"><legend>d. Do you have a valid driver's licence?</legend><div class="choice-grid"><label class="choice"><input type="radio" name="license" value="Yes" required><span class="pill">Yes</span></label><label class="choice"><input type="radio" name="license" value="No" required><span class="pill">No</span></label></div></fieldset><div class="field" data-show-if="license=Yes"><label class="f-label" for="licenseNumber">e. Driver's licence number</label><input type="text" id="licenseNumber" required></div><div class="field" data-show-if="transport=Yes"><label class="f-label" for="restraints">f. Number of child restraint devices in your vehicle</label><input type="number" id="restraints" required min="0" inputmode="numeric"></div><div class="subheading">23. Consent for Access and Disclosure of Personal Information</div><div class="legal-block">TARG Family Day Home Agency operates under a license issued and overseen by the Alberta Ministry of Children and Family Services. In line with the Early Learning and Child Care Act, the Ministry holds the authority to review agency and educator records for purposes such as monitoring, licensing compliance, and quality assurance.</div><div class="legal-block">To maintain accountability and openness, we request your consent for the Ministry of Children and Family Services to access both your personal and program-related files when necessary. Such files may include, but are not limited to, application forms, childcare records, and compliance-related documentation.</div><div class="legal-block">Please note that all information examined will be kept strictly confidential. Access will only occur for the purpose of regulatory oversight, licensing reviews, or program quality assurance. No personal details will be shared outside these purposes unless required by law or unless you provide written authorization.</div><div class="field tick-field"><label class="tick"><input type="checkbox" id="consentAgree" required><span class="f-label">I hereby acknowledge and grant permission for the Alberta Ministry of Children and Family Services to review files connected with the operation of my Family Day Home under TARG Family Day Home Agency.</span></label></div><div class="field"><label class="f-label" for="consentInitials">Initial here</label><input type="text" id="consentInitials" required maxlength="6" style="max-width:140px;"></div></section>
+<section class="form-page"><p class="step-title">Application Checklist — Documents</p><div class="note">For each document: tap <strong>Attached</strong> and add the file (photo or PDF), or choose why it is not provided (<strong>N/A</strong>, <strong>Pending</strong> or <strong>In-Progress</strong>). Files are sent securely to the Agency with your application. <em>Attached files are not saved in your draft — if you close the page, you will need to attach them again.</em></div><div class="doc-item doc-fixed"><div class="doc-title"><span class="doc-num">1</span>Completed Educator Application Form</div><div class="doc-auto">✔ Provided — this form</div></div><div class="doc-item" data-doc="doc2"><div class="doc-title"><span class="doc-num">2</span>Early Childhood Educator (ECE) certification</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc2_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc2_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc2_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc2_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc2_status=Attached"><label class="upload-btn"><input type="file" id="doc2_file" data-doc-file="doc2" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc2_list"></div></div></div><div class="doc-item" data-doc="doc3"><div class="doc-title"><span class="doc-num">3</span>Proof of current First Aid &amp; CPR certification</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc3_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc3_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc3_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc3_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc3_status=Attached"><label class="upload-btn"><input type="file" id="doc3_file" data-doc-file="doc3" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc3_list"></div></div></div><div class="doc-item" data-doc="doc4"><div class="doc-title"><span class="doc-num">4</span>Any other relevant certification applicable to Childcare, Health &amp; Safety</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc4_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc4_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc4_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc4_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc4_status=Attached"><label class="upload-btn"><input type="file" id="doc4_file" data-doc-file="doc4" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc4_list"></div></div></div><div class="doc-item" data-doc="doc5"><div class="doc-title"><span class="doc-num">5</span>General Liability (or Extended Home) Insurance policy covering indoor and outdoor day home operations</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc5_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc5_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc5_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc5_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc5_status=Attached"><label class="upload-btn"><input type="file" id="doc5_file" data-doc-file="doc5" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc5_list"></div></div></div><div class="doc-item" data-doc="doc6"><div class="doc-title"><span class="doc-num">6</span>Three professional references (non-family members)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc6_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc6_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc6_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc6_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc6_status=Attached"><label class="upload-btn"><input type="file" id="doc6_file" data-doc-file="doc6" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc6_list"></div></div></div><div class="doc-item" data-doc="doc7"><div class="doc-title"><span class="doc-num">7</span>Educator&#x27;s Program Information (if available)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc7_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc7_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc7_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc7_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc7_status=Attached"><label class="upload-btn"><input type="file" id="doc7_file" data-doc-file="doc7" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc7_list"></div></div></div><div class="doc-item" data-doc="doc8"><div class="doc-title"><span class="doc-num">8</span>Child Guidance materials (if available)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc8_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc8_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc8_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc8_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc8_status=Attached"><label class="upload-btn"><input type="file" id="doc8_file" data-doc-file="doc8" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc8_list"></div></div></div><div class="doc-item" data-doc="doc9"><div class="doc-title"><span class="doc-num">9</span>Current Rates for Child Care and Fee Structure</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc9_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc9_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc9_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc9_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc9_status=Attached"><label class="upload-btn"><input type="file" id="doc9_file" data-doc-file="doc9" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc9_list"></div></div></div><div class="doc-item" data-doc="doc10"><div class="doc-title"><span class="doc-num">10</span>Vehicle insurance documents (if you will transport children)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc10_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc10_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc10_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc10_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc10_status=Attached"><label class="upload-btn"><input type="file" id="doc10_file" data-doc-file="doc10" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc10_list"></div></div></div><div class="doc-item" data-doc="doc11"><div class="doc-title"><span class="doc-num">11</span>Pet vaccination records (if applicable)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc11_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc11_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc11_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc11_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc11_status=Attached"><label class="upload-btn"><input type="file" id="doc11_file" data-doc-file="doc11" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc11_list"></div></div></div><div class="doc-item" data-doc="doc12"><div class="doc-title"><span class="doc-num">12</span>Police Information Checks for everyone in the home aged 18+ years (including Vulnerable Sector Search)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc12_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc12_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc12_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc12_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc12_status=Attached"><label class="upload-btn"><input type="file" id="doc12_file" data-doc-file="doc12" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc12_list"></div></div></div><div class="doc-item" data-doc="doc13"><div class="doc-title"><span class="doc-num">13</span>Written disclosure of any criminal history for minors over 12 years (if applicable)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc13_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc13_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc13_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc13_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc13_status=Attached"><label class="upload-btn"><input type="file" id="doc13_file" data-doc-file="doc13" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc13_list"></div></div></div><div class="doc-item" data-doc="doc14"><div class="doc-title"><span class="doc-num">14</span>Letter of consent from landlord (if you rent your residence)</div><fieldset class="q-group doc-status"><legend class="sr">Status</legend><div class="choice-grid"><label class="choice"><input type="radio" name="doc14_status" value="Attached" required><span class="pill">Attached</span></label><label class="choice"><input type="radio" name="doc14_status" value="N/A" required><span class="pill">N/A</span></label><label class="choice"><input type="radio" name="doc14_status" value="Pending" required><span class="pill">Pending</span></label><label class="choice"><input type="radio" name="doc14_status" value="In-Progress" required><span class="pill">In-Progress</span></label></div></fieldset><div class="doc-upload" data-show-if="doc14_status=Attached"><label class="upload-btn"><input type="file" id="doc14_file" data-doc-file="doc14" multiple accept="image/*,application/pdf"><span>📎 Attach file(s)</span></label><div class="file-list" id="doc14_list"></div></div></div></section>
+<section class="form-page"><p class="step-title">Important Family Day Home Information</p><p class="step-sub">Please read this information carefully before signing.</p><div class="info-block">
+<h4>Visitors</h4>
+<p>We understand that family and friends may occasionally visit your home. For everyone’s comfort and safety:</p>
+<ul><li>Please let both the agency and parents know if you expect long-term visitors.</li>
+<li>Visitors should never be left alone with the children in your care.</li>
+<li>If a visitor plans to stay longer than two weeks, we kindly request that they complete a Criminal Record Check (including a Vulnerable Sector Search) whenever possible. This helps give parents peace of mind and ensures we maintain a safe environment for all children.</li></ul>
+<h4>Maximum Number of Children</h4>
+<p>To provide quality attention and care, Alberta regulations set clear limits:</p>
+<ul><li>An educator may care for up to six children (this number does not include your own).</li>
+<li>Within this group: no more than three children under 36 months (3 years), including your own; and no more than two children under 24 months (2 years), including your own.</li></ul>
+<p>These limits are in place to make sure each child receives the support, supervision, and nurturing environment they deserve.</p>
+<h4>Safe Sleep Practices</h4>
+<p>Children’s safety is always our top priority, especially at rest time. For infants under 12 months:</p>
+<ul><li>Only a crib may be used for sleep.</li><li>Cribs must have a tight-fitting sheet only.</li>
+<li>Items such as blankets, bumpers, pillows, or stuffed animals are not permitted in the crib.</li></ul>
+<h4>Late Pick-up Policy</h4>
+<ul><li>Each family’s contract specifies regular hours of care.</li>
+<li>If children are picked up later than the agreed-upon time, educators may, at their discretion, charge a late fee of approximately $1 per child per minute, or another reasonable amount within the $1 range.</li>
+<li>If late pickups happen often, we encourage families and educators to discuss adjusting the contract to reflect the additional hours. A Change of Services Form can be completed and emailed to the agency.</li>
+<li>Please ensure attendance records are kept up to date, as this helps the agency process late fees accurately.</li>
+<li>Any care provided outside the regular contracted hours is considered a private arrangement between the parent and educator.</li></ul>
+<p>For everyone’s well-being, educators cannot care for a child more than 18 hours in any 24-hour period without written approval from the agency.</p>
+<h4>Statutory Holidays</h4>
+<p>Family Day Homes are not required to remain open on statutory holidays. Families are encouraged to contact educators early if they hope to arrange care on a holiday. Educators may choose to offer care and, if so, an additional fee per child can be charged, payable directly to the educator. Common statutory holidays include New Year’s Day, Family Day, Good Friday, Canada Day, Labour Day, Thanksgiving Day and Christmas Day.</p>
+<h4>Home Safety &amp; Orientation Process</h4>
+<p>Once your application forms are completed and returned to the agency, we’ll schedule an initial safety check and interview at your residence. During this visit we make sure your home is safe, welcoming, and ready for the children in your care; we may suggest a few small adjustments; and we will look at the spaces and equipment you plan to use and identify any items you’ll need to add before opening your day home.</p>
+<p>When your home is ready and our safety recommendations are complete, a second visit will be scheduled to review the agency forms and your resource binder and finalize the contracts together. The entire process usually takes two to three weeks, depending on how quickly security checks and references are returned to our office.</p>
+<p><em>The Agency will provide you with a resource binder (hardcopy or softcopy) that typically includes Agency policies and procedures, Government regulations, Emergency procedures, Record-keeping forms, Health &amp; safety checklists, Educational resources, and Contact information.</em></p>
+<h4>How We Help / Agency Support</h4>
+<ol><li>Provide ongoing training, support, and professional development to enhance educator skills.</li>
+<li>Ensure educators have access to curriculum resources and activity planning support.</li>
+<li>Offer guidance to meet and maintain licensing and quality standards.</li>
+<li>Provide access to backup or alternate care when required.</li>
+<li>Collect payments from families and distribute fees to educators.</li>
+<li>Maintain regular communication and feedback to support continuous improvement.</li>
+<li>Support access to subsidized childcare programs where applicable.</li>
+<li>Offer a fair and transparent dispute resolution process between educators and families.</li>
+<li>Refer families to appropriate community resources and support.</li>
+<li>Assist educators during emergency situations.</li></ol>
+<h4>Summary of Required Application Processing Documents</h4>
+<ol><li><strong>First Aid and CPR Certification:</strong> A valid certificate in First Aid and CPR is required.</li>
+<li><strong>Criminal Record Checks:</strong> Must be completed and dated within six months of opening your day home and renewed every three years. All household members 18 years and older must also complete one. Children in the household aged 12 to 17 require a signed statement from the educator confirming that they have no criminal history.</li>
+<li><strong>Proof of General Liability (or Extended Home) Insurance:</strong> A copy of your home insurance policy extended to cover family day home operations, equivalent to General Liability Insurance of up to $2,000,000.</li>
+<li><strong>Pet Vaccination Records:</strong> If you have pets, please provide up-to-date vaccination records.</li>
+<li><strong>Medical Statement:</strong> A signed statement from your physician confirming that you are both physically and mentally capable of caring for children.</li>
+<li><strong>Professional References:</strong> Names and contact details of three professional references (not family members).</li>
+<li><strong>Educator’s Program Information</strong> (if already prepared): daily routines, planned activities, learning materials, safety procedures and how your day is structured.</li>
+<li><strong>Child Guidance Policies</strong> (if already prepared): your approach to guiding children’s behaviour (e.g. FLIGHT, Montessori, Reggio Emilia, High Scope). If not yet prepared, the agency will provide guidance and resources.</li>
+<li><strong>ECE Certification – Level 1:</strong> If you do not already hold ECE Level 1 or higher, you must be willing to complete it within six months of approval. Alberta offers a free online program (alberta.ca/early-childhood-educator-certification). More information: alberta.ca/child-care.</li></ol>
+<p>If you encounter difficulties obtaining any of the required documents, please inform us so we can explore how best to assist you.</p>
+<h4>Agency Contact</h4>
+<p>TARG Family Day Home Agency [TARG Childcare Services] — Coordinator: Peter Arhebamen — Phone: 403-879-9425 — Email: info@targetfix.com</p>
+</div>
+<div class="field tick-field"><label class="tick"><input type="checkbox" id="infoRead" required><span class="f-label">I have read and understood the information above.</span></label></div></section>
+<section class="form-page"><p class="step-title">24. Confidentiality Agreement  |  25. Declaration</p><div class="subheading">24. Educator Confidentiality Agreement</div><div class="field"><label class="f-label" for="confName">I (full name)</label><input type="text" id="confName" required data-mirror="applicantName"></div><div class="legal-block">recognize that in my capacity as an educator with TARG Family Day Home Agency, I may be entrusted with confidential information concerning children, their families, fellow educators, and the agency’s internal operations.</div><div class="legal-block">I acknowledge that all such information must remain strictly confidential, in accordance with Alberta’s Freedom of Information and Protection of Privacy Act as well as the Early Learning and Child Care Regulation. I will not share or release any personal or sensitive details obtained through my role to unauthorized persons or organizations. This duty of confidentiality applies both during my active involvement with the agency and continues even after my role with TARG Family Day Home Agency has ended.</div><div class="legal-block">I commit to always following the agency’s confidentiality and information protection policies and fully understand the importance of safeguarding the privacy, trust, and dignity of every individual connected to our programs.</div><div class="sig-wrap"><div class="sig-label"><span class="t">Educator signature — sign with your finger</span><button type="button" class="sig-clear" data-clear="sigConf">Clear</button></div><div class="sig-box" data-sig="sigConf" data-signer-label="Educator signature"><canvas id="sigConfCanvas"></canvas><div class="sig-baseline"></div><div class="sig-placeholder" id="sigConfPlaceholder">sign here</div></div></div><div class="field"><label class="f-label" for="confDate">Date</label><input type="date" id="confDate" required data-today="1" style="max-width:220px;"></div><div class="subheading">25. Declaration</div><div class="field"><label class="f-label" for="declName">I (full name)</label><input type="text" id="declName" required data-mirror="applicantName"></div><div class="legal-block">certify that the information provided in this application is accurate. I understand that submitting this application does not guarantee approval of my day home by the agency. If my application is declined, I expect the agency to either return all personal information in its possession or securely destroy it in accordance with agency policy and applicable laws. Should I decide not to proceed with the agency, I will promptly notify them and request that my personal information be managed as outlined above, in compliance with the law.</div><div class="sig-wrap"><div class="sig-label"><span class="t">Applicant's signature — sign with your finger</span><button type="button" class="sig-clear" data-clear="sigDecl">Clear</button></div><div class="sig-box" data-sig="sigDecl" data-signer-label="Applicant's signature"><canvas id="sigDeclCanvas"></canvas><div class="sig-baseline"></div><div class="sig-placeholder" id="sigDeclPlaceholder">sign here</div></div></div><div class="field"><label class="f-label" for="declDate">Date</label><input type="date" id="declDate" required data-today="1" style="max-width:220px;"></div></section>
+
+    <div class="nav-row">
+      <button type="button" class="btn btn-back" id="backBtn">Back</button>
+      <button type="button" class="btn btn-next" id="nextBtn">Next</button>
+      <button type="button" class="btn btn-download" id="downloadBtn" style="display:none;">Submit application</button>
+    </div>
+    <div class="status-line" id="statusLine"></div>
+    <div class="foot-note">Protected A (when completed). Your information is collected for assessing your application and is kept confidential.</div>
+  </form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function () {
+  // ============================================================
+  //  AGENCY SETUP — deployed Apps Script Web App URL (own Sheet +
+  //  own Drive folder, least-privilege scopes, same pattern as the
+  //  other TARG forms).
+  // ============================================================
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym1ken_e4XaCPgecM2NJgB1udWPxJowhci5WXW8lYuPN67ZwiBKpisKEwzc-LvwUoa/exec";
+  // ============================================================
+
+  var form = document.getElementById('theForm');
+  var MAX_FILE = 10 * 1024 * 1024, MAX_TOTAL = 30 * 1024 * 1024;
+  window.__docFiles = {};
+
+  // ---------- Add-row tables ----------
+  var TABLES = {
+    ownKids: [
+      { key: 'name', label: 'Name', type: 'text' },
+      { key: 'sex', label: 'Sex', type: 'select', opts: ['M', 'F'] },
+      { key: 'dob', label: 'Birth date', type: 'date' },
+      { key: 'imm', label: 'Immunizations up-to-date?', type: 'select', opts: ['Yes', 'No'] }
+    ],
+    others: [
+      { key: 'name', label: 'Name', type: 'text' },
+      { key: 'age', label: 'Age', type: 'number' },
+      { key: 'rel', label: 'Relationship', type: 'text' },
+      { key: 'involved', label: 'Involved in childcare?', type: 'select', opts: ['Yes', 'No'] }
+    ]
+  };
+  function addRow(key, values) {
+    var box = document.getElementById(key + 'Rows');
+    var div = document.createElement('div');
+    div.className = 'table-row';
+    var cells = TABLES[key].map(function (f) {
+      var v = values && values[f.key] != null ? values[f.key] : '';
+      var inp;
+      if (f.type === 'select') {
+        inp = '<select class="t-' + f.key + '" required><option value="">Select…</option>' + f.opts.map(function (o) {
+          return '<option' + (o === v ? ' selected' : '') + '>' + o + '</option>'; }).join('') + '</select>';
+      } else {
+        inp = '<input type="' + f.type + '" class="t-' + f.key + '" required value="' + escapeHtmlClient(v).replace(/"/g, '&quot;') + '"' + (f.type === 'number' ? ' min="0" inputmode="numeric"' : '') + '>';
+      }
+      return '<div class="field"><label class="f-label">' + f.label + '</label>' + inp + '</div>';
+    });
+    div.innerHTML = '<button type="button" class="remove-row">Remove</button>' +
+      '<div class="row-2">' + cells.slice(0, 2).join('') + '</div><div class="row-2">' + cells.slice(2).join('') + '</div>';
+    div.querySelector('.remove-row').addEventListener('click', function () { div.remove(); saveDraftSoon(); });
+    box.appendChild(div);
+  }
+  document.querySelectorAll('[data-add]').forEach(function (b) {
+    b.addEventListener('click', function () { addRow(b.getAttribute('data-add')); saveDraftSoon(); });
+  });
+  addRow('ownKids'); addRow('others');
+
+  // ---------- Show/hide follow-up questions ----------
+  function isHidden(el) { return !!el.closest('.cond-hidden'); }
+  function applyConditions() {
+    for (var pass = 0; pass < 4; pass++) {
+      document.querySelectorAll('[data-show-if]').forEach(function (el) {
+        var parts = el.getAttribute('data-show-if').split('=');
+        var name = parts[0], wanted = parts[1].split('|');
+        var ok = Array.prototype.some.call(form.querySelectorAll('input[name="' + name + '"]:checked'), function (r) {
+          return wanted.indexOf(r.value) !== -1 && !isHidden(r);
+        });
+        el.classList.toggle('cond-hidden', !ok);
+      });
+      document.querySelectorAll('[data-hide-if-checked]').forEach(function (el) {
+        var cb = document.getElementById(el.getAttribute('data-hide-if-checked'));
+        el.classList.toggle('cond-hidden', !!(cb && cb.checked));
+      });
+    }
+  }
+  form.addEventListener('change', applyConditions);
+
+  // Name fields in the agreements mirror the applicant name until edited.
+  var appName = document.getElementById('applicantName');
+  function mirrorNames(force) {
+    document.querySelectorAll('[data-mirror]').forEach(function (m) {
+      if (force || !m.value || m.value === m.getAttribute('data-last')) {
+        m.value = appName.value; m.setAttribute('data-last', appName.value);
+      }
+    });
+  }
+  appName.addEventListener('input', function () { mirrorNames(false); });
+  function todayISO() { var n = new Date(); return n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + n.getDate()).slice(-2); }
+  function fillToday() { document.querySelectorAll('[data-today]').forEach(function (d) { if (!d.value) d.value = todayISO(); }); }
+
+  // ---------- Wizard ----------
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.form-page'));
+  var totalSteps = pages.length, current = 0;
+  var progressFill = document.getElementById('progressFill');
+  var progressLabel = document.getElementById('progressLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var statusLine = document.getElementById('statusLine');
+  function setStatus(msg) { statusLine.textContent = msg || ''; }
+
+  function updateNav() {
+    pages.forEach(function (p, i) { p.classList.toggle('active', i === current); });
+    progressFill.style.width = (((current + 1) / totalSteps) * 100) + '%';
+    progressLabel.textContent = 'Step ' + (current + 1) + ' of ' + totalSteps;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    var isLast = current === totalSteps - 1;
+    nextBtn.style.display = isLast ? 'none' : 'block';
+    downloadBtn.style.display = isLast ? 'block' : 'none';
+    if (pages[current].querySelector('.sig-box')) setTimeout(resizeCanvases, 50);
+    var miss = getAllMissing().filter(function (m) { return m.step === current; }).length;
+    setStatus('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return miss;
+  }
+  nextBtn.addEventListener('click', function () {
+    var missHere = getAllMissing().filter(function (m) { return m.step === current; });
+    if (missHere.length) highlightMissing(missHere, true);
+    if (current < totalSteps - 1) { current++; updateNav(); saveDraft(); }
+    if (missHere.length) setStatus('Note: the previous step still has ' + missHere.length + ' unanswered item(s) — you will need to complete them before submitting.');
+  });
+  backBtn.addEventListener('click', function () { if (current > 0) { current--; updateNav(); saveDraft(); } });
+
+  // ---------- Signatures (two boxes) ----------
+  var sigs = {};
+  function resizeCanvases() {
+    Object.keys(sigs).forEach(function (k) {
+      var s = sigs[k], rect = s.canvas.getBoundingClientRect();
+      if (rect.width === 0) return;
+      var ratio = window.devicePixelRatio || 1;
+      if (s.canvas.width === Math.round(rect.width * ratio)) return;
+      var keep = s.box.getAttribute('data-signed') === '1' ? s.canvas.toDataURL() : null;
+      s.canvas.width = rect.width * ratio; s.canvas.height = rect.height * ratio;
+      s.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      s.ctx.lineCap = 'round'; s.ctx.lineJoin = 'round'; s.ctx.lineWidth = 2.4; s.ctx.strokeStyle = '#1E2624';
+      if (keep) { var img = new Image(); img.onload = function () { s.ctx.drawImage(img, 0, 0, rect.width, rect.height); }; img.src = keep; }
+    });
+  }
+  window.addEventListener('resize', resizeCanvases);
+  document.querySelectorAll('.sig-box').forEach(function (box) {
+    var key = box.getAttribute('data-sig');
+    var canvas = box.querySelector('canvas'), ph = box.querySelector('.sig-placeholder');
+    var s = sigs[key] = { box: box, canvas: canvas, ctx: canvas.getContext('2d') };
+    var drawing = false;
+    function pos(evt) { var r = canvas.getBoundingClientRect(); var p = evt.touches ? evt.touches[0] : evt; return { x: p.clientX - r.left, y: p.clientY - r.top }; }
+    function start(evt) { evt.preventDefault(); drawing = true; ph.style.opacity = '0'; box.setAttribute('data-signed', '1'); box.classList.remove('field-missing'); var p = pos(evt); s.ctx.beginPath(); s.ctx.moveTo(p.x, p.y); }
+    function move(evt) { if (!drawing) return; evt.preventDefault(); var p = pos(evt); s.ctx.lineTo(p.x, p.y); s.ctx.stroke(); }
+    function end() { drawing = false; }
+    canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+    canvas.addEventListener('touchstart', start, { passive: false }); canvas.addEventListener('touchmove', move, { passive: false }); canvas.addEventListener('touchend', end);
+  });
+  document.querySelectorAll('[data-clear]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var s = sigs[b.getAttribute('data-clear')];
+      s.ctx.clearRect(0, 0, s.canvas.width, s.canvas.height);
+      s.box.removeAttribute('data-signed'); s.box.querySelector('.sig-placeholder').style.opacity = '1';
+    });
+  });
+
+  // ---------- Document uploads ----------
+  function totalBytes() { var t = 0; Object.keys(window.__docFiles).forEach(function (k) { window.__docFiles[k].forEach(function (f) { t += f.size; }); }); return t; }
+  function fmtSize(b) { return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
+  function renderFiles(doc) {
+    var list = document.getElementById(doc + '_list');
+    var files = window.__docFiles[doc] || [];
+    list.innerHTML = files.map(function (f, i) {
+      return '<div class="file-chip"><span>' + escapeHtmlClient(f.name) + ' <em>(' + fmtSize(f.size) + ')</em></span><button type="button" data-rm="' + i + '">Remove</button></div>';
+    }).join('');
+    list.querySelectorAll('[data-rm]').forEach(function (b) {
+      b.addEventListener('click', function () { files.splice(+b.getAttribute('data-rm'), 1); renderFiles(doc); });
+    });
+    if (files.length) { var item = list.closest('.doc-item'); item && item.classList.remove('field-missing'); }
+  }
+  document.querySelectorAll('input[data-doc-file]').forEach(function (inp) {
+    inp.addEventListener('change', function () {
+      var doc = inp.getAttribute('data-doc-file');
+      var arr = window.__docFiles[doc] = window.__docFiles[doc] || [];
+      var picked = Array.prototype.slice.call(inp.files || []);
+      inp.value = '';
+      var jobs = picked.map(function (file) {
+        if (file.size > MAX_FILE) { alertBox('“' + file.name + '” is larger than 10 MB. Please attach a smaller file or a photo of the document.'); return Promise.resolve(); }
+        if (totalBytes() + file.size > MAX_TOTAL) { alertBox('Your attachments together are over 30 MB. Please attach smaller files (a phone photo is usually enough).'); return Promise.resolve(); }
+        return blobToBase64(file).then(function (b64) {
+          arr.push({ name: file.name, type: file.type || 'application/octet-stream', size: file.size, base64: b64 });
+        });
+      });
+      Promise.all(jobs).then(function () { renderFiles(doc); });
+    });
+  });
+
+  // ---------- Validation (no "submit anyway") ----------
+  function labelFor(el) {
+    var docItem = el.closest('.doc-item');
+    if (docItem) return textOf(docItem.querySelector('.doc-title')).replace(/^\d+\s*/, '');
+    var avail = el.closest('.avail-row');
+    var f = el.closest('.field');
+    var lab = f && f.querySelector('.f-label');
+    var fs = el.closest('fieldset');
+    var t = lab ? lab.textContent : (fs && fs.querySelector('legend') ? fs.querySelector('legend').textContent : (el.id || el.name));
+    t = t.replace(/\(optional\)/, '').replace(/\s+/g, ' ').trim();
+    if (avail) t = avail.getAttribute('data-day') + (fs && !lab ? ' — available?' : ' — ' + t);
+    var tbl = el.closest('.table-row');
+    if (tbl && !avail) { var sec = tbl.closest('.form-page').querySelector('.dyn-rows') ? 'Table row' : ''; t = (tbl.querySelector('.ref-num') ? tbl.querySelector('.ref-num').textContent + ' — ' : (sec ? sec + ' — ' : '')) + t; }
+    return t;
+  }
+  function getAllMissing() {
+    var missing = [], seen = {};
+    pages.forEach(function (page, idx) {
+      page.querySelectorAll('input, select, textarea').forEach(function (el) {
+        if (isHidden(el) || el.type === 'file') return;
+        if (el.type === 'radio') {
+          if (!el.required || seen[el.name]) return; seen[el.name] = 1;
+          if (!page.querySelector('input[name="' + el.name + '"]:checked')) missing.push({ step: idx, el: el, label: labelFor(el) });
+          return;
+        }
+        if (el.type === 'checkbox') {
+          if (el.required && !el.checked) missing.push({ step: idx, el: el, label: labelFor(el) });
+          return;
+        }
+        if (!el.required) return;
+        if (!String(el.value || '').trim()) missing.push({ step: idx, el: el, label: labelFor(el) });
+        else if (!el.checkValidity()) missing.push({ step: idx, el: el, label: labelFor(el) + ' (please check the format)' });
+      });
+      page.querySelectorAll('fieldset[data-min-one]').forEach(function (fs) {
+        if (isHidden(fs)) return;
+        if (!fs.querySelector('input:checked')) missing.push({ step: idx, el: fs.querySelector('input'), label: textOf(fs.querySelector('legend')) });
+      });
+      page.querySelectorAll('.dyn-rows').forEach(function (box) {
+        if (isHidden(box)) return;
+        if (!box.children.length) missing.push({ step: idx, el: box, label: 'Add at least one row, or tick the “None” box', box: true });
+      });
+      page.querySelectorAll('.doc-item[data-doc]').forEach(function (item) {
+        var st = item.querySelector('input[type=radio]:checked');
+        if (st && st.value === 'Attached' && !(window.__docFiles[item.getAttribute('data-doc')] || []).length)
+          missing.push({ step: idx, el: item, label: labelFor(item.querySelector('input')) + ' — attach the file', doc: true });
+      });
+      page.querySelectorAll('.sig-box').forEach(function (box) {
+        if (!signatureIsDrawn(box)) missing.push({ step: idx, el: box, label: box.getAttribute('data-signer-label') + ' (please sign)', sig: true });
+      });
+    });
+    return missing;
+  }
+  function clearFieldHighlights() { document.querySelectorAll('.field-missing').forEach(function (el) { el.classList.remove('field-missing'); }); }
+  function highlightMissing(list, keep) {
+    if (!keep) clearFieldHighlights();
+    list.forEach(function (m) {
+      var t = m.sig || m.doc || m.box ? (m.box ? m.el.closest('.dyn-wrap') : m.el) : (m.el.type === 'radio' || m.el.type === 'checkbox' && m.el.closest('fieldset') ? m.el.closest('fieldset') : (m.el.closest('.field') || m.el));
+      if (t) t.classList.add('field-missing');
+    });
+  }
+  form.addEventListener('input', function (e) {
+    var el = e.target;
+    var c = el.closest('.field') || el.closest('fieldset');
+    if (c && c.classList.contains('field-missing')) {
+      if (el.type === 'radio' || el.type === 'checkbox' ? (el.checked || c.querySelector('input:checked')) : String(el.value).trim()) c.classList.remove('field-missing');
+    }
+    saveDraftSoon();
+  }, true);
+  form.addEventListener('change', saveDraftSoon, true);
+
+  // ---------- Modal + jump menu ----------
+  function escapeHtmlClient(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function showModal(html, buttons) {
+    var overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    var box = document.createElement('div');
+    box.className = 'modal-box';
+    box.innerHTML = html;
+    var btnRow = document.createElement('div');
+    btnRow.className = 'modal-btns';
+    buttons.forEach(function (b) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = b.label;
+      btn.className = 'btn ' + (b.primary ? 'btn-next' : 'btn-back');
+      btn.onclick = function () { document.body.removeChild(overlay); b.onClick && b.onClick(); };
+      btnRow.appendChild(btn);
+    });
+    box.appendChild(btnRow); overlay.appendChild(box); document.body.appendChild(overlay);
+  }
+  function alertBox(msg) { showModal('<p style="font-size:13.5px;margin:0;">' + escapeHtmlClient(msg) + '</p>', [{ label: 'OK', primary: true }]); }
+  document.getElementById('jumpMenuBtn').addEventListener('click', function () {
+    var missing = getAllMissing(), per = {};
+    missing.forEach(function (m) { per[m.step] = (per[m.step] || 0) + 1; });
+    var listHtml = pages.map(function (p, i) {
+      var title = textOf(p.querySelector('.step-title')) || ('Step ' + (i + 1));
+      var badge = per[i] ? '<span class="jump-badge">' + per[i] + ' to do</span>' : '<span class="jump-done">✔</span>';
+      return '<button type="button" class="jump-item' + (i === current ? ' jump-current' : '') + '" data-idx="' + i + '">' + escapeHtmlClient(title) + badge + '</button>';
+    }).join('');
+    var overlay = document.createElement('div'); overlay.className = 'modal-overlay';
+    var box = document.createElement('div'); box.className = 'modal-box jump-box';
+    box.innerHTML = '<div class="jump-head"><h3>Jump to a step</h3><button type="button" class="jump-close">&times;</button></div>' + listHtml;
+    overlay.appendChild(box); document.body.appendChild(overlay);
+    function close() { if (overlay.parentNode) document.body.removeChild(overlay); }
+    box.querySelectorAll('.jump-item').forEach(function (b) {
+      b.addEventListener('click', function () { current = +b.getAttribute('data-idx'); updateNav(); saveDraft(); close(); });
+    });
+    box.querySelector('.jump-close').addEventListener('click', close);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  });
+
+  // ---------- Draft save & resume (this device only) ----------
+  var STORAGE_KEY = 'targ_educator_application_draft_v1';
+  function serializeForm() {
+    var data = { simple: {}, checks: {}, radios: {}, rows: {}, currentStep: current, savedAt: new Date().toISOString() };
+    form.querySelectorAll('input[id], textarea[id], select[id]').forEach(function (el) {
+      if (el.type === 'file' || el.type === 'radio') return;
+      if (el.type === 'checkbox') data.checks[el.id] = el.checked; else data.simple[el.id] = el.value;
+    });
+    form.querySelectorAll('input[type=radio]:checked').forEach(function (r) { data.radios[r.name] = r.value; });
+    Object.keys(TABLES).forEach(function (key) {
+      data.rows[key] = Array.prototype.map.call(document.getElementById(key + 'Rows').children, function (row) {
+        var o = {}; TABLES[key].forEach(function (f) { var i = row.querySelector('.t-' + f.key); o[f.key] = i ? i.value : ''; }); return o;
+      });
+    });
+    return data;
+  }
+  function restoreForm(data) {
+    Object.keys(data.simple || {}).forEach(function (id) { var el = document.getElementById(id); if (el) el.value = data.simple[id]; });
+    Object.keys(data.checks || {}).forEach(function (id) { var el = document.getElementById(id); if (el) el.checked = !!data.checks[id]; });
+    Object.keys(data.radios || {}).forEach(function (name) {
+      form.querySelectorAll('input[name="' + name + '"]').forEach(function (r) { r.checked = r.value === data.radios[name]; });
+    });
+    Object.keys(TABLES).forEach(function (key) {
+      var box = document.getElementById(key + 'Rows'); box.innerHTML = '';
+      var rows = (data.rows && data.rows[key]) || [];
+      rows.forEach(function (r) { addRow(key, r); });
+    });
+    document.querySelectorAll('[data-mirror]').forEach(function (m) { m.setAttribute('data-last', m.value === appName.value ? m.value : ''); });
+    applyConditions();
+    current = Math.min(data.currentStep || 0, totalSteps - 1);
+    updateNav();
+  }
+  function saveDraft() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeForm())); } catch (e) {} }
+  var saveTimer = null;
+  function saveDraftSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(saveDraft, 700); }
+  function loadDraft() { try { var raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; } }
+  function clearDraft() { try { localStorage.removeItem(STORAGE_KEY); } catch (e) {} }
+
+  // ---------- Helpers shared with the PDF engine ----------
+  function triggerBrowserDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function blobToBase64(blob) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onloadend = function () { var r = reader.result; var c = r.indexOf(','); resolve(c >= 0 ? r.slice(c + 1) : r); };
+      reader.onerror = reject; reader.readAsDataURL(blob);
+    });
+  }
+
+  var PDF_CONFIG = {
+    org: 'TARG Family Day Home Agency',
+    title: 'Educator Application Form',
+    confidentiality: 'Protected A (when completed)',
+    skipEmptyOptional: true,
+    flagNoAnswers: false,
+    quietFollowUpWhenNoIssues: false,
+    signerFieldId: 'applicantName',
+    signerRole: 'Applicant',
+    keepSignatureSectionHeight: 200
+  };
+
+  function pdfText(s) {
+    // Standard PDF fonts cover the WinAnsi set (incl. dashes and curly
+    // quotes); anything outside it (e.g. emoji) is dropped.
+    return String(s == null ? '' : s)
+      .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF–—‘’‚“”„†‡•…‰‹›€™ŒœŠšŸŽžƒˆ˜]/g, '')
+      .replace(/[ \t]+\n/g, '\n').trim();
+  }
+  var PDF_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function prettyDate(v, short) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+    if (!m) return v || '';
+    var mon = PDF_MONTHS[+m[2] - 1];
+    return (short ? mon.slice(0, 3) : mon) + ' ' + (+m[3]) + ', ' + m[1];
+  }
+  function prettyTime(v) {
+    var m = /^(\d{1,2}):(\d{2})/.exec(v || '');
+    if (!m) return v || '';
+    var h = +m[1], ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return h + ':' + m[2] + ' ' + ap;
+  }
+  function textOf(el) { return el ? pdfText(el.textContent.replace(/\s+/g, ' ')) : ''; }
+  function inputValue(inp, short) {
+    if (!inp) return '';
+    if (inp.type === 'checkbox') return inp.checked ? 'Yes' : '';
+    if (inp.type === 'date') return prettyDate(inp.value, short);
+    if (inp.type === 'time') return prettyTime(inp.value);
+    return pdfText(inp.value);
+  }
+  function signatureIsDrawn(box) {
+    var cv = box.querySelector('canvas');
+    if (box.getAttribute('data-signed') === '1') return true;
+    try {
+      var d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+      for (var k = 3; k < d.length; k += 16) { if (d[k] !== 0) return true; }
+    } catch (e) {}
+    return false;
+  }
+
+  function buildDocumentPdf() {
+    var C = PDF_CONFIG;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'pt', format: 'letter', compress: true });
+    var PW = doc.internal.pageSize.getWidth(), PH = doc.internal.pageSize.getHeight();
+    var M = 54, CW = PW - 2 * M, BOTTOM = PH - 58;
+    var TEAL = [31, 78, 69], DARK = [30, 38, 36], MUTED = [91, 101, 95], GOLD = [199, 154, 62],
+        LINE = [221, 227, 223], SOFT = [238, 241, 240], RED = [168, 50, 50], GREY = [150, 150, 150];
+    var y = M;
+
+    function font(style, size, color) { doc.setFont('helvetica', style); doc.setFontSize(size); doc.setTextColor.apply(doc, color); }
+    function newPage() { doc.addPage(); y = M; }
+    function ensure(h) { if (y + h > BOTTOM) newPage(); }
+    function split(text, size, width, style) { doc.setFont('helvetica', style || 'normal'); doc.setFontSize(size); return doc.splitTextToSize(text, width); }
+    function write(ls, size, style, color, x, lh) {
+      lh = lh || size * 1.35;
+      ls.forEach(function (l) { ensure(lh); font(style, size, color); doc.text(l, x || M, y + size); y += lh; });
+    }
+    function rule(color, w) { doc.setDrawColor.apply(doc, color); doc.setLineWidth(w); doc.line(M, y, PW - M, y); }
+
+    // Lazily printed sub-heading: only appears if something under it prints.
+    var pendingSub = null;
+    function flushSub() {
+      if (!pendingSub) return;
+      var t = pendingSub; pendingSub = null;
+      ensure(34); y += 4;
+      font('bold', 8.5, GOLD); doc.text(t.toUpperCase(), M, y + 9); y += 15;
+    }
+
+    function isAnswered(v) { return v !== '' && v != null; }
+
+    // Which blank, optional questions to leave out of the PDF:
+    //  - "if ..." follow-ups ("If Other, please describe", "Level (if yes)")
+    //    that simply didn't apply;
+    //  - a standard's Evidence & Follow-up boxes when every answer in that
+    //    standard was Yes/N/A (nothing to follow up). If the standard has a
+    //    "No", its follow-up boxes always print, so a missing remedy plan
+    //    shows up as "Not answered".
+    //  Every other blank prints as "Not answered" so gaps stay visible.
+    var inQuietFollowUp = false;
+    function conditionApplies(label, el) {
+      // "If yes/no/other/not ..." -> did the answer just before it match?
+      var m = /(?:^|\()\s*if\s+(yes|no|not|other|so)\b/i.exec(label || '');
+      if (!m || !el) return false;
+      var want = { yes: 'yes', so: 'yes', no: 'no', not: 'no', other: 'other' }[m[1].toLowerCase()];
+      var page = el.closest('.form-page'), prev = null;
+      Array.prototype.forEach.call(page.querySelectorAll('input[type=radio]:checked'), function (r) {
+        if (r.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) prev = r;
+      });
+      return !!prev && prev.value.toLowerCase().indexOf(want) === 0;
+    }
+    function hideBlank(label, answered, required, el) {
+      if (answered || required) return false;
+      if (/^\s*if\b|\(if\b/i.test(label || '')) return !conditionApplies(label, el);
+      if (inQuietFollowUp) return true;
+      return !!C.skipEmptyOptional;
+    }
+
+    // ---- Masthead ----
+    var logo = document.querySelector('.masthead img.logo');
+    var textX = M;
+    if (logo && logo.src && logo.src.indexOf('data:image') === 0) {
+      try {
+        var lw = 62, lh = (logo.naturalWidth && logo.naturalHeight) ? lw * logo.naturalHeight / logo.naturalWidth : 36;
+        doc.addImage(logo.src, 'PNG', M, y, lw, lh); textX = M + lw + 14;
+      } catch (e) {}
+    }
+    font('bold', 9, GOLD); doc.text(C.org.toUpperCase(), textX, y + 12);
+    doc.setFont('times', 'bold'); doc.setFontSize(17); doc.setTextColor.apply(doc, TEAL);
+    doc.text(C.title, textX, y + 32);
+    var now = new Date();
+    var stamp = prettyDate(now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2));
+    font('normal', 8.5, MUTED);
+    doc.text('Submitted ' + stamp + ' at ' + prettyTime(('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2)) + '  |  ' + C.confidentiality, textX, y + 46);
+    y += 60; rule(GOLD, 1.2); y += 14;
+
+    // ---- "Needs attention" summary for Yes/No checklists ----
+    if (C.flagNoAnswers) {
+      var counts = { Yes: 0, No: 0, 'N/A': 0, unanswered: 0 }, flagged = [];
+      pages.forEach(function (page) {
+        var sec = textOf(page.querySelector('.step-title'));
+        page.querySelectorAll('.q-block, fieldset').forEach(function (b) {
+          var r = b.querySelector('input[type=radio]:checked');
+          if (!b.querySelector('input[type=radio]')) return;
+          var v = r ? r.value : '';
+          if (!v) counts.unanswered++; else if (counts[v] != null) counts[v]++;
+          if (v === 'No') {
+            var qt = textOf(b.querySelector('.q-text, legend'));
+            if (!qt) { var prev = b.previousElementSibling; if (prev && prev.classList.contains('subheading')) qt = textOf(prev); }
+            flagged.push({ sec: sec, q: qt || 'Question' });
+          }
+        });
+      });
+      font('bold', 10, TEAL); doc.text('Checklist summary', M, y + 10);
+      font('normal', 9.5, DARK);
+      doc.text(counts.Yes + ' Yes   |   ' + counts.No + ' No   |   ' + counts['N/A'] + ' N/A   |   ' + counts.unanswered + ' not answered', PW - M, y + 10, { align: 'right' });
+      y += 18;
+      if (flagged.length) {
+        font('bold', 9, RED); doc.text('Needs attention (answered "No"):', M, y + 9); y += 14;
+        flagged.forEach(function (f) {
+          write(split('- ' + f.sec + ': ' + f.q, 9, CW - 10), 9, 'normal', DARK, M + 8, 12);
+        });
+      } else {
+        font('italic', 9, MUTED); doc.text('No items were answered "No".', M, y + 9); y += 14;
+      }
+      y += 4; rule(LINE, 0.8); y += 12;
+    }
+
+    // ---- Renderers ----
+    function choiceRow(q, a, required, el) {
+      var answered = isAnswered(a);
+      if (hideBlank(q, answered, required, el)) return;
+      flushSub();
+      var ansTxt = answered ? a : 'Not answered';
+      font(answered ? 'bold' : 'italic', answered ? 10.5 : 9, DARK);
+      var aw = Math.min(doc.getTextWidth(ansTxt), CW * 0.45);
+      var aLines = answered ? split(ansTxt, 10.5, CW * 0.45, 'bold') : [ansTxt];
+      var qL = split(q || 'Answer', 9.5, Math.max(CW - aw - 18, CW * 0.5));
+      ensure(Math.max(qL.length, aLines.length) * 12.5 + 8);
+      var top = y;
+      write(qL, 9.5, 'normal', DARK, M, 12.5);
+      y = Math.max(y, top + aLines.length * 12.5);
+      var bad = C.flagNoAnswers && a === 'No';
+      font(answered ? 'bold' : 'italic', answered ? 10.5 : 9, answered ? (bad ? RED : TEAL) : GREY);
+      aLines.forEach(function (l, k) { doc.text(l, PW - M, top + 10 + k * 12.5, { align: 'right' }); });
+      y += 4; rule(LINE, 0.4); y += 6;
+    }
+    function qaBlock(q, a, required, el) {
+      var answered = isAnswered(a);
+      if (hideBlank(q, answered, required, el)) return;
+      flushSub();
+      var qL = q ? split(q, 9.5, CW, 'bold') : [];
+      var aL = answered ? split(a, 10.5, CW - 12) : ['Not answered'];
+      ensure(qL.length * 12.8 + Math.min(aL.length, 3) * 14.5 + 6);
+      write(qL, 9.5, 'bold', MUTED);
+      y += 2;
+      var segTop = y;
+      aL.forEach(function (l) {
+        if (y + 14.5 > BOTTOM) {
+          doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+          newPage(); segTop = y;
+        }
+        font(answered ? 'normal' : 'italic', 10.5, answered ? DARK : GREY);
+        doc.text(l, M + 10, y + 10.5); y += 14.5;
+      });
+      doc.setDrawColor.apply(doc, GOLD); doc.setLineWidth(1.5); doc.line(M + 2, segTop, M + 2, y - 2);
+      y += 9;
+    }
+    function gridRow(fields) {
+      // A row of short inputs (dates, times, names) printed side by side.
+      var cells = fields.map(function (f) {
+        var inp = f.querySelector('input, select');
+        var v = inputValue(inp);
+        return { l: textOf(f.querySelector('.f-label')), v: v, req: inp && inp.required, el: f };
+      }).filter(function (c) { return !hideBlank(c.l, isAnswered(c.v), c.req, c.el); });
+      if (!cells.length) return;
+      flushSub();
+      var colW = CW / Math.max(cells.length, 2), gap = 12, heights = [];
+      cells.forEach(function (c) {
+        c.lL = split(c.l, 8.5, colW - gap, 'bold');
+        c.vL = split(isAnswered(c.v) ? c.v : 'Not answered', 10.5, colW - gap);
+        heights.push(c.lL.length * 11 + c.vL.length * 14 + 4);
+      });
+      var h = Math.max.apply(null, heights);
+      ensure(h + 8);
+      cells.forEach(function (c, i) {
+        var x = M + i * colW, yy = y;
+        c.lL.forEach(function (l) { font('bold', 8.5, MUTED); doc.text(l, x, yy + 8.5); yy += 11; });
+        yy += 2;
+        c.vL.forEach(function (l) { font(isAnswered(c.v) ? 'normal' : 'italic', 10.5, isAnswered(c.v) ? DARK : GREY); doc.text(l, x, yy + 10.5); yy += 14; });
+      });
+      y += h + 8;
+    }
+    function table(container) {
+      var rows = Array.prototype.slice.call(container.querySelectorAll('.table-row'));
+      if (!rows.length) return;
+      var headers = [], data = [];
+      Array.prototype.forEach.call(rows[0].querySelectorAll('input, select, textarea'), function (inp) {
+        var fieldEl = inp.closest('.field');
+        var lab = inp.type === 'checkbox' ? inp.closest('label') : (fieldEl && fieldEl.querySelector('.f-label'));
+        headers.push(textOf(lab));
+      });
+      rows.forEach(function (r) {
+        var vals = Array.prototype.map.call(r.querySelectorAll('input, select, textarea'), function (inp) { return inputValue(inp, true); });
+        if (vals.some(isAnswered)) data.push(vals);
+      });
+      flushSub();
+      if (!data.length) { ensure(18); font('italic', 9.5, GREY); doc.text('None recorded', M, y + 10); y += 20; return; }
+      var n = headers.length;
+      // Column widths: weight by the longest content in each column.
+      var weights = headers.map(function (h, i) {
+        var longest = Math.max(h.length * 0.6, 6);
+        data.forEach(function (row) { longest = Math.max(longest, Math.min(String(row[i]).length, 40)); });
+        return longest;
+      });
+      var total = weights.reduce(function (s, w) { return s + w; }, 0);
+      var widths = weights.map(function (w) { return CW * w / total; });
+      var pad = 5;
+      function drawHeader() {
+        var hl = headers.map(function (h, i) { return split(h, 8, widths[i] - 2 * pad, 'bold'); });
+        var hh = Math.max.apply(null, hl.map(function (l) { return l.length; })) * 10 + 2 * pad;
+        ensure(hh + 20);
+        doc.setFillColor.apply(doc, SOFT); doc.rect(M, y, CW, hh, 'F');
+        var x = M;
+        hl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('bold', 8, TEAL); doc.text(l, x + pad, y + pad + 8 + k * 10); });
+          x += widths[i];
+        });
+        y += hh;
+      }
+      drawHeader();
+      data.forEach(function (row) {
+        var cl = row.map(function (v, i) { return split(isAnswered(v) ? String(v) : '-', 9.5, widths[i] - 2 * pad); });
+        var rh = Math.max.apply(null, cl.map(function (l) { return l.length; })) * 12 + 2 * pad;
+        if (y + rh > BOTTOM) { newPage(); drawHeader(); }
+        var x = M;
+        cl.forEach(function (ls, i) {
+          ls.forEach(function (l, k) { font('normal', 9.5, isAnswered(row[i]) ? DARK : GREY); doc.text(l, x + pad, y + pad + 9 + k * 12); });
+          x += widths[i];
+        });
+        y += rh; rule(LINE, 0.5);
+      });
+      y += 12;
+    }
+    function signatureBlock(box) {
+      flushSub();
+      ensure(120);
+      var canvas = box.querySelector('canvas');
+      font('bold', 9, MUTED); doc.text(box.getAttribute('data-signer-label') || 'Signature', M, y + 9); y += 14;
+      if (signatureIsDrawn(box)) {
+        var sw = 250, sh = (canvas.width && canvas.height) ? sw * canvas.height / canvas.width : 70;
+        sh = Math.min(sh, 80);
+        try { doc.addImage(canvas.toDataURL('image/png'), 'PNG', M, y, sw, sh); } catch (e) {}
+        y += sh;
+      } else {
+        font('italic', 10, RED); doc.text('Not signed', M, y + 30); y += 40;
+      }
+      doc.setDrawColor.apply(doc, DARK); doc.setLineWidth(0.6); doc.line(M, y + 2, M + 250, y + 2); y += 14;
+      var signer = C.signerFieldId && document.getElementById(C.signerFieldId);
+      var who = signer ? pdfText(signer.value) : '';
+      font('normal', 9, MUTED);
+      doc.text((who ? who + (C.signerRole ? ', ' + C.signerRole : '') + '  |  ' : '') + 'Signed electronically on ' + stamp, M, y + 9);
+      y += 22;
+    }
+
+    // Walk a page's content in document order.
+    function walk(node) {
+      Array.prototype.forEach.call(node.children, function (el) {
+        var cl = el.classList;
+        if (cl.contains('step-title') || cl.contains('sig-label') || cl.contains('add-row-btn') ||
+            cl.contains('remove-row') || el.tagName === 'BUTTON' || el.tagName === 'SCRIPT' ||
+            cl.contains('cond-hidden') || cl.contains('note') || cl.contains('info-block') || cl.contains('sr') ||
+            cl.contains('ref-num') || cl.contains('upload-btn') || cl.contains('file-list')) return;
+        if (cl.contains('doc-item')) {
+          var dt = textOf(el.querySelector('.doc-title')).replace(/^\d+\s*/, '');
+          if (cl.contains('doc-fixed')) { choiceRow(dt, 'Provided', true, el); return; }
+          var st = el.querySelector('input[type=radio]:checked');
+          var names = (window.__docFiles && window.__docFiles[el.getAttribute('data-doc')] || []).map(function (f) { return f.name; });
+          choiceRow(dt, st ? st.value : '', true, el);
+          if (st && st.value === 'Attached') { qaBlock('Attached file(s)', names.join(', '), true, el); }
+          return;
+        }
+        if (cl.contains('avail-row')) {
+          var day = el.getAttribute('data-day');
+          var ar = el.querySelector('input[type=radio]:checked');
+          var av = '';
+          if (ar && ar.value === 'Available') {
+            av = prettyTime(el.querySelector('input[id^=start]').value) + ' - ' + prettyTime(el.querySelector('input[id^=end]').value);
+            var cm = pdfText(el.querySelector('input[id^=comm]').value); if (cm) av += ' (' + cm + ')';
+          } else if (ar) av = 'Not available';
+          choiceRow(day, av, true, el); return;
+        }
+        if (el.tagName === 'FIELDSET' && el.hasAttribute('data-min-one')) {
+          var vals = Array.prototype.filter.call(el.querySelectorAll('input[type=checkbox]'), function (c) { return c.checked; }).map(function (c) { return c.value; });
+          qaBlock(textOf(el.querySelector('legend')), vals.join(', '), true, el); return;
+        }
+        if (cl.contains('tick-field')) {
+          var cb = el.querySelector('input[type=checkbox]');
+          choiceRow(textOf(el.querySelector('.f-label')), cb && cb.checked ? (cl.contains('none-field') ? 'Yes' : 'Confirmed') : '', !cl.contains('none-field'), el);
+          return;
+        }
+        if (cl.contains('step-sub')) { write(split(textOf(el), 9, CW, 'italic'), 9, 'italic', MUTED); y += 5; return; }
+        if (cl.contains('subheading')) {
+          pendingSub = textOf(el);
+          // Follow-up zone of a Yes/No standard with no "No" answers.
+          if (C.quietFollowUpWhenNoIssues && el.closest('.form-page').querySelector('.q-block') &&
+              !el.closest('.form-page').querySelector('.q-block input[value="No"]:checked')) inQuietFollowUp = true;
+          return;
+        }
+        if (cl.contains('legal-block')) { flushSub(); write(split(textOf(el), 10, CW), 10, 'normal', DARK); y += 8; return; }
+        if (cl.contains('sig-box')) { signatureBlock(el); return; }
+        if (el.querySelector(':scope > .table-row')) { table(el); return; }
+        if (cl.contains('q-block') || cl.contains('trait-row') || el.tagName === 'FIELDSET') {
+          var qEl = el.querySelector('.q-text, .t-title, legend');
+          var r = el.querySelector('input[type=radio]:checked');
+          var anyReq = !!el.querySelector('input[required]');
+          var q = textOf(qEl);
+          if (!q && pendingSub) { q = pendingSub; pendingSub = null; }
+          choiceRow(q, r ? r.value : '', anyReq, el);
+          return;
+        }
+        if (cl.contains('row-2') || cl.contains('row-3')) {
+          var fields = Array.prototype.slice.call(el.querySelectorAll(':scope > .field'));
+          var allShort = fields.length && fields.every(function (f) { return !f.querySelector('textarea'); });
+          if (allShort) { gridRow(fields); return; }
+          walk(el); return;
+        }
+        if (cl.contains('field')) {
+          var inp = el.querySelector('input, textarea, select');
+          if (!inp) return;
+          qaBlock(textOf(el.querySelector('.f-label')), inputValue(inp), inp.required, el);
+          return;
+        }
+        if (el.children.length) walk(el);
+      });
+    }
+
+    pages.forEach(function (page) {
+      pendingSub = null; inQuietFollowUp = false;
+      var title = textOf(page.querySelector('.step-title'));
+      if (title) {
+        ensure(page.querySelector('.sig-box') ? C.keepSignatureSectionHeight : 64);
+        y += 6;
+        doc.setFont('times', 'bold'); doc.setFontSize(13.5); doc.setTextColor.apply(doc, TEAL);
+        doc.text(title, M, y + 13.5); y += 19;
+        rule(LINE, 0.8); y += 9;
+      }
+      walk(page);
+    });
+
+    // ---- Footer on every page ----
+    var n = doc.getNumberOfPages();
+    for (var p = 1; p <= n; p++) {
+      doc.setPage(p);
+      doc.setDrawColor.apply(doc, LINE); doc.setLineWidth(0.6); doc.line(M, PH - 40, PW - M, PH - 40);
+      font('normal', 7.5, MUTED);
+      doc.text(C.org + '  |  ' + C.title + '  |  ' + C.confidentiality, M, PH - 28);
+      doc.text('Page ' + p + ' of ' + n, PW - M, PH - 28, { align: 'right' });
+    }
+    return doc;
+  }
+
+
+  // ---------- Submit ----------
+  downloadBtn.addEventListener('click', function () {
+    applyConditions();
+    var missing = getAllMissing();
+    if (missing.length) {
+      highlightMissing(missing);
+      var steps = {}; missing.forEach(function (m) { steps[m.step] = 1; });
+      var listHtml = missing.slice(0, 15).map(function (m) { return '&bull; Step ' + (m.step + 1) + ': ' + escapeHtmlClient(m.label); }).join('<br>') +
+        (missing.length > 15 ? '<br>&hellip; and ' + (missing.length - 15) + ' more' : '');
+      showModal(
+        '<h3>Please complete all fields</h3>' +
+        '<p class="modal-p">' + missing.length + ' item(s) across ' + Object.keys(steps).length + ' step(s) still need an answer. Your application can only be submitted once everything is complete. The items are highlighted in red.</p>' +
+        '<div class="modal-list">' + listHtml + '</div>',
+        [{ label: 'Take me to the first one', primary: true, onClick: function () {
+            current = missing[0].step; updateNav(); highlightMissing(missing);
+            setTimeout(function () { var t = document.querySelector('.form-page.active .field-missing'); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 350);
+            setStatus('Items still needed are highlighted in red.');
+          } }]
+      );
+      return;
+    }
+    proceedWithSubmit();
+  });
+
+  async function proceedWithSubmit() {
+    var btn = downloadBtn; btn.disabled = true;
+    setStatus('Preparing your PDF…');
+    var originalStep = current;
+    try {
+      var pdf = buildDocumentPdf();
+      var blob = pdf.output('blob');
+      var name = appName.value.trim() || 'Applicant';
+      var filename = ('TARG_EducatorApplication_' + name + '_' + todayISO()).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') + '.pdf';
+      var attachments = [];
+      document.querySelectorAll('.doc-item[data-doc]').forEach(function (item) {
+        var st = item.querySelector('input[type=radio]:checked');
+        if (!st || st.value !== 'Attached') return;
+        var doc = item.getAttribute('data-doc');
+        var label = textOf(item.querySelector('.doc-title')).replace(/^\d+\s*/, '');
+        (window.__docFiles[doc] || []).forEach(function (f) { attachments.push({ doc: doc, label: label, name: f.name, mimeType: f.type, base64: f.base64 }); });
+      });
+      var sent = false, result = null;
+      if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('__') !== 0) {
+        setStatus(attachments.length ? 'Sending your application and ' + attachments.length + ' document(s) to the Agency… (this can take a minute)' : 'Sending your application to the Agency…');
+        try {
+          var resp = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              filename: filename, applicantName: name,
+              phone: document.getElementById('phone').value.trim(),
+              email: document.getElementById('email').value.trim(),
+              desiredStart: document.getElementById('desiredStart').value,
+              pdfBase64: await blobToBase64(blob), attachments: attachments
+            })
+          });
+          result = await resp.json();
+          sent = !!(result && result.status === 'ok');
+        } catch (sendErr) { console.error('Delivery failed', sendErr); sent = false; }
+      }
+      triggerBrowserDownload(blob, filename);
+      if (sent) {
+        clearDraft();
+        setStatus('Sent to the Agency and downloaded a copy for you.');
+        showModal('<h3>Application submitted — thank you!</h3><p class="modal-p">Your application' + (attachments.length ? ' and ' + attachments.length + ' document(s) have' : ' has') + ' been sent to TARG Family Day Home Agency, and a PDF copy was downloaded to your device. We will contact you to arrange your home safety check and interview.</p>', [{ label: 'Done', primary: true }]);
+      } else {
+        setStatus('Downloaded your copy — but sending to the Agency failed. Please check your internet connection and press Submit again, or email the PDF and documents to info@targetfix.com.');
+      }
+    } catch (err) {
+      console.error(err);
+      current = originalStep; updateNav();
+      setStatus('Sorry, the PDF could not be created. Please refresh the page and try again, or contact the Agency.');
+    } finally { btn.disabled = false; }
+  }
+
+  // ---------- Start ----------
+  fillToday();
+  applyConditions();
+  updateNav();
+  var existingDraft = loadDraft();
+  if (existingDraft) {
+    var savedDate = existingDraft.savedAt ? new Date(existingDraft.savedAt).toLocaleString() : 'earlier';
+    showModal('<h3>Resume your unfinished application?</h3><p class="modal-p">We found answers you saved on this device (' + escapeHtmlClient(savedDate) + '). Your signatures and attached files are not saved and will need to be added again.</p>',
+      [{ label: 'Start fresh', onClick: function () { clearDraft(); } },
+       { label: 'Resume', primary: true, onClick: function () { restoreForm(existingDraft); fillToday(); } }]);
+  }
+})();
+
+</script>
+</body>
+</html>
