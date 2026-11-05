@@ -252,6 +252,12 @@
   //  other TARG forms).
   // ============================================================
   var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbym1ken_e4XaCPgecM2NJgB1udWPxJowhci5WXW8lYuPN67ZwiBKpisKEwzc-LvwUoa/exec";
+  // Private link (Phase 2): targ-educator-application.html?request=<id> fills in and
+  // locks the name and email the Agency typed. Without ?request= the form works as before.
+  var REQUEST_ID = '';
+  try { REQUEST_ID = (new URLSearchParams(window.location.search).get('request') || '').trim(); } catch (e) {}
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(REQUEST_ID)) REQUEST_ID = '';
+  var REQUEST_INFO = null;
   // ============================================================
 
   var form = document.getElementById('theForm');
@@ -543,6 +549,29 @@
 
   // ---------- Draft save & resume (this device only) ----------
   var STORAGE_KEY = 'targ_educator_application_draft_v1';
+  // Every answer, for the Agency's records (long picture data is left out).
+  function answersForSend() {
+    var d = serializeForm();
+    Object.keys(d.simple).forEach(function (k) {
+      var v = String(d.simple[k] || '');
+      if (v.length > 2000 && v.indexOf('data:') === 0) d.simple[k] = '[image omitted]';
+    });
+    return d;
+  }
+  // Fills in and locks the fields the Agency typed for this private link.
+  function lockFromRequest() {
+    if (!REQUEST_INFO) return;
+    [['applicantName', REQUEST_INFO.applicantName], ['email', REQUEST_INFO.email]].forEach(function (p) {
+      var el = document.getElementById(p[0]);
+      if (!el || !p[1]) return;
+      el.value = p[1]; el.readOnly = true; el.style.background = '#F3F1EA';
+      if (!el.parentNode.querySelector('.locked-note')) {
+        var n = document.createElement('p'); n.className = 'locked-note'; n.style.cssText = 'font-size:12px;color:#5B655F;margin:4px 0 0';
+        n.textContent = 'Filled in by the Agency'; el.parentNode.appendChild(n);
+      }
+    });
+  }
+
   function serializeForm() {
     var data = { simple: {}, checks: {}, radios: {}, rows: {}, currentStep: current, savedAt: new Date().toISOString(), docsVersion: 2 };
     form.querySelectorAll('input[id], textarea[id], select[id]').forEach(function (el) {
@@ -1047,6 +1076,7 @@
               phone: document.getElementById('phone').value.trim(),
               email: document.getElementById('email').value.trim(),
               desiredStart: document.getElementById('desiredStart').value,
+              request: REQUEST_ID, answers: answersForSend(),
               pdfBase64: await blobToBase64(blob), attachments: attachments
             })
           });
@@ -1073,12 +1103,31 @@
   fillToday();
   applyConditions();
   updateNav();
-  var existingDraft = loadDraft();
-  if (existingDraft) {
-    var savedDate = existingDraft.savedAt ? new Date(existingDraft.savedAt).toLocaleString() : 'earlier';
-    showModal('<h3>Resume your unfinished application?</h3><p class="modal-p">We found answers you saved on this device (' + escapeHtmlClient(savedDate) + '). Your signatures and attached files are not saved and will need to be added again.</p>',
-      [{ label: 'Start fresh', onClick: function () { clearDraft(); } },
-       { label: 'Resume', primary: true, onClick: function () { restoreForm(existingDraft); fillToday(); } }]);
+  function offerDraft() {
+    var existingDraft = loadDraft();
+    if (existingDraft) {
+      var savedDate = existingDraft.savedAt ? new Date(existingDraft.savedAt).toLocaleString() : 'earlier';
+      showModal('<h3>Resume your unfinished application?</h3><p class="modal-p">We found answers you saved on this device (' + escapeHtmlClient(savedDate) + '). Your signatures and attached files are not saved and will need to be added again.</p>',
+        [{ label: 'Start fresh', onClick: function () { clearDraft(); } },
+         { label: 'Resume', primary: true, onClick: function () { restoreForm(existingDraft); fillToday(); lockFromRequest(); } }]);
+    }
+  }
+  if (REQUEST_ID && APPS_SCRIPT_URL.indexOf('__') !== 0) {
+    fetch(APPS_SCRIPT_URL + '?request=' + encodeURIComponent(REQUEST_ID))
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.status === 'ok') { REQUEST_INFO = res.stage1 || {}; lockFromRequest(); offerDraft(); }
+        else if (res && res.status === 'completed') {
+          downloadBtn.disabled = true;
+          showModal('<h3>This application has already been submitted</h3><p class="modal-p">Thank you. The Agency has received it. If something needs to change, please email info@targ.ca.</p>', [{ label: 'OK', primary: true }]);
+        } else {
+          downloadBtn.disabled = true;
+          showModal('<h3>This link is no longer active</h3><p class="modal-p">Please email info@targ.ca and we will send you a new link.</p>', [{ label: 'OK', primary: true }]);
+        }
+      })
+      .catch(function () { offerDraft(); });   // offline: the Agency checks the link when you submit
+  } else {
+    offerDraft();
   }
 })();
 
