@@ -1,0 +1,530 @@
+// ============================================================
+//  TARG Family Day Home Agency - Contract for Childcare
+//  (Parent Childcare Contract, Placement & PAD) - Backend
+//  TWO-STAGE: the Agency sends it from the staff page (Educator &
+//  program + parent's email); the parent completes and signs.
+//  Bound to its log Sheet. Least-privilege scopes, Advanced Drive
+//  Service, supportsAllDrives on every Drive call (PRP 5.3, 5.21).
+// ============================================================
+
+// — CONFIG ——————————————————————————————————
+const DRIVE_FOLDER_NAME = "TARG Parent Contract Submissions"; // Drive folder for PDFs
+const LOG_SHEET_NAME    = "Parent Contract Submissions";      // Tab name for the log
+const ALLOWED_DOMAIN    = "targ.ca";  // Staff page is restricted to this domain
+const FORM_URL          = "https://targ.ca/targ-parent-childcare-contract.html";
+const STAFF_PORTAL_URL  = "PASTE_STAFF_PORTAL_URL_AFTER_DEPLOY";
+const LOG_HEADERS = [
+  "Received At", "Parent or Guardian", "Child or Children", "Educator & Program",
+  "Effective Date", "Date Signed", "PDF Link", "Agency Receipt Date"
+];
+
+const FORM = {
+  title: "Contract for Childcare",
+  shortTitle: "Parent Contract",
+  portalTitle: "TARG Parent Contract",
+  recipientLabel: "Parent or guardian's email",
+  // Stage 1 — what the Agency fills in before sending (shown locked to the parent).
+  stage1: [
+    { key: "educatorProgram", label: "Educator & Program", placeholder: "e.g. Jane Smith — Sunny Days Family Day Home" }
+  ],
+  email: function (s) {
+    return {
+      subject: "Please review and sign: your TARG Contract for Childcare",
+      paragraphs: [
+        "Hello,",
+        "TARG Family Day Home Agency is asking you to review and sign your Contract for Childcare " +
+          "for your child's care with " + s.educatorProgram + ". It sets out the fees, notice periods and the " +
+          "terms of your child's placement.",
+        "It takes about 5 to 10 minutes on a phone or computer. Your answers are saved on your device as you go, " +
+          "so you can finish later on the same device."
+      ],
+      button: "Open the form"
+    };
+  },
+  // Stage 2 — log the finished form. Stage 1 values come from the Requests
+  // tab (what the Agency typed), never from the browser.
+  logSubmission: function (body, req, fileUrl) {
+    var parentName = String(body.parentName || "Unknown Parent");
+    var childNames = String(body.childNames || "");
+    logSubmission([parentName, childNames, req.stage1.educatorProgram,
+                   String(body.effectiveDate || ""), String(body.dateSigned || ""), fileUrl]);
+    return parentName + (childNames ? " (" + childNames + ")" : "");
+  },
+  submissionsNote: "Record the receipt date in the log Sheet's “Agency Receipt Date” column.",
+  submissionsTableHtml: function () {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(LOG_SHEET_NAME);
+    var rows = [];
+    if (sheet && sheet.getLastRow() > 1) rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, LOG_HEADERS.length).getValues();
+    var body = rows.slice().reverse().map(function (r) {
+      var receipt = r[7] ? escapeHtml(fmtCell(r[7], false)) : "<span style='color:#A32D2D;font-weight:600;'>Not yet received</span>";
+      return "<tr><td>" + escapeHtml(fmtCell(r[0], true)) + "</td><td>" + escapeHtml(r[1]) + "</td><td>" + escapeHtml(r[2]) +
+        "</td><td>" + escapeHtml(r[3]) + "</td><td>" + escapeHtml(fmtCell(r[4], false)) + "</td><td>" + escapeHtml(fmtCell(r[5], false)) +
+        "</td><td><a href='" + escapeHtml(r[6]) + "' target='_blank'>Open PDF</a></td><td>" + receipt + "</td></tr>";
+    }).join("");
+    return "<table><thead><tr><th>Received</th><th>Parent/Guardian</th><th>Child(ren)</th><th>Educator &amp; Program</th>" +
+      "<th>Effective</th><th>Signed</th><th>PDF</th><th>Agency Receipt</th></tr></thead><tbody>" +
+      (body || "<tr><td colspan='8' style='text-align:center;color:#8B9490;'>No submissions yet</td></tr>") + "</tbody></table>";
+  }
+};
+// ————————————————————————————————————————————
+
+
+/**
+ * logSubmission — one summary row per submission. "Agency Receipt Date" is
+ * left blank on purpose for staff to fill in once the form is received.
+ */
+function logSubmission(values) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(LOG_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(LOG_SHEET_NAME);
+    sheet.appendRow(LOG_HEADERS);
+    sheet.getRange(1, 1, 1, LOG_HEADERS.length).setFontWeight("bold").setBackground("#1F4E45").setFontColor("#ffffff");
+    sheet.getRange(1, LOG_HEADERS.length).setBackground("#C79A3E").setFontColor("#2A2110"); // staff-completed column
+    sheet.setFrozenRows(1);
+  }
+  sheet.appendRow([now_()].concat(values.map(safe_)).concat([""]));
+}
+
+// TEST HELPER — run once (Run > testSetup) to create the log tab + PDF folder.
+function testSetup() {
+  var folderId = getOrCreateFolderId(DRIVE_FOLDER_NAME);
+  logSubmission(["Test Parent", "Test Child", "Test Educator", "2026-09-26", "2026-09-26", "https://example.com/test"]);
+  Logger.log("Folder ready — ID: " + folderId);
+}
+
+// ============================================================
+//  TWO-STAGE HANDOFF CORE — shared by every "Agency starts,
+//  someone else finishes" form (PRP 5.21). Nothing below this
+//  line is form-specific; each form only sets FORM (above).
+//
+//  Stage 1 (staff page, targ.ca sign-in): staff type the first
+//    detail + the recipient's email and press Send. A row is added
+//    to the "Requests" tab and the recipient is emailed a private
+//    link:  FORM_URL?request=<random id>
+//  Stage 2 (public form): the page reads the Stage 1 detail with
+//    doGet(?request=), shows it locked, and the recipient completes
+//    and signs. doPost saves the PDF, logs it, marks the request
+//    Completed (one use only) and emails the staff member who sent it.
+// ============================================================
+const AGENCY_NAME = "TARG Family Day Home Agency";
+const REQUESTS_SHEET_NAME = "Requests";
+const TZ = "America/Edmonton";
+const ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+
+// ── Web entry points ──────────────────────────────────────────
+function doGet(e) {
+  var id = e && e.parameter && e.parameter.request;
+  if (id) return jsonResponse(publicRequestInfo_(String(id)));
+  return staffPortal_();
+}
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  var locked = false;
+  try {
+    var body = JSON.parse(e.postData.contents);
+    var id = String(body.requestId || "");
+    if (!body.pdfBase64) {
+      return jsonResponse({ status: "error", code: "nopdf", message: "No PDF data received." });
+    }
+    if (!ID_PATTERN.test(id)) {
+      return jsonResponse({ status: "error", code: "invalid", message: "This form must be opened from the link the Agency emailed you." });
+    }
+    lock.waitLock(30000); locked = true;
+    var req = findRequest_(id);
+    if (!req) return jsonResponse({ status: "error", code: "invalid", message: "This link is not valid." });
+    if (req.status === "Completed") return jsonResponse({ status: "error", code: "completed", message: "This form has already been submitted." });
+    if (req.status !== "Waiting") return jsonResponse({ status: "error", code: "cancelled", message: "This link is no longer active." });
+
+    var fileUrl = savePdf_(body.filename, body.pdfBase64);
+    var summary = FORM.logSubmission(body, req, fileUrl);
+    setReqCells_(req, { status: "Completed", completedAt: now_(), pdfLink: fileUrl });
+    SpreadsheetApp.flush();
+    lock.releaseLock(); locked = false;
+
+    try { notifySender_(req, summary, fileUrl); } catch (mailErr) { console.error("Notify failed: " + mailErr); }
+    return jsonResponse({ status: "ok", fileUrl: fileUrl });
+  } catch (err) {
+    return jsonResponse({ status: "error", message: err.message });
+  } finally {
+    if (locked) { try { lock.releaseLock(); } catch (x) {} }
+  }
+}
+
+// What the public form is allowed to know about a request: its Stage 1
+// detail while it is waiting, otherwise only its state.
+function publicRequestInfo_(id) {
+  if (!ID_PATTERN.test(id)) return { status: "invalid" };
+  var req = findRequest_(id);
+  if (!req) return { status: "invalid" };
+  if (req.status === "Completed") return { status: "completed" };
+  if (req.status !== "Waiting") return { status: "cancelled" };
+  return { status: "ok", stage1: req.stage1 };
+}
+
+
+// ── Staff actions (called from the staff page with google.script.run) ──
+function sendRequest(input) {
+  var staff = staffEmail_();
+  var v = checkRequestInput_(input);
+  if (MailApp.getRemainingDailyQuota() < 2) throw new Error("The daily email limit has been reached. Please try again tomorrow.");
+
+  var req = { id: Utilities.getUuid(), sentAt: now_(), sentBy: staff, sentTo: v.to, stage1: v.stage1 };
+  sendRequestEmail_(req);   // email first: nothing is recorded if it fails
+  addRequestRow_(req, req.sentAt);
+  return { requests: listRequests_(), sentTo: v.to, link: requestLink_(req.id) };
+}
+
+// "Create link only": the same request as sendRequest (same checks, same
+// Requests row, same one-use link) but NO email is sent. Staff email the
+// link themselves, e.g. from the shared info@targ.ca address in Gmail.
+// "Last Emailed" is left blank so the staff page shows "link only".
+function createRequestLink(input) {
+  var staff = staffEmail_();
+  var v = checkRequestInput_(input);
+  var req = { id: Utilities.getUuid(), sentAt: now_(), sentBy: staff, sentTo: v.to, stage1: v.stage1 };
+  addRequestRow_(req, "");
+  return { requests: listRequests_(), sentTo: v.to, link: requestLink_(req.id), email: requestEmailContent_(req) };
+}
+
+function checkRequestInput_(input) {
+  var to = String((input && input.email) || "").trim();
+  if (!/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(to)) throw new Error("Please enter one valid email address.");
+  var stage1 = {};
+  FORM.stage1.forEach(function (f) {
+    var v = String((input && input.stage1 && input.stage1[f.key]) || "").trim();
+    if (!v) throw new Error("Please fill in: " + f.label);
+    if (v.length > 200) throw new Error(f.label + " is too long.");
+    stage1[f.key] = v;
+  });
+  return { to: to, stage1: stage1 };
+}
+
+function addRequestRow_(req, lastEmailed) {
+  var row = [req.id, req.sentAt, req.sentBy, safe_(req.sentTo)];
+  FORM.stage1.forEach(function (f) { row.push(safe_(req.stage1[f.key])); });
+  row.push("Waiting", lastEmailed, "", "");
+  requestsSheet_().appendRow(row);
+}
+
+function resendRequest(id) {
+  staffEmail_();
+  var req = findRequest_(String(id));
+  if (!req) throw new Error("Request not found.");
+  if (req.status !== "Waiting") throw new Error("Only forms that are still waiting can be resent.");
+  sendRequestEmail_(req);
+  setReqCells_(req, { lastEmailed: now_() });
+  return { requests: listRequests_() };
+}
+
+function cancelRequest(id) {
+  staffEmail_();
+  var req = findRequest_(String(id));
+  if (!req) throw new Error("Request not found.");
+  if (req.status !== "Waiting") throw new Error("Only forms that are still waiting can be cancelled.");
+  setReqCells_(req, { status: "Cancelled" });
+  return { requests: listRequests_() };
+}
+
+
+// ── Emails ────────────────────────────────────────────────────
+function requestLink_(id) { return FORM_URL + "?request=" + id; }
+
+function sendRequestEmail_(req) {
+  var c = requestEmailContent_(req);
+  MailApp.sendEmail({ to: req.sentTo, subject: c.subject, body: c.text, htmlBody: c.html, name: AGENCY_NAME, replyTo: req.sentBy });
+}
+
+// The request email (subject, HTML and plain text), used by sendRequestEmail_
+// and returned by createRequestLink so staff can send the very same email.
+function requestEmailContent_(req) {
+  var link = requestLink_(req.id);
+  var m = FORM.email(req.stage1);
+  var html =
+    "<div style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1E2624;line-height:1.55;max-width:560px'>" +
+    m.paragraphs.map(function (p) { return "<p>" + escapeHtml(p) + "</p>"; }).join("") +
+    "<p style='margin:26px 0'><a href='" + link + "' style='background:#1F4E45;color:#ffffff;padding:12px 22px;" +
+    "border-radius:999px;text-decoration:none;font-weight:bold;display:inline-block'>" + escapeHtml(m.button) + "</a></p>" +
+    "<p style='font-size:13px;color:#5B655F'>If the button does not work, copy this link into your browser:<br>" + link + "</p>" +
+    "<p style='font-size:13px;color:#5B655F'>Questions? Just reply to this email.<br>" + escapeHtml(AGENCY_NAME) + "</p></div>";
+  var text = m.paragraphs.join("\n\n") + "\n\n" + m.button + ": " + link +
+    "\n\nQuestions? Just reply to this email.\n" + AGENCY_NAME;
+  return { to: req.sentTo, subject: m.subject, text: text, html: html, link: link };
+}
+
+function notifySender_(req, summary, fileUrl) {
+  if (!req.sentBy) return;
+  var subject = "Completed: " + FORM.shortTitle + " — " + summary;
+  var text = "Good news — " + req.sentTo + " has completed and signed the " + FORM.title + ".\n\n" +
+    summary + "\n\nPDF: " + fileUrl + "\nStaff page: " + STAFF_PORTAL_URL;
+  var html = "<div style='font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#1E2624;line-height:1.55'>" +
+    "<p>Good news — <b>" + escapeHtml(req.sentTo) + "</b> has completed and signed the " + escapeHtml(FORM.title) + ".</p>" +
+    "<p>" + escapeHtml(summary) + "</p>" +
+    "<p><a href='" + escapeHtml(fileUrl) + "'>Open the signed PDF</a> &nbsp;&middot;&nbsp; <a href='" + STAFF_PORTAL_URL + "'>Staff page</a></p></div>";
+  MailApp.sendEmail({ to: req.sentBy, subject: subject, body: text, htmlBody: html, name: AGENCY_NAME });
+}
+
+
+// ── Requests tab ──────────────────────────────────────────────
+function reqHeaders_() {
+  return ["Request ID", "Sent At", "Sent By", "Sent To"]
+    .concat(FORM.stage1.map(function (f) { return f.label; }))
+    .concat(["Status", "Last Emailed", "Completed At", "PDF Link"]);
+}
+
+function requestsSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(REQUESTS_SHEET_NAME);
+  if (!sh) {
+    sh = ss.insertSheet(REQUESTS_SHEET_NAME);
+    var h = reqHeaders_();
+    sh.appendRow(h);
+    sh.getRange(1, 1, 1, h.length).setFontWeight("bold").setBackground("#1F4E45").setFontColor("#ffffff");
+    sh.setFrozenRows(1);
+  }
+  return sh;
+}
+
+function readRequests_() {
+  var sh = requestsSheet_();
+  var n = sh.getLastRow() - 1;
+  if (n < 1) return [];
+  return sh.getRange(2, 1, n, reqHeaders_().length).getValues().map(function (r, i) { return rowToReq_(r, i + 2); });
+}
+
+function rowToReq_(r, rowNum) {
+  var k = FORM.stage1.length, stage1 = {};
+  FORM.stage1.forEach(function (f, i) { stage1[f.key] = String(r[4 + i]); });
+  return {
+    row: rowNum, id: String(r[0]), sentAt: String(fmtCell(r[1], true)), sentBy: String(r[2]), sentTo: String(r[3]),
+    stage1: stage1, status: String(r[4 + k]), lastEmailed: String(fmtCell(r[5 + k], true)),
+    completedAt: String(fmtCell(r[6 + k], true)), pdfLink: String(r[7 + k])
+  };
+}
+
+function findRequest_(id) {
+  var all = readRequests_();
+  for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i];
+  return null;
+}
+
+function setReqCells_(req, changes) {
+  var k = FORM.stage1.length, sh = requestsSheet_();
+  var col = { status: 5 + k, lastEmailed: 6 + k, completedAt: 7 + k, pdfLink: 8 + k };
+  Object.keys(changes).forEach(function (key) { sh.getRange(req.row, col[key]).setValue(changes[key]); });
+}
+
+function listRequests_() {
+  return readRequests_().reverse().slice(0, 300).map(function (q) {
+    return { id: q.id, sentAt: q.sentAt, sentBy: q.sentBy, sentTo: q.sentTo, stage1: q.stage1, status: q.status,
+             lastEmailed: q.lastEmailed, completedAt: q.completedAt, pdfLink: q.pdfLink, link: requestLink_(q.id) };
+  });
+}
+
+
+// ── Staff page ────────────────────────────────────────────────
+function staffEmail_() {
+  var email = Session.getActiveUser().getEmail();
+  if (!email || (ALLOWED_DOMAIN && email.split("@")[1] !== ALLOWED_DOMAIN)) {
+    throw new Error("Please sign in with your Agency (" + ALLOWED_DOMAIN + ") Google account.");
+  }
+  return email;
+}
+
+function staffPortal_() {
+  var email = Session.getActiveUser().getEmail();
+  var gate = function (msg) {
+    return HtmlService.createHtmlOutput("<p style='font-family:sans-serif;padding:40px;text-align:center;'>" + msg + "</p>")
+      .setTitle(FORM.portalTitle);
+  };
+  if (!email) return gate("Please sign in with your Agency Google account to view this page.");
+  if (ALLOWED_DOMAIN && email.split("@")[1] !== ALLOWED_DOMAIN) return gate("Access restricted to " + ALLOWED_DOMAIN + " accounts.");
+
+  var data = {
+    title: FORM.title, recipientLabel: FORM.recipientLabel, recipientWho: FORM.recipientWho,
+    stage1: FORM.stage1.map(function (f) { return { key: f.key, label: f.label, placeholder: f.placeholder || "" }; }),
+    requests: listRequests_()
+  };
+  var html =
+    "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'><style>" +
+    "body{font-family:-apple-system,'Segoe UI',sans-serif;background:#EEF1F0;color:#1E2624;margin:0;padding:24px 16px;}" +
+    "h1{font-family:Georgia,serif;color:#163A33;font-size:20px;margin:0 0 4px;}" +
+    "h2{font-family:Georgia,serif;color:#163A33;font-size:16px;margin:30px 0 10px;}" +
+    ".meta{color:#5B655F;font-size:13px;margin-bottom:20px;}" +
+    ".panel{background:#fff;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.08);padding:18px;max-width:560px;}" +
+    ".panel label{display:block;font-size:12.5px;font-weight:600;color:#5B655F;margin:0 0 6px;}" +
+    ".panel input{width:100%;box-sizing:border-box;font:inherit;font-size:15px;border:1.5px solid #DDE3DF;border-radius:9px;padding:10px 12px;margin-bottom:14px;}" +
+    ".panel input:focus{outline:none;border-color:#1F4E45;}" +
+    ".btn{appearance:none;border:none;border-radius:999px;padding:10px 20px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;background:#1F4E45;color:#fff;}" +
+    ".btn:disabled{opacity:.5;cursor:default;} .btn.small{padding:5px 11px;font-size:12px;margin:2px 4px 2px 0;background:#E6ECE9;color:#1E2624;}" +
+    ".btn.small.warn{background:#F6E3E3;color:#A32D2D;}" +
+    ".msg{font-size:13px;margin-top:10px;min-height:18px;} .msg.ok{color:#1F4E45;} .msg.err{color:#A32D2D;}" +
+    ".linkbox{width:100%;box-sizing:border-box;font-size:12px;padding:6px 8px;border:1px solid #DDE3DF;border-radius:6px;margin-top:6px;}" +
+    ".scroll{overflow-x:auto;}" +
+    "table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.08);}" +
+    "th{background:#1F4E45;color:#fff;text-align:left;padding:10px 12px;font-size:12.5px;white-space:nowrap;}" +
+    "td{padding:10px 12px;border-bottom:1px solid #DDE3DF;font-size:13px;vertical-align:top;}" +
+    "a{color:#C79A3E;font-weight:600;text-decoration:none;}" +
+    ".st-w{color:#9A6B12;font-weight:600;} .st-c{color:#1F4E45;font-weight:600;} .st-x{color:#8B9490;}" +
+    "</style></head><body>" +
+    "<h1>" + escapeHtml(FORM.portalTitle) + "</h1>" +
+    "<div class='meta'>Signed in as " + escapeHtml(email) + "</div>" +
+    "<h2 style='margin-top:10px'>Send this form</h2><div class='panel' id='sendPanel'></div>" +
+    "<h2>Sent forms</h2><div class='scroll' id='reqTable'></div>" +
+    "<h2>Completed submissions</h2><div class='meta'>" + FORM.submissionsNote + "</div><div class='scroll'>" + FORM.submissionsTableHtml() + "</div>" +
+    "<script>(" + portalClient_.toString() + ")(" + JSON.stringify(data).replace(/</g, "\\u003c") + ");</script>" +
+    "</body></html>";
+  return HtmlService.createHtmlOutput(html).setTitle(FORM.portalTitle)
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// Runs in the staff member's browser (inserted into the page above).
+function portalClient_(data) {
+  function esc(v) { return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
+  var panel = document.getElementById("sendPanel");
+  var h = "";
+  data.stage1.forEach(function (f) {
+    h += "<label for='s1_" + f.key + "'>" + esc(f.label) + "</label><input id='s1_" + f.key + "' placeholder='" + esc(f.placeholder) + "'>";
+  });
+  h += "<label for='toEmail'>" + esc(data.recipientLabel) + "</label><input id='toEmail' type='email' placeholder='name@example.com'>" +
+       "<button class='btn' id='sendBtn' type='button'>Send form by email</button> " +
+       "<button class='btn small' id='linkBtn' type='button' style='padding:10px 16px;font-size:13px'>Create link only (I will email it myself)</button>" +
+       "<div class='msg' id='sendMsg'></div><div id='newLink' style='display:none'><input class='linkbox' id='newLinkBox' readonly></div>";
+  panel.innerHTML = h;
+
+  function msg(text, ok) { var m = document.getElementById("sendMsg"); m.className = "msg " + (ok ? "ok" : "err"); m.textContent = text; }
+  document.getElementById("linkBtn").addEventListener("click", function () {
+    var btn = this, stage1 = {}, missing = null;
+    data.stage1.forEach(function (f) { var v = document.getElementById("s1_" + f.key).value.trim(); stage1[f.key] = v; if (!v && !missing) missing = f.label; });
+    var email = document.getElementById("toEmail").value.trim();
+    if (missing) return msg("Please fill in: " + missing, false);
+    if (!/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(email)) return msg("Please enter one valid email address.", false);
+    btn.disabled = true; msg("Creating the link…", true); document.getElementById("newLink").style.display = "none";
+    google.script.run.withSuccessHandler(function (res) {
+      btn.disabled = false;
+      data.stage1.forEach(function (f) { document.getElementById("s1_" + f.key).value = ""; });
+      document.getElementById("toEmail").value = "";
+      var box = document.getElementById("newLinkBox"); box.value = res.link;
+      document.getElementById("newLink").style.display = "block"; box.focus(); box.select();
+      msg("Link created for " + res.sentTo + " (no email sent). Copy it and email it yourself.", true);
+      try { navigator.clipboard.writeText(res.link).then(function () { msg("Link created for " + res.sentTo + " and copied (no email sent). Paste it into your own email.", true); }, function () {}); } catch (e) {}
+      render(res.requests);
+    }).withFailureHandler(function (err) { btn.disabled = false; msg(err.message || String(err), false); })
+      .createRequestLink({ email: email, stage1: stage1 });
+  });
+  document.getElementById("sendBtn").addEventListener("click", function () {
+    var btn = this, stage1 = {}, missing = null;
+    data.stage1.forEach(function (f) { var v = document.getElementById("s1_" + f.key).value.trim(); stage1[f.key] = v; if (!v && !missing) missing = f.label; });
+    var email = document.getElementById("toEmail").value.trim();
+    if (missing) return msg("Please fill in: " + missing, false);
+    if (!/^[^\s@,;]+@[^\s@,;]+\.[^\s@,;]+$/.test(email)) return msg("Please enter one valid email address.", false);
+    btn.disabled = true; msg("Sending…", true);
+    google.script.run.withSuccessHandler(function (res) {
+      btn.disabled = false;
+      data.stage1.forEach(function (f) { document.getElementById("s1_" + f.key).value = ""; });
+      document.getElementById("toEmail").value = "";
+      msg("Sent to " + res.sentTo + ". It now appears under “Sent forms” below.", true);
+      render(res.requests);
+    }).withFailureHandler(function (err) { btn.disabled = false; msg(err.message || String(err), false); })
+      .sendRequest({ email: email, stage1: stage1 });
+  });
+
+  function render(list) {
+    var box = document.getElementById("reqTable");
+    if (!list.length) { box.innerHTML = "<div class='meta'>Nothing sent yet.</div>"; return; }
+    var t = "<table><thead><tr><th>Sent</th><th>Sent to</th>";
+    data.stage1.forEach(function (f) { t += "<th>" + esc(f.label) + "</th>"; });
+    t += "<th>Status</th><th></th></tr></thead><tbody>";
+    list.forEach(function (q) {
+      var st = q.status === "Waiting" ? "<span class='st-w'>Waiting</span>" + (!q.lastEmailed ? "<br><small>link only (emailed by staff)</small>" : q.lastEmailed !== q.sentAt ? "<br><small>re-sent " + esc(q.lastEmailed) + "</small>" : "")
+        : q.status === "Completed" ? "<span class='st-c'>Completed</span><br><small>" + esc(q.completedAt) + "</small>"
+        : "<span class='st-x'>" + esc(q.status) + "</span>";
+      var act = q.status === "Waiting"
+        ? "<button class='btn small' data-a='resend' data-id='" + esc(q.id) + "'>Resend email</button>" +
+          "<button class='btn small' data-a='link' data-id='" + esc(q.id) + "'>Show link</button>" +
+          "<button class='btn small warn' data-a='cancel' data-id='" + esc(q.id) + "'>Cancel</button>" +
+          "<div id='lk_" + esc(q.id) + "' style='display:none'><input class='linkbox' readonly value='" + esc(q.link) + "'></div>"
+        : (q.pdfLink ? "<a href='" + esc(q.pdfLink) + "' target='_blank'>Open PDF</a>" : "");
+      t += "<tr><td>" + esc(q.sentAt) + "<br><small>" + esc(q.sentBy) + "</small></td><td>" + esc(q.sentTo) + "</td>";
+      data.stage1.forEach(function (f) { t += "<td>" + esc(q.stage1[f.key]) + "</td>"; });
+      t += "<td>" + st + "</td><td>" + act + "<div class='msg' id='rm_" + esc(q.id) + "'></div></td></tr>";
+    });
+    box.innerHTML = t + "</tbody></table>";
+  }
+  document.getElementById("reqTable").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-a]"); if (!b) return;
+    var id = b.getAttribute("data-id"), a = b.getAttribute("data-a"), note = document.getElementById("rm_" + id);
+    function fail(err) { b.disabled = false; note.className = "msg err"; note.textContent = err.message || String(err); }
+    if (a === "link") {
+      var lk = document.getElementById("lk_" + id); lk.style.display = lk.style.display === "none" ? "block" : "none";
+      var inp = lk.querySelector("input"); inp.focus(); inp.select();
+      try { navigator.clipboard.writeText(inp.value).then(function () { note.className = "msg ok"; note.textContent = "Link copied."; }, function () {}); } catch (e) {}
+      return;
+    }
+    if (a === "cancel" && b.getAttribute("data-sure") !== "1") {
+      b.setAttribute("data-sure", "1"); b.textContent = "Tap again to cancel"; return;
+    }
+    b.disabled = true; note.className = "msg ok"; note.textContent = a === "resend" ? "Sending…" : "Cancelling…";
+    var run = google.script.run.withSuccessHandler(function (res) {
+      render(res.requests);
+      var n = document.getElementById("rm_" + id);
+      if (n) { n.className = "msg ok"; n.textContent = a === "resend" ? "Email sent again." : ""; }
+    }).withFailureHandler(fail);
+    if (a === "resend") run.resendRequest(id); else run.cancelRequest(id);
+  });
+  render(data.requests);
+}
+
+
+// ── Shared helpers ────────────────────────────────────────────
+function savePdf_(name, pdfBase64) {
+  var filename = String(name || "TARG_Form.pdf").replace(/[^\w\-. ]+/g, "").trim().slice(0, 150) || "TARG_Form.pdf";
+  if (!/\.pdf$/i.test(filename)) filename += ".pdf";
+  var folderId = getOrCreateFolderId(DRIVE_FOLDER_NAME);
+  var blob = Utilities.newBlob(Utilities.base64Decode(pdfBase64), "application/pdf", filename);
+  var file = Drive.Files.create({ name: filename, parents: [folderId] }, blob,
+    { fields: "id, webViewLink", supportsAllDrives: true });
+  return file.webViewLink || ("https://drive.google.com/file/d/" + file.id + "/view");
+}
+
+function getOrCreateFolderId(name) {
+  var props = PropertiesService.getScriptProperties();
+  var storedId = props.getProperty("SUBMISSIONS_FOLDER_ID");
+  if (storedId) {
+    try { return Drive.Files.get(storedId, { fields: "id", supportsAllDrives: true }).id; }
+    catch (e) { /* folder deleted or ID invalid — fall through and recreate */ }
+  }
+  var folder = Drive.Files.create({ name: name, mimeType: "application/vnd.google-apps.folder" },
+    null, { fields: "id", supportsAllDrives: true });
+  props.setProperty("SUBMISSIONS_FOLDER_ID", folder.id);
+  return folder.id;
+}
+
+// Text typed by the public must never turn into a spreadsheet formula.
+function safe_(v) { v = String(v == null ? "" : v); return /^[=+\-@]/.test(v) ? "'" + v : v; }
+function now_() { return Utilities.formatDate(new Date(), TZ, "yyyy-MM-dd HH:mm"); }
+
+// Sheets turns date-like text back into Date values; show them in a short form.
+function fmtCell(v, withTime) {
+  if (v instanceof Date) return Utilities.formatDate(v, TZ, withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd");
+  return v;
+}
+
+function escapeHtml(v) {
+  return String(v == null ? "" : v)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function jsonResponse(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Run once from the editor (Run > setupRequests) after pasting this code:
+// creates the Requests tab and asks you to approve sending email.
+function setupRequests() {
+  requestsSheet_();
+  Logger.log("Requests tab ready. Emails left today: " + MailApp.getRemainingDailyQuota());
+}
