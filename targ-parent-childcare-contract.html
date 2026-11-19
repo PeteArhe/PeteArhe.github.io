@@ -388,28 +388,59 @@
           <label class="choice"><input type="radio" name="placementType" value="Non-Funded Space (under 50 hrs/month)"><span class="pill">Non-Funded Space</span></label>
         </div>
       </fieldset>
-      <p class="subheading">Contracted days of the week</p>
-      <div class="choice-grid" style="margin-bottom:14px;">
-        <label class="choice"><input type="checkbox" id="dayMon" data-day="Mon"><span class="pill">Mon</span></label>
-        <label class="choice"><input type="checkbox" id="dayTue" data-day="Tue"><span class="pill">Tue</span></label>
-        <label class="choice"><input type="checkbox" id="dayWed" data-day="Wed"><span class="pill">Wed</span></label>
-        <label class="choice"><input type="checkbox" id="dayThu" data-day="Thu"><span class="pill">Thu</span></label>
-        <label class="choice"><input type="checkbox" id="dayFri" data-day="Fri"><span class="pill">Fri</span></label>
+      <p class="subheading">Contracted days and hours of care</p>
+      <p class="hint">Tick each day your child attends, then set that day&#39;s drop-off and pick-up time. Days may have different hours.</p>
+      <style>
+        .day-grid { margin: 6px 0 14px; }
+        .day-head { display:grid; grid-template-columns: 76px 1fr 1fr; gap:8px; font-size:12px; color:#6b7280; margin-bottom:6px; }
+        .day-row { display:grid; grid-template-columns: 76px 1fr 1fr; gap:8px; align-items:center; margin-bottom:8px; }
+        .day-row .choice { margin:0; }
+        .day-row input[type="time"] { width:100%; padding:10px; border:1px solid #d1d5db; border-radius:8px; font-size:15px; background:#fff; color:#111827; }
+        .day-row input[type="time"]:disabled { background:#f3f4f6; color:#9ca3af; }
+      </style>
+      <div class="day-grid">
+        <div class="day-head"><span>Day</span><span>Drop-off</span><span>Pick-up</span></div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="dayMon" data-day="Mon" aria-label="Monday"><span class="pill">Mon</span></label>
+          <input type="time" id="dayMonIn" aria-label="Monday drop-off time">
+          <input type="time" id="dayMonOut" aria-label="Monday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="dayTue" data-day="Tue" aria-label="Tuesday"><span class="pill">Tue</span></label>
+          <input type="time" id="dayTueIn" aria-label="Tuesday drop-off time">
+          <input type="time" id="dayTueOut" aria-label="Tuesday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="dayWed" data-day="Wed" aria-label="Wednesday"><span class="pill">Wed</span></label>
+          <input type="time" id="dayWedIn" aria-label="Wednesday drop-off time">
+          <input type="time" id="dayWedOut" aria-label="Wednesday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="dayThu" data-day="Thu" aria-label="Thursday"><span class="pill">Thu</span></label>
+          <input type="time" id="dayThuIn" aria-label="Thursday drop-off time">
+          <input type="time" id="dayThuOut" aria-label="Thursday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="dayFri" data-day="Fri" aria-label="Friday"><span class="pill">Fri</span></label>
+          <input type="time" id="dayFriIn" aria-label="Friday drop-off time">
+          <input type="time" id="dayFriOut" aria-label="Friday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="daySat" data-day="Sat" aria-label="Saturday"><span class="pill">Sat</span></label>
+          <input type="time" id="daySatIn" aria-label="Saturday drop-off time">
+          <input type="time" id="daySatOut" aria-label="Saturday pick-up time">
+        </div>
+        <div class="day-row">
+          <label class="choice"><input type="checkbox" id="daySun" data-day="Sun" aria-label="Sunday"><span class="pill">Sun</span></label>
+          <input type="time" id="daySunIn" aria-label="Sunday drop-off time">
+          <input type="time" id="daySunOut" aria-label="Sunday pick-up time">
+        </div>
       </div>
       <div class="field">
-        <label class="f-label" for="daysSummary">Days selected</label>
-        <input type="text" id="daysSummary" value="" readonly required>
+        <label class="f-label" for="scheduleSummary">Days and hours selected</label>
+        <input type="text" id="scheduleSummary" value="" readonly required>
       </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="f-label" for="dropOff">Daily drop-off time</label>
-          <input type="time" id="dropOff" required>
-        </div>
-        <div class="field">
-          <label class="f-label" for="pickUp">Daily pick-up time</label>
-          <input type="time" id="pickUp" required>
-        </div>
-      </div>
+      <p class="hint" id="schedHint" style="color:#b91c1c; display:none;"></p>
       <div class="legal-block">
         <p>Maximum daily care hours: <strong>11 hours</strong> (included in the fee).</p>
         <p><strong>Standard Parent Portion</strong> - based on the Full-Time ($326.25) or Part-Time ($230.00) rate, after government funding is applied.</p>
@@ -532,17 +563,45 @@
     </section>
 
     <script>
-      // Mirrors the day pills into a read-only field so the day selection
-      // prints in the PDF (the PDF engine reads .field inputs).
+      // Mirrors the per-day schedule into a read-only field so it prints in
+      // the PDF (the PDF engine reads .field inputs). The field stays empty -
+      // and therefore blocks submission - until every ticked day has both a
+      // drop-off and a pick-up time.
       (function () {
         var days = Array.prototype.slice.call(document.querySelectorAll('input[data-day]'));
-        var out = document.getElementById('daysSummary');
+        var out = document.getElementById('scheduleSummary');
+        var hint = document.getElementById('schedHint');
         function sync() {
           if (!out) return;
-          out.value = days.filter(function (d) { return d.checked; })
-                          .map(function (d) { return d.getAttribute('data-day'); }).join(', ');
+          var parts = [], incomplete = [];
+          days.forEach(function (d) {
+            var key = d.getAttribute('data-day');
+            var a = document.getElementById(d.id + 'In');
+            var b = document.getElementById(d.id + 'Out');
+            if (a) a.disabled = !d.checked;
+            if (b) b.disabled = !d.checked;
+            if (!d.checked) return;
+            if (a && b && a.value && b.value) parts.push(key + ' ' + a.value + '-' + b.value);
+            else incomplete.push(key);
+          });
+          if (!parts.length && !incomplete.length) {
+            out.value = '';
+            if (hint) { hint.style.display = 'none'; hint.textContent = ''; }
+            return;
+          }
+          if (incomplete.length) {
+            out.value = '';
+            if (hint) {
+              hint.textContent = 'Please add a drop-off and pick-up time for: ' + incomplete.join(', ') + '.';
+              hint.style.display = 'block';
+            }
+            return;
+          }
+          out.value = parts.join('; ');
+          if (hint) { hint.style.display = 'none'; hint.textContent = ''; }
         }
         document.addEventListener('change', sync);
+        document.addEventListener('input', sync);
         setInterval(sync, 400);
         sync();
       })();
